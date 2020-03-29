@@ -1,8 +1,8 @@
-package com.biblioteca.portalAba.repository;
+package com.portalaba.apirest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.biblioteca.portalAba.models.Clientes;
+import com.portalaba.apirest.models.Clientes;
 
 public interface ClientesRepository extends JpaRepository<Clientes, Long>{
 	

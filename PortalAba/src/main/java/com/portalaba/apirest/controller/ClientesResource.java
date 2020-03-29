@@ -1,4 +1,4 @@
-package com.biblioteca.portalAba.controller;
+package com.portalaba.apirest.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.biblioteca.portalAba.models.Clientes;
-import com.biblioteca.portalAba.repository.ClientesRepository;
+import com.portalaba.apirest.models.Clientes;
+import com.portalaba.apirest.repository.ClientesRepository;
 
 @RestController
 @RequestMapping(value="/clientes")

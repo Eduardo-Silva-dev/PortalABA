@@ -1,4 +1,4 @@
-package com.biblioteca.portalAba;
+package com.portalaba.apirest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

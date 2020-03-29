@@ -1,4 +1,4 @@
-package com.biblioteca.portalAba.models;
+package com.portalaba.apirest.models;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
