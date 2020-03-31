@@ -10,39 +10,38 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.portalaba.apirest.models.Clientes;
-import com.portalaba.apirest.repository.ClientesRepository;
+import com.portalaba.apirest.models.Analista;
+import com.portalaba.apirest.repository.AnalistaRepository;
 
 @RestController
-@RequestMapping(value="/clientes")
-public class ClientesResource {
+@RequestMapping(value="/analistas")
+public class AnalistaResource {
 
 	@Autowired
-	private ClientesRepository clientesrepository;
+	private AnalistaRepository analsitarepository;
 	
 	@GetMapping
-	public List<Clientes> listartodos(){
-		return clientesrepository.findAll();
+	public List<Analista> listartodos(){
+		return analsitarepository.findAll();
 	}
 	
 	@GetMapping("{id}")
-	public Clientes listar(@PathVariable(value="id")long id) {
-		return clientesrepository.findById(id);
+	public Analista listar(@PathVariable(value="id")long id) {
+		return analsitarepository.findById(id);
 	}
 	
 	@PostMapping
-	public Clientes salvarCliente (@RequestBody Clientes cliente) {
-		return clientesrepository.save(cliente);
+	public Analista salvarCliente (@RequestBody Analista analista) {
+		return analsitarepository.save(analista);
 	}
 	
 	@DeleteMapping
-	public void deletarCliente (@RequestBody Clientes cliente) {
-		clientesrepository.delete(cliente);
+	public void deletarCliente (@RequestBody Analista analista) {
+		analsitarepository.delete(analista);
 	}
 	
 	@PutMapping
-	public Clientes atualizaCLiente (@RequestBody Clientes cliente) {
-		return clientesrepository.save(cliente);
+	public Analista atualizaCLiente (@RequestBody Analista analista) {
+		return analsitarepository.save(analista);
 	}
 }
