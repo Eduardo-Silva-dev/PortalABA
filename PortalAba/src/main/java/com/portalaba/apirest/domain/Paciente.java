@@ -26,25 +26,25 @@ public class Paciente extends Pessoa  implements Serializable{
     private Integer dataNascimentoMae;
     
     @NotEmpty
-    @Column(length=60,unique = true)
+    @Column(length=60)
     private String emailResponsavel;
 
-    @Column(length=11,unique = true)
+    @Column(length=11)
     private String cpfPaciente;
     
-    @Column(length=11,unique = true)
+    @Column(length=11)
     private String cpfPai;
     
-    @Column(length=11,unique = true)
+    @Column(length=11)
     private String cpfMae;
     
-    @Column(length=11,unique = true)
+    @Column(length=11)
     private String contatoPaciente;
 
-    @Column(length=11,unique = true)
+    @Column(length=11)
     private String contatoPai;
     
-    @Column(length=11,unique = true)
+    @Column(length=11)
     private String contatoMae;
     
     @OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
