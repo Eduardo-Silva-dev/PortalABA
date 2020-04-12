@@ -1,88 +1,75 @@
-package com.portalaba.apirest.models;
+package com.portalaba.apirest.dto;
 
-import javax.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.UniqueElements;
-import java.io.Serializable;
-import javax.persistence.*;
+import java.sql.Date;
 
-@Entity
-@Table(name="tb_paciente")
-public class Paciente implements Serializable{
+public class PacienteNewDTO {
 
-	private static final long serialVersionUID = 1l;
+    private String password; 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idPaciente; 
-
-    @NotBlank
-    @UniqueElements
-    @Column(length=60)
-    private String nomePaciente;
+    private String nome;
     
-    @Column(length=60)
+    private Date dataNascimento;
+    
     private String nomePai;
     
-    @Column(length=60)
     private String nomeMae;
     
-    @NotBlank
-    @Column(length=8)
-    private Integer dataNascimentoPaciente;
-    
-    @Column(length=8)
     private Integer dataNascimentoPai;
     
-    @Column(length=8)
     private Integer dataNascimentoMae;
     
-    @NotBlank
-    @Column(length=60)
-    @UniqueElements
     private String emailResponsavel;
 
-    @Column(length=11)
-    @UniqueElements
     private String cpfPaciente;
     
-    @Column(length=11)
-    @UniqueElements
     private String cpfPai;
     
-    @Column(length=11)
-    @UniqueElements
     private String cpfMae;
     
-    @NotBlank
-    @Column(length=150)
-    private String enderecoPaciente;
-    
-    @Column(length=11)
-    @UniqueElements
     private String contatoPaciente;
 
-    @Column(length=11)
-    @UniqueElements
     private String contatoPai;
     
-    @Column(length=11)
-    @UniqueElements
     private String contatoMae;
-
-	public long getIdPaciente() {
-		return idPaciente;
+    
+    private String logradouro;
+	
+	private String complemento;
+	
+	private String bairro;
+	
+	private String cep;
+	
+	private String numero;
+    
+	private Integer cidade;
+	
+	public PacienteNewDTO() {
+		
 	}
 
-	public void setIdPaciente(long idPaciente) {
-		this.idPaciente = idPaciente;
+	public String getPassword() {
+		return password;
 	}
 
-	public String getNomePaciente() {
-		return nomePaciente;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public void setNomePaciente(String nomePaciente) {
-		this.nomePaciente = nomePaciente;
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	public String getNomePai() {
@@ -99,14 +86,6 @@ public class Paciente implements Serializable{
 
 	public void setNomeMae(String nomeMae) {
 		this.nomeMae = nomeMae;
-	}
-
-	public Integer getDataNascimentoPaciente() {
-		return dataNascimentoPaciente;
-	}
-
-	public void setDataNascimentoPaciente(Integer dataNascimentoPaciente) {
-		this.dataNascimentoPaciente = dataNascimentoPaciente;
 	}
 
 	public Integer getDataNascimentoPai() {
@@ -157,14 +136,6 @@ public class Paciente implements Serializable{
 		this.cpfMae = cpfMae;
 	}
 
-	public String getEnderecoPaciente() {
-		return enderecoPaciente;
-	}
-
-	public void setEnderecoPaciente(String enderecoPaciente) {
-		this.enderecoPaciente = enderecoPaciente;
-	}
-
 	public String getContatoPaciente() {
 		return contatoPaciente;
 	}
@@ -188,6 +159,52 @@ public class Paciente implements Serializable{
 	public void setContatoMae(String contatoMae) {
 		this.contatoMae = contatoMae;
 	}
-	
-    
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public Integer getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Integer cidade) {
+		this.cidade = cidade;
+	}
 }

@@ -1,9 +1,10 @@
 package com.portalaba.apirest.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.portalaba.apirest.models.Acompanhante;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface AcompanhanteRepository extends JpaRepository<Acompanhante, Long>{
+import com.portalaba.apirest.domain.Acompanhante;
+
+public interface AcompanhanteRepository extends PagingAndSortingRepository<Acompanhante, Long>{
 	
 	Acompanhante findById(long id);
 }
