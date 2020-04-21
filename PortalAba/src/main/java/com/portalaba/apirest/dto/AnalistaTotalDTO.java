@@ -3,6 +3,7 @@ package com.portalaba.apirest.dto;
 import java.io.Serializable;
 import java.sql.Date;
 import com.portalaba.apirest.domain.Analista;
+import com.portalaba.apirest.domain.Endereco;
 
 public class AnalistaTotalDTO implements Serializable {
 	
@@ -46,7 +47,7 @@ public class AnalistaTotalDTO implements Serializable {
 		
 	}
 
-	public AnalistaTotalDTO(Analista obj) {
+	public AnalistaTotalDTO(Analista obj, Endereco endereco) {
 		super();
 		this.id = obj.getId();
 		this.password = obj.getPassword();
@@ -58,13 +59,13 @@ public class AnalistaTotalDTO implements Serializable {
 		this.cpfAnalista = obj.getCpfAnalista();
 		this.contatoAnalista = obj.getContatoAnalista();
 		this.crpAnalista = obj.getCrpAnalista();
-//		this.logradouro = obj.getEnderecos().getLogradouro();
-//		this.complemento = obj.getEnderecos().getComplemento();
-//		this.bairro = obj.getEnderecos().getBairro();
-//		this.cep = obj.getEnderecos().getCep();
-//		this.numero = obj.getEnderecos().getNumero();
-//		this.cidade = obj.getEnderecos().getCidade();
-//		this.estado = obj.getEnderecos().getEstado();
+		this.bairro = endereco.getBairro();
+		this.cep = endereco.getCep();
+		this.cidade = endereco.getCidade();
+		this.complemento = endereco.getComplemento();
+		this.estado = endereco.getEstado();
+		this.logradouro = endereco.getLogradouro();
+		this.numero = endereco.getNumero();
 	}
 
 	public long getId() {

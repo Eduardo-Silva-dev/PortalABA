@@ -20,6 +20,6 @@ public interface AcompanhanteRepository extends PagingAndSortingRepository<Acomp
 	@Query("select u.analistas from Acompanhante u where u.id = ?1")
 	List<Analista> findAllAnalistas(long id);
 	
-	@Query("select u from Endereco u where u.acompanhante = 3")
-	Endereco findEnderecos(Acompanhante id);
+	@Query("select u from Endereco u where u.id = ?1")
+	Endereco findEnderecos(long id);
 }

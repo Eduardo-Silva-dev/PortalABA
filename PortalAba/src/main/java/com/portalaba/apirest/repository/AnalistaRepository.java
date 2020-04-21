@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
+import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 
 public interface AnalistaRepository extends CrudRepository<Analista, Long>{
@@ -19,4 +20,7 @@ public interface AnalistaRepository extends CrudRepository<Analista, Long>{
 
 	@Query("select u.acompanhantes from Analista u where u.id = ?1")
 	List<Acompanhante> findAllAcompanhantes(long id);
+	
+	@Query("select u from Endereco u where u.id = ?1")
+	Endereco findEnderecos(long id);
 }

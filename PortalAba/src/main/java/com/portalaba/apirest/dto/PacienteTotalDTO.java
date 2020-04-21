@@ -2,6 +2,8 @@ package com.portalaba.apirest.dto;
 
 import java.io.Serializable;
 import java.sql.Date;
+
+import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 
 public class PacienteTotalDTO implements Serializable {
@@ -57,7 +59,7 @@ public class PacienteTotalDTO implements Serializable {
 		
 	}
 
-	public PacienteTotalDTO(Paciente obj) {
+	public PacienteTotalDTO(Paciente obj,Endereco endereco) {
 		super();
 		this.id = obj.getId();
 		this.password = obj.getPassword();
@@ -74,13 +76,13 @@ public class PacienteTotalDTO implements Serializable {
 		contatoPaciente = obj.getContatoPaciente();
 		contatoPai = obj.getContatoPai();
 		contatoMae = obj.getContatoMae();
-//		this.logradouro = obj.getEnderecos().getLogradouro();
-//		this.complemento = obj.getEnderecos().getComplemento();
-//		this.bairro = obj.getEnderecos().getBairro();
-//		this.cep = obj.getEnderecos().getCep();
-//		this.numero = obj.getEnderecos().getNumero();
-//		this.cidade = obj.getEnderecos().getCidade();
-//		this.estado = obj.getEnderecos().getEstado();
+		this.bairro = endereco.getBairro();
+		this.cep = endereco.getCep();
+		this.cidade = endereco.getCidade();
+		this.complemento = endereco.getComplemento();
+		this.estado = endereco.getEstado();
+		this.logradouro = endereco.getLogradouro();
+		this.numero = endereco.getNumero();
 	}
 
 	public long getId() {

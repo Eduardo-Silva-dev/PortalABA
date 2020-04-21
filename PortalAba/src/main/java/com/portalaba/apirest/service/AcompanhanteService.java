@@ -31,15 +31,18 @@ public class AcompanhanteService {
 	private AnalistaRepository repoA;
 	
 	public AcompanhanteTotalDTO findTotal(long id) {
+		long endId = 0;
 		Acompanhante obj = repo.findByID(id);
-		Endereco endereco = repo.findEnderecos(repo.findByID(id));
+		for (int i =0;i<1;i++) {
+			endId = obj.getEnderecos().get(i).getId();
+		}
+		Endereco endereco = repo.findEnderecos(endId);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
 		}
 		
-		System.out.print(obj.getEnderecos().getClass().toString());
-		AcompanhanteTotalDTO objTotalDTO = new AcompanhanteTotalDTO(obj);
+		AcompanhanteTotalDTO objTotalDTO = new AcompanhanteTotalDTO(obj, endereco);
 		
 			return objTotalDTO;
 	}

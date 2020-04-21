@@ -33,13 +33,17 @@ public class PacienteService {
 	private AcompanhanteRepository repoT;
 	
 	public PacienteTotalDTO findTotal(long id) {
-		Paciente obj = find(id);
-		
+		long endId = 0;
+		Paciente obj = repo.findByID(id);
+		for (int i =0;i<1;i++) {
+			endId = obj.getEnderecos().get(i).getId();
+		}
+		Endereco endereco = repo.findEnderecos(endId);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
 		}
-		PacienteTotalDTO obgTotalDTO = new PacienteTotalDTO(obj);
+		PacienteTotalDTO obgTotalDTO = new PacienteTotalDTO(obj,endereco);
 			return obgTotalDTO;
 	}
 	

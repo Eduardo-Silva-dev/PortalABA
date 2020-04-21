@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import com.portalaba.apirest.domain.Acompanhante;
+import com.portalaba.apirest.domain.Endereco;
 
 public class AcompanhanteTotalDTO implements Serializable {
 	
@@ -45,7 +46,7 @@ public class AcompanhanteTotalDTO implements Serializable {
 		
 	}
 
-	public AcompanhanteTotalDTO(Acompanhante obj) {
+	public AcompanhanteTotalDTO(Acompanhante obj, Endereco endereco) {
 		super();
 		this.id = obj.getId();
 		this.password = obj.getPassword();
@@ -56,13 +57,13 @@ public class AcompanhanteTotalDTO implements Serializable {
 		this.cpfAcompanhante = obj.getCpfAcompanhante();
 		this.contatoAcompanhante = obj.getContatoAcompanhante();
 		this.crpAcompanhante = obj.getCrpAcompanhante();
-//		this.bairro = endereco.getBairro();
-//		this.cep = endereco.getCep();
-//		this.cidade = endereco.getCidade();
-//		this.complemento = endereco.getComplemento();
-//		this.estado = endereco.getEstado();
-//		this.logradouro = endereco.getLogradouro();
-//		this.numero = endereco.getNumero();
+		this.bairro = endereco.getBairro();
+		this.cep = endereco.getCep();
+		this.cidade = endereco.getCidade();
+		this.complemento = endereco.getComplemento();
+		this.estado = endereco.getEstado();
+		this.logradouro = endereco.getLogradouro();
+		this.numero = endereco.getNumero();
 	}
 
 	public long getId() {

@@ -26,13 +26,17 @@ public class AnalistaService {
 	private AnalistaRepository repo;
 	
 	public AnalistaTotalDTO findTotal(long id) {
-		Analista obj = find(id);
-		
+		long endId = 0;
+		Analista obj = repo.findByID(id);
+		for (int i =0;i<1;i++) {
+			endId = obj.getEnderecos().get(i).getId();
+		}
+		Endereco endereco = repo.findEnderecos(endId);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
 		}
-		AnalistaTotalDTO obgTotalDTO = new AnalistaTotalDTO(obj);
+		AnalistaTotalDTO obgTotalDTO = new AnalistaTotalDTO(obj,endereco);
 			return obgTotalDTO;
 	}
 	
