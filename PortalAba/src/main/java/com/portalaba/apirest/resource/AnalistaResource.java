@@ -73,7 +73,7 @@ public class AnalistaResource {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@PathVariable long id, @RequestBody Analista obj){
-		obj = analsitaservice.update(obj);
+		obj = analsitaservice.update(obj,id);
 		return ResponseEntity.noContent().build();
 	}
 	

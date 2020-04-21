@@ -72,7 +72,7 @@ public class PacienteResource {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@PathVariable long id, @RequestBody Paciente obj){
-		obj = pacienteService.update(obj);
+		obj = pacienteService.update(obj,id);
 		return ResponseEntity.noContent().build();
 	}
 	

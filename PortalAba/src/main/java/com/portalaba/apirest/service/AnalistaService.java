@@ -68,7 +68,8 @@ public class AnalistaService {
 		return analista;
 	}
 
-	public Analista update(Analista obj) {
+	public Analista update(Analista obj,long id) {
+		obj.setId(id);
 		find(obj.getId());
 		return repo.save(obj);
 	}

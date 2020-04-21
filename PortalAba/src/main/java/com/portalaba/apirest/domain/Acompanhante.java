@@ -49,9 +49,11 @@ public class Acompanhante extends Pessoa implements Serializable{
 	@JoinColumn(name="paciente_id")
 	private Paciente paciente;
 
+	@JsonIgnore
     @OneToMany(mappedBy="acompanhante", cascade=CascadeType.ALL)
 	private List<Analista> analistas = new ArrayList<>();
     
+	@JsonIgnore
     @OneToMany(mappedBy="acompanhante", cascade=CascadeType.ALL)
 	private List<Paciente> pacientes = new ArrayList<>();
 

@@ -50,11 +50,11 @@ public class Analista extends Pessoa implements Serializable{
     @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
   	private List<Endereco> enderecos = new ArrayList<>();
     
- 
+	@JsonIgnore
     @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
    	private List<Acompanhante> acompanhantes = new ArrayList<>();
     
-    
+	@JsonIgnore
     @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
    	private List<Paciente> pacientes = new ArrayList<>();
 

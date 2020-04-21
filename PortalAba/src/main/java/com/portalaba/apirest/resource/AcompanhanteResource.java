@@ -73,7 +73,7 @@ public class AcompanhanteResource {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@PathVariable long id, @RequestBody Acompanhante obj){
-		obj = acompanhanteservice.update(obj);
+		obj = acompanhanteservice.update(obj,id);
 		return ResponseEntity.noContent().build();
 	}
 	

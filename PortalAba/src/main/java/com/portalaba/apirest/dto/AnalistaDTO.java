@@ -39,19 +39,19 @@ public class AnalistaDTO {
 		this.nome = nome;
 	}
 
-	public String getEmailAcompanhante() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setEmailAcompanhante(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public String getCpfAcompanhante() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpfAcompanhante(String cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 }

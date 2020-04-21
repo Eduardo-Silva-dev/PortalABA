@@ -97,7 +97,8 @@ public class PacienteService {
 		return paciente; 
 	}
 
-	public Paciente update(Paciente obj) {
+	public Paciente update(Paciente obj,long id) {
+		obj.setId(id);
 		find(obj.getId());
 		return repo.save(obj);
 	}

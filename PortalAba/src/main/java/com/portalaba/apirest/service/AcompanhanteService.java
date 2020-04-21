@@ -83,7 +83,8 @@ public class AcompanhanteService {
 		return acompanhante;
 	}
 
-	public Acompanhante update(Acompanhante obj) {
+	public Acompanhante update(Acompanhante obj,long id) {
+		obj.setId(id);
 		find(obj.getId());
 		return repo.save(obj);
 	}
