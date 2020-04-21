@@ -12,61 +12,61 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="acompanhante")
-public class Acompanhante extends Pessoa  implements Serializable{
+public class Acompanhante extends Pessoa implements Serializable{
 
 	private static final long serialVersionUID = 1l;
 
-    @NotEmpty
     @Column(length=30)
     private String tipoAcompanhante;
     
-    @NotEmpty
     @Column(length=60)
     private String emailAcompanhante;
     
-    @NotEmpty
     @Column(length=11)
     private String cpfAcompanhante;
     
-    @NotEmpty
     @Column(length=11)
     private String contatoAcompanhante;
     
-    @NotBlank
     @Column(length=20)
     private Integer crpAcompanhante;
 
     @OneToMany(mappedBy="acompanhante", cascade=CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
     
-    @JsonIgnore
-	@ManyToOne
-	@JoinColumn(name="paciente_id")
-	private Paciente paciente;
-    
-    @JsonIgnore
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="analista_id")
 	private Analista analista;
     
+	@JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="paciente_id")
+	private Paciente paciente;
+
     @OneToMany(mappedBy="acompanhante", cascade=CascadeType.ALL)
 	private List<Analista> analistas = new ArrayList<>();
+    
+    @OneToMany(mappedBy="acompanhante", cascade=CascadeType.ALL)
+	private List<Paciente> pacientes = new ArrayList<>();
 
 	public Acompanhante(String password,String nome,Date dataNascimento,String tipoAcompanhante,
-			String emailAcompanhante,String cpfAcompanhante,String contatoAcompanhante,Integer crpAcompanhante) {
+			String emailAcompanhante,String cpfAcompanhante,String contatoAcompanhante,Integer crpAcompanhante,Analista analista) {
 		super();
+		setPassword(password);
+		setNome(nome);
+		setDataNascimento(dataNascimento);
 		this.tipoAcompanhante = tipoAcompanhante;
 		this.emailAcompanhante = emailAcompanhante;
 		this.cpfAcompanhante = cpfAcompanhante;
 		this.contatoAcompanhante = contatoAcompanhante;
 		this.crpAcompanhante = crpAcompanhante;
+		this.analista = (analista == null) ? null : analista;
 	}
     
    public Acompanhante() {
@@ -121,12 +121,12 @@ public class Acompanhante extends Pessoa  implements Serializable{
 		this.enderecos = enderecos;
 	}
 
-	public Paciente getPaciente() {
-		return paciente;
+	public List<Paciente> getPacientes() {
+		return pacientes;
 	}
 
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	public void setPacientes(List<Paciente> pacientes) {
+		this.pacientes = pacientes;
 	}
 
 	public Analista getAnalista() {

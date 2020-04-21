@@ -2,7 +2,6 @@ package com.portalaba.apirest.resource;
 
 import java.net.URI;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.portalaba.apirest.domain.Acompanhante;
+import com.portalaba.apirest.domain.Analista;
+import com.portalaba.apirest.domain.Paciente;
+import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AcompanhanteNewDTO;
+import com.portalaba.apirest.dto.AcompanhanteTotalDTO;
+import com.portalaba.apirest.dto.AnalistaDTO;
+import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.service.AcompanhanteService;
 
 @RestController
@@ -32,10 +37,29 @@ public class AcompanhanteResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping("/{id}/pacientes")
+	public ResponseEntity<List<PacienteDTO>> findAllPacientes(@PathVariable long id) {
+		List<PacienteDTO> list = acompanhanteservice.findAllPacientes(id);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping("/{id}/analistas")
+	public ResponseEntity<List<AnalistaDTO>> findAllAnalistas(@PathVariable long id) {
+		List<AnalistaDTO> list = acompanhanteservice.findAllAnalistas(id);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping("/total/{id}")
+	public ResponseEntity<AcompanhanteTotalDTO> findTotal(@PathVariable long id) {
+		AcompanhanteTotalDTO obj = acompanhanteservice.findTotal(id);
+		return ResponseEntity.ok().body(obj);
+	}
+
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<String> find(@PathVariable long id) {
-		Acompanhante obj = acompanhanteservice.find(id);
-		return ResponseEntity.ok().body(obj.toString());
+	public ResponseEntity<AcompanhanteDTO> find(@PathVariable long id) {
+		AcompanhanteDTO obj = acompanhanteservice.findParcial(id);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping

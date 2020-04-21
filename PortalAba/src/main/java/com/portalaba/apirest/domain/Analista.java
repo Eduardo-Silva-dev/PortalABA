@@ -41,16 +41,22 @@ public class Analista extends Pessoa implements Serializable{
     @Column(length=14)
     private String cnpjAnalista;
     
-    @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<>();
+    @JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="acompanhante_id")
+	private Acompanhante acompanhante;
     
+    
+    @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
+  	private List<Endereco> enderecos = new ArrayList<>();
+    
+ 
     @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
    	private List<Acompanhante> acompanhantes = new ArrayList<>();
     
-    @JsonIgnore
-	@ManyToOne
-	@JoinColumn(name="acompanhante_id")
-	private Acompanhante acompanhante;
+    
+    @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
+   	private List<Paciente> pacientes = new ArrayList<>();
 
 	public Analista(String password, String nome, Date dataNascimento,
 			String tipoAnalista, String emailAnalista, String cpfAnalista, String contatoAnalista,
@@ -133,6 +139,14 @@ public class Analista extends Pessoa implements Serializable{
 
 	public void setAcompanhantes(List<Acompanhante> acompanhantes) {
 		this.acompanhantes = acompanhantes;
+	}
+
+	public List<Paciente> getPacientes() {
+		return pacientes;
+	}
+
+	public void setPacientes(List<Paciente> pacientes) {
+		this.pacientes = pacientes;
 	}
 
 	public Acompanhante getAcompanhante() {

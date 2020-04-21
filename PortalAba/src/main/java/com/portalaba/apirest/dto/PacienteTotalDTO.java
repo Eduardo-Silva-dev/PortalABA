@@ -1,9 +1,15 @@
 package com.portalaba.apirest.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
+import com.portalaba.apirest.domain.Paciente;
 
-public class PacienteNewDTO {
+public class PacienteTotalDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
+    private long id; 
+    
     private String password; 
 
     private String nome;
@@ -43,15 +49,46 @@ public class PacienteNewDTO {
 	private String numero;
     
 	private String cidade;
-    
+	
 	private String estado;
+    
 	
-	private long analista;
-	
-	private long acompanhante;
-	
-	public PacienteNewDTO() {
+	public PacienteTotalDTO() {
 		
+	}
+
+	public PacienteTotalDTO(Paciente obj) {
+		super();
+		this.id = obj.getId();
+		this.password = obj.getPassword();
+		this.nome = obj.getNome();
+		this.dataNascimento = obj.getDataNascimento();
+		nomePai = obj.getNomePai();
+		nomeMae = obj.getNomeMae();
+		dataNascimentoPai = obj.getDataNascimentoPai();
+		dataNascimentoMae = obj.getDataNascimentoMae();
+		emailResponsavel = obj.getEmailResponsavel();
+		cpfPaciente = obj.getCpfPaciente();
+		cpfPai = obj.getCpfPai();
+		cpfMae = obj.getCpfMae();
+		contatoPaciente = obj.getContatoPaciente();
+		contatoPai = obj.getContatoPai();
+		contatoMae = obj.getContatoMae();
+//		this.logradouro = obj.getEnderecos().getLogradouro();
+//		this.complemento = obj.getEnderecos().getComplemento();
+//		this.bairro = obj.getEnderecos().getBairro();
+//		this.cep = obj.getEnderecos().getCep();
+//		this.numero = obj.getEnderecos().getNumero();
+//		this.cidade = obj.getEnderecos().getCidade();
+//		this.estado = obj.getEnderecos().getEstado();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPassword() {
@@ -220,21 +257,5 @@ public class PacienteNewDTO {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public long getAnalista() {
-		return analista;
-	}
-
-	public void setAnalista(long analista) {
-		this.analista = analista;
-	}
-
-	public long getAcompanhante() {
-		return acompanhante;
-	}
-
-	public void setAcompanhante(long acompanhante) {
-		this.acompanhante = acompanhante;
 	}
 }

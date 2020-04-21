@@ -1,9 +1,16 @@
 package com.portalaba.apirest.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class AcompanhanteNewDTO {
+import com.portalaba.apirest.domain.Acompanhante;
 
+public class AcompanhanteTotalDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+    private long id; 
+    
     private String password; 
 
     private String nome;
@@ -31,13 +38,39 @@ public class AcompanhanteNewDTO {
 	private String numero;
     
 	private String cidade;
-    
+	
 	private String estado;
 	
-	private long analista;
-	
-	public AcompanhanteNewDTO() {
+	public AcompanhanteTotalDTO() {
 		
+	}
+
+	public AcompanhanteTotalDTO(Acompanhante obj) {
+		super();
+		this.id = obj.getId();
+		this.password = obj.getPassword();
+		this.nome = obj.getNome();
+		this.dataNascimento = obj.getDataNascimento();
+		this.tipoAcompanhante = obj.getTipoAcompanhante();
+		this.emailAcompanhante = obj.getEmailAcompanhante();
+		this.cpfAcompanhante = obj.getCpfAcompanhante();
+		this.contatoAcompanhante = obj.getContatoAcompanhante();
+		this.crpAcompanhante = obj.getCrpAcompanhante();
+//		this.bairro = endereco.getBairro();
+//		this.cep = endereco.getCep();
+//		this.cidade = endereco.getCidade();
+//		this.complemento = endereco.getComplemento();
+//		this.estado = endereco.getEstado();
+//		this.logradouro = endereco.getLogradouro();
+//		this.numero = endereco.getNumero();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPassword() {
@@ -151,20 +184,12 @@ public class AcompanhanteNewDTO {
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
-
+	
 	public String getEstado() {
 		return estado;
 	}
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public long getAnalista() {
-		return analista;
-	}
-
-	public void setAnalista(long analista) {
-		this.analista = analista;
 	}
 }

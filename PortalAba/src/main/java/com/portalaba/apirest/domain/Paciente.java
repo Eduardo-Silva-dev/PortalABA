@@ -1,10 +1,14 @@
 package com.portalaba.apirest.domain;
 
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -48,19 +52,25 @@ public class Paciente extends Pessoa  implements Serializable{
     private String contatoMae;
     
     @OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<>();
+  	private List<Endereco> enderecos = new ArrayList<>();
     
-    @OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
-	private List<Acompanhante> acompanhantes = new ArrayList<>();
-    
+    @JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="acompanhante_id")
+	private Acompanhante acompanhante;
+	
+	@JsonIgnore
+    @ManyToOne
+	@JoinColumn(name="analista_id")
     private Analista analista;
-    
-    private Acompanhante acompanhante;
 
 	public Paciente(String password, String nome, Date dataNascimento,String nomePai, String nomeMae, Integer dataNascimentoPai, Integer dataNascimentoMae,
 			String emailResponsavel, String cpfPaciente, String cpfPai, String cpfMae,
-			String contatoPaciente, String contatoPai, String contatoMae,Analista analista,Acompanhante acompanhante) {
+			String contatoPaciente, String contatoPai, String contatoMae,Analista analista, Acompanhante acompanhante) {
 		super();
+		setPassword(password);
+		setNome(nome);
+		setDataNascimento(dataNascimento);
 		this.nomePai = nomePai;
 		this.nomeMae = nomeMae;
 		this.dataNascimentoPai = dataNascimentoPai;
@@ -174,14 +184,6 @@ public class Paciente extends Pessoa  implements Serializable{
 
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
-	}
-
-	public List<Acompanhante> getAcompanhantes() {
-		return acompanhantes;
-	}
-
-	public void setAcompanhantes(List<Acompanhante> acompanhantes) {
-		this.acompanhantes = acompanhantes;
 	}
 
 	public Analista getAnalista() {

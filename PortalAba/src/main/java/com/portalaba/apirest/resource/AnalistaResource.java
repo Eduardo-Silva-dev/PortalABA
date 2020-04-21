@@ -2,7 +2,6 @@ package com.portalaba.apirest.resource;
 
 import java.net.URI;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
+import com.portalaba.apirest.domain.Paciente;
+import com.portalaba.apirest.dto.AcompanhanteDTO;
+import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
+import com.portalaba.apirest.dto.AnalistaTotalDTO;
+import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.service.AnalistaService;
 
 @RestController
@@ -31,10 +37,29 @@ public class AnalistaResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping("/{id}/pacientes")
+	public ResponseEntity<List<PacienteDTO>> findAllPacientes(@PathVariable long id) {
+		List<PacienteDTO> list = analsitaservice.findAllPacientes(id);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping("/{id}/acompanhantes")
+	public ResponseEntity<List<AcompanhanteDTO>> findAllAcompanhantes(@PathVariable long id) {
+		List<AcompanhanteDTO> list = analsitaservice.findAllAcompanhantes(id);
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping("/total/{id}")
+	public ResponseEntity<AnalistaTotalDTO> findTotal(@PathVariable long id) {
+		AnalistaTotalDTO obj = analsitaservice.findTotal(id);
+		return ResponseEntity.ok().body(obj);
+	}
+
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<String> find(@PathVariable long id) {
-		Analista obj = analsitaservice.find(id);
-		return ResponseEntity.ok().body(obj.toString());
+	public ResponseEntity<AnalistaDTO> find(@PathVariable long id) {
+		AnalistaDTO obj = analsitaservice.findParcial(id);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping

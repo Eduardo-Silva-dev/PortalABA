@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -30,56 +32,68 @@ public class Endereco implements Serializable{
 	
 	@JsonIgnore
 	@ManyToOne
+	@JoinColumn(name="acompanhante")
+	private Acompanhante acompanhante;
+	
+	@JsonIgnore
+	@OneToOne
 	@JoinColumn(name="analista_id")
 	private Analista analista;
 	
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name="acompanhante_id")
-	private Acompanhante acompanhante;
-	
-	@JsonIgnore
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="paciente_id")
 	private Paciente paciente;
 	
-	@ManyToOne
-	@JoinColumn(name="cidade_id")
-	private Cidade cidade;
+	private String cidade;
 	
-	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,Analista analista) {
+	private String estado;
+	
+	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,
+			String cidade, String estado,Analista analista) {
 		super();
 		this.logradouro = logradouro;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cep = cep;
 		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
 		this.analista = analista;
 	}
 	
-	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,Acompanhante acompanhante) {
+	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,
+			String cidade, String estado,Acompanhante acompanhante) {
 		super();
 		this.logradouro = logradouro;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cep = cep;
 		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
 		this.acompanhante = acompanhante;
 	}
 
-	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,Paciente paciente) {
+	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,Paciente paciente,
+			String cidade, String estado) {
 		super();
 		this.logradouro = logradouro;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cep = cep;
 		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
 		this.paciente = paciente;
 	}
 
+	public Endereco(Endereco endereco) {
 
+	}
+	
 	public Endereco() {
-		
+
 	}
 
 	public long getId() {
@@ -129,15 +143,23 @@ public class Endereco implements Serializable{
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-
-	public Cidade getCidade() {
+	
+	public String getCidade() {
 		return cidade;
 	}
 
-	public void setCidade(Cidade cidade) {
+	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
-	
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 	public Analista getAnalista() {
 		return analista;
 	}
@@ -146,20 +168,20 @@ public class Endereco implements Serializable{
 		this.analista = analista;
 	}
 
-	public Acompanhante getAcompanhante() {
-		return acompanhante;
-	}
-
-	public void setAcompanhante(Acompanhante acompanhante) {
-		this.acompanhante = acompanhante;
-	}
-
 	public Paciente getPaciente() {
 		return paciente;
 	}
 
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
+	}
+
+	public Acompanhante getAcompanhante() {
+		return acompanhante;
+	}
+
+	public void setAcompanhante(Acompanhante acompanhante) {
+		this.acompanhante = acompanhante;
 	}
 
 	@Override

@@ -1,9 +1,15 @@
 package com.portalaba.apirest.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
+import com.portalaba.apirest.domain.Analista;
 
-public class AnalistaNewDTO {
+public class AnalistaTotalDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
+    private long id; 
+    
     private String password; 
 
     private String nome;
@@ -36,8 +42,37 @@ public class AnalistaNewDTO {
     
 	private String estado;
 	
-	public AnalistaNewDTO() {
+	public AnalistaTotalDTO() {
 		
+	}
+
+	public AnalistaTotalDTO(Analista obj) {
+		super();
+		this.id = obj.getId();
+		this.password = obj.getPassword();
+		this.nome = obj.getNome();
+		this.dataNascimento = obj.getDataNascimento();
+		this.tipoAnalista = obj.getTipoAnalista();
+		this.emailAnalista = obj.getEmailAnalista();
+		this.cnpjAnalista = obj.getCnpjAnalista();
+		this.cpfAnalista = obj.getCpfAnalista();
+		this.contatoAnalista = obj.getContatoAnalista();
+		this.crpAnalista = obj.getCrpAnalista();
+//		this.logradouro = obj.getEnderecos().getLogradouro();
+//		this.complemento = obj.getEnderecos().getComplemento();
+//		this.bairro = obj.getEnderecos().getBairro();
+//		this.cep = obj.getEnderecos().getCep();
+//		this.numero = obj.getEnderecos().getNumero();
+//		this.cidade = obj.getEnderecos().getCidade();
+//		this.estado = obj.getEnderecos().getEstado();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPassword() {
@@ -83,6 +118,14 @@ public class AnalistaNewDTO {
 	public String getCpfAnalista() {
 		return cpfAnalista;
 	}
+	
+	public String getCnpjAnalista() {
+		return cnpjAnalista;
+	}
+
+	public void setCnpjAnalista(String cnpjAnalista) {
+		this.cnpjAnalista = cnpjAnalista;
+	}
 
 	public void setCpfAnalista(String cpfAnalista) {
 		this.cpfAnalista = cpfAnalista;
@@ -102,14 +145,6 @@ public class AnalistaNewDTO {
 
 	public void setCrpAnalista(Integer crpAnalista) {
 		this.crpAnalista = crpAnalista;
-	}
-
-	public String getCnpjAnalista() {
-		return cnpjAnalista;
-	}
-
-	public void setCnpjAnalista(String cnpjAnalista) {
-		this.cnpjAnalista = cnpjAnalista;
 	}
 
 	public String getLogradouro() {
