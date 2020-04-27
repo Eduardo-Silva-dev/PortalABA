@@ -6,58 +6,40 @@ public class StandardError implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long timestamp;
-	private Integer status;
-	private String error;
-	private String message;
-	private String path;
+	private Integer staus;
 	
-	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
+	private String msg;
+	
+	private long timeSystem;
+
+	public StandardError(Integer staus, String msg, long timeSystem) {
 		super();
-		this.timestamp = timestamp;
-		this.status = status;
-		this.error = error;
-		this.message = message;
-		this.path = path;
+		this.staus = staus;
+		this.msg = msg;
+		this.timeSystem = timeSystem;
 	}
 
-	public Long getTimestamp() {
-		return timestamp;
+	public Integer getStaus() {
+		return staus;
 	}
 
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
+	public void setStaus(Integer staus) {
+		this.staus = staus;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public String getMsg() {
+		return msg;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
-	public String getError() {
-		return error;
+	public long getTimeSystem() {
+		return timeSystem;
 	}
 
-	public void setError(String error) {
-		this.error = error;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
+	public void setTimeSystem(long timeSystem) {
+		this.timeSystem = timeSystem;
 	}
 }

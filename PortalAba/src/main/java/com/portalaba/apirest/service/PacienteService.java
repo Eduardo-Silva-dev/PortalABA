@@ -1,9 +1,9 @@
 package com.portalaba.apirest.service;
 
-import java.util.List;
-
-import org.hibernate.ObjectNotFoundException;
+import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.portalaba.apirest.domain.Acompanhante;
@@ -19,7 +19,6 @@ import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
 
-
 @Service
 public class PacienteService {
 
@@ -32,38 +31,47 @@ public class PacienteService {
 	@Autowired
 	private AcompanhanteRepository repoT;
 	
-	public PacienteTotalDTO findTotal(long id) {
-		long endId = 0;
-		Paciente obj = repo.findByID(id);
-		for (int i =0;i<1;i++) {
-			endId = obj.getEnderecos().get(i).getId();
-		}
-		Endereco endereco = repo.findEnderecos(endId);
+	public Page<Paciente> findAll(Pageable pageable) {
+		return repo.findAll(pageable);
+	}
+	
+	public Paciente find(long id) {
+		Paciente obj =  repo.findByID(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		}
+				return obj;
+	}
+	
+	public PacienteDTO findParcial(long id) {
+		Paciente obj = find(id);
+		PacienteDTO obgDTO = new PacienteDTO(obj);
+		return obgDTO;
+	}
+	
+	public PacienteTotalDTO findTotal(long id) {
+		long endId = 0;
+		Paciente obj = find(id);
+		Endereco endereco = repo.findEnderecos(obj.getEnderecos().getId());
+		if (endereco == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + endId + ", Tipo: " + Endereco.class.getName(), null);
 		}
 		PacienteTotalDTO obgTotalDTO = new PacienteTotalDTO(obj,endereco);
 			return obgTotalDTO;
 	}
 	
-	public Paciente find(long id) {
-		Paciente obj =  repo.findByID(id);
-				if (obj == null) {
-					throw new ObjectNotFoundException(
-							"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
-				}
-					return obj;
+	public AnalistaDTO findAnalista(long id){
+		Paciente paciente = find(id);
+		AnalistaDTO analistaDTO = new AnalistaDTO(repoA.findByID(paciente.getAnalista().getId()));
+		return analistaDTO;
 	}
 	
-	public PacienteDTO findParcial(long id) {
-		Paciente obj = find(id);
-		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
-		}
-		PacienteDTO obgDTO = new PacienteDTO(obj);
-		return obgDTO;
+	public AcompanhanteDTO findAcompanhante(long id){
+		Paciente paciente = find(id);
+		AcompanhanteDTO obj = new AcompanhanteDTO(repoT.findByID(paciente.getAcompanhante().getId()));
+		return obj;
 	}
 	
 	public Paciente insert(Paciente obj) {
@@ -71,54 +79,49 @@ public class PacienteService {
 		return obj;
 	}
 	
-	public AnalistaDTO findAnalista(long id){
-		Paciente paciente = repo.findByID(id);
-		long idA = paciente.getAnalista().getId();
-		AnalistaDTO analistaDTO = new AnalistaDTO(repoA.findByID(idA));
-		return analistaDTO;
-	}
-	
-	public AcompanhanteDTO findAcompanhante(long id){
-		Paciente paciente = repo.findByID(id);
-		long idT = paciente.getAcompanhante().getId();
-		AcompanhanteDTO obj = new AcompanhanteDTO(repoT.findByID(idT));
-		return obj;
+	public Paciente insertAcompanhante(long idP, long idA) {
+		Paciente paciente = find(idP);
+		Acompanhante acompanhante = repoT.findByID(idA);
+		if (acompanhante == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idA + ", Tipo: " + Acompanhante.class.getName(), null);
+		}
+		paciente.setAcompanhante(acompanhante);
+		return repo.save(paciente);
 	}
 	
 	public Paciente fromDTO(PacienteNewDTO objDto) {
-		Analista analista = repoA.findByID(objDto.getAnalista());
 		
-		Acompanhante acompanhante = repoT.findByID(objDto.getAcompanhante());
-		
-		Paciente paciente = new Paciente(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomePai(),
-				objDto.getNomeMae(),objDto.getDataNascimentoPai(),objDto.getDataNascimentoMae(),objDto.getEmailResponsavel(),
-				objDto.getCpfPaciente(),objDto.getCpfPai(),objDto.getCpfMae(),objDto.getContatoPaciente(),objDto.getContatoPai(),objDto.getContatoMae(),analista,acompanhante);
+		Paciente paciente = new Paciente(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomeResponsavel(),
+				objDto.getDataNascimentoResponsavel(),objDto.getEmailResponsavel(),objDto.getCpfResponsavel(),objDto.getContatoResponsavel(),
+				objDto.getContatoAuxiliar(),objDto.getNivelAltismo());
 		
 		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), objDto.getNumero(),paciente,objDto.getCidade(),objDto.getEstado());
 		
-		paciente.getEnderecos().add(endereco);
+		paciente.setEnderecos(endereco);
 		
 		return paciente; 
+	}
+	
+	public Paciente insertAnalista(long id,long idA) {
+		Paciente obj = find(id);
+		Analista analista = repoA.findByID(idA);
+		if (analista == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
+		}
+		obj.setAnalista(analista);
+		return repo.save(obj);
 	}
 
 	public Paciente update(Paciente obj,long id) {
 		obj.setId(id);
-		find(obj.getId());
+		Paciente end = find(obj.getId());
+		obj.getEnderecos().setId(end.getEnderecos().getId());
 		return repo.save(obj);
 	}
 	
-	public Paciente inserirAcompanhante(long idP, long idA) {
-		Paciente paciente = find(idP);
-		Acompanhante acompanhante = repoT.findByID(idA);
-		paciente.setAcompanhante(acompanhante);
-		return paciente;
-	}
-
 	public void delete(long id){
 		repo.deleteById(id);	
-	}
-
-	public List<Paciente> findAll() {
-		return (List<Paciente>) repo.findAll();
 	}
 }

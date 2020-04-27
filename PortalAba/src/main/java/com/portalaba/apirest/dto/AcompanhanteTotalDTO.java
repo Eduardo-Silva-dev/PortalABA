@@ -1,7 +1,7 @@
 package com.portalaba.apirest.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Endereco;
@@ -16,7 +16,7 @@ public class AcompanhanteTotalDTO implements Serializable {
 
     private String nome;
     
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     private String tipoAcompanhante;
     
@@ -26,7 +26,7 @@ public class AcompanhanteTotalDTO implements Serializable {
     
     private String contatoAcompanhante;
     
-    private Integer crpAcompanhante;
+    private String crpAcompanhante;
     
     private String logradouro;
 	
@@ -90,11 +90,11 @@ public class AcompanhanteTotalDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -130,11 +130,11 @@ public class AcompanhanteTotalDTO implements Serializable {
 		this.contatoAcompanhante = contatoAcompanhante;
 	}
 
-	public Integer getCrpAcompanhante() {
+	public String getCrpAcompanhante() {
 		return crpAcompanhante;
 	}
 
-	public void setCrpAcompanhante(Integer crpAcompanhante) {
+	public void setCrpAcompanhante(String crpAcompanhante) {
 		this.crpAcompanhante = crpAcompanhante;
 	}
 

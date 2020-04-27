@@ -1,13 +1,14 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotEmpty;
 
 @MappedSuperclass
 public abstract class Pessoa  implements Serializable{
@@ -15,23 +16,26 @@ public abstract class Pessoa  implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;  
 	
-	@Column(length=60)
+	@NotEmpty
+	@Column(name = "password",length=60)
     private String password; 
 
-    @Column(length=60)
+	@NotEmpty
+    @Column(name = "nome",length=60,unique = true)
     private String nome;
     
-    @Column(length=8)
-    private Date dataNascimento;
-    
+    @Column(name = "dataNascimento",length=8)
+    private LocalDate dataNascimento;
+
     public Pessoa() {
     	
     }
     
-	public Pessoa(String password, String nome, Date dataNascimento) {
+	public Pessoa(String password, String nome, LocalDate dataNascimento) {
 		super();
 		this.password = password;
 		this.nome = nome;
@@ -62,11 +66,11 @@ public abstract class Pessoa  implements Serializable{
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

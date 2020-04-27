@@ -1,10 +1,12 @@
 package com.portalaba.apirest.resource;
 
-
 import java.net.URI;
-import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,21 +33,19 @@ public class PacienteResource {
 	private PacienteService pacienteService;
 	
 	@GetMapping
-	public ResponseEntity<List<Paciente>> findAll() {
-		List<Paciente> list = pacienteService.findAll();
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<Page<Paciente>> findAll(Pageable pageable) {
+		return ResponseEntity.ok().body(pacienteService.findAll(pageable));
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<PacienteDTO> find(@PathVariable long id) {
+		PacienteDTO obj = pacienteService.findParcial(id);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@GetMapping("/total/{id}")
 	public ResponseEntity<PacienteTotalDTO> findTotal(@PathVariable long id) {
 		PacienteTotalDTO obj = pacienteService.findTotal(id);
-		return ResponseEntity.ok().body(obj);
-	}
-
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<PacienteDTO> find(@PathVariable long id) {
-		PacienteDTO obj = pacienteService.findParcial(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -62,7 +62,7 @@ public class PacienteResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody PacienteNewDTO objDto){
+	public ResponseEntity<Void> insert(@Valid @RequestBody PacienteNewDTO objDto){
 		Paciente obj = pacienteService.fromDTO(objDto);
 		obj = pacienteService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -71,21 +71,28 @@ public class PacienteResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable long id, @RequestBody Paciente obj){
-		obj = pacienteService.update(obj,id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<Void> update(@PathVariable long id, @RequestBody PacienteNewDTO objDto){
+		Paciente obj = pacienteService.fromDTO(objDto);
+		pacienteService.update(obj, id);
+		return ResponseEntity.ok().build();
 	}
 	
-	@PutMapping("/{idP}/{idA}")
+	@PutMapping("/{idP}/acompanhante/{idA}")
 	public ResponseEntity<Void> inserirAcompanhante(@PathVariable long idP,@PathVariable long idA){
-		pacienteService.inserirAcompanhante(idP,idA);
+		pacienteService.insertAcompanhante(idP,idA);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping("/{id}/analista/{idA}")
+	public ResponseEntity<Void> insertAnalista(@PathVariable long id,@PathVariable long idA){
+		pacienteService.insertAnalista(id,idA);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		pacienteService.delete(id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().build();
 	}
 
 }

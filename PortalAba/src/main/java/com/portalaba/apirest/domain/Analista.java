@@ -1,66 +1,68 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "analistas")
 public class Analista extends Pessoa implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-    @Column(length=30)
+	@NotEmpty
+    @Column(name = "tipo",length=30)
     private String tipoAnalista;
     
-
-    @Column(length=60)
+	@NotEmpty
+    @Column(name = "email",length=60,unique = true)
     private String emailAnalista;
     
-
-    @Column(length=11)
+	@NotEmpty
+    @Column(name = "cpf",length=11,unique = true)
     private String cpfAnalista;
 
-    @Column(length=11)
+	@NotEmpty
+    @Column(name = "contato",length=11,unique = true)
     private String contatoAnalista;
     
-
-    @Column(length=20)
-    private Integer crpAnalista;
+	@NotEmpty
+    @Column(name = "crp",length=20,unique = true)
+    private String crpAnalista;
     
-
-    @Column(length=14)
+    @Column(name = "cnpj",length=14,unique = true)
     private String cnpjAnalista;
     
     @JsonIgnore
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="acompanhante_id")
-	private Acompanhante acompanhante;
+	@ManyToMany(mappedBy="analistas")
+	private List<Acompanhante> acompanhantes = new ArrayList<>();
     
+    @Column(name = "dataInicio",length=8)
+    private Date dataInicio;
     
-    @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
-  	private List<Endereco> enderecos = new ArrayList<>();
-    
-	@JsonIgnore
-    @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
-   	private List<Acompanhante> acompanhantes = new ArrayList<>();
+    @OneToOne(mappedBy="analista", cascade=CascadeType.ALL)
+  	private Endereco enderecos = new Endereco();
     
 	@JsonIgnore
     @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
    	private List<Paciente> pacientes = new ArrayList<>();
 
-	public Analista(String password, String nome, Date dataNascimento,
+	public Analista(String password, String nome, LocalDate dataNascimento,
 			String tipoAnalista, String emailAnalista, String cpfAnalista, String contatoAnalista,
-			Integer crpAnalista, String cnpjAnalista) {
+			String crpAnalista, String cnpjAnalista) {
 		super();
 		setPassword(password);
 		setNome(nome);
@@ -71,6 +73,7 @@ public class Analista extends Pessoa implements Serializable{
 		this.contatoAnalista = contatoAnalista;
 		this.crpAnalista = crpAnalista;
 		this.cnpjAnalista = cnpjAnalista;
+		this.dataInicio = new Date();
 	}
 
 	public Analista() {
@@ -109,11 +112,11 @@ public class Analista extends Pessoa implements Serializable{
 		this.contatoAnalista = contatoAnalista;
 	}
 
-	public Integer getCrpAnalista() {
+	public String getCrpAnalista() {
 		return crpAnalista;
 	}
 
-	public void setCrpAnalista(Integer crpAnalista) {
+	public void setCrpAnalista(String crpAnalista) {
 		this.crpAnalista = crpAnalista;
 	}
 
@@ -125,11 +128,11 @@ public class Analista extends Pessoa implements Serializable{
 		this.cnpjAnalista = cnpjAnalista;
 	}
 
-	public List<Endereco> getEnderecos() {
+	public Endereco getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(Endereco enderecos) {
 		this.enderecos = enderecos;
 	}
 
@@ -148,12 +151,12 @@ public class Analista extends Pessoa implements Serializable{
 	public void setPacientes(List<Paciente> pacientes) {
 		this.pacientes = pacientes;
 	}
-
-	public Acompanhante getAcompanhante() {
-		return acompanhante;
+	
+	public Date getDataInicio() {
+		return dataInicio;
 	}
 
-	public void setAcompanhante(Acompanhante acompanhante) {
-		this.acompanhante = acompanhante;
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
 	}
 }

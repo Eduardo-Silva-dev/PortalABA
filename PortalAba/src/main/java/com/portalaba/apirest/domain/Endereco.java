@@ -1,6 +1,8 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,17 +20,26 @@ public class Endereco implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
+	
+	@NotEmpty
+	@Column(name = "logradouro")
 	private String logradouro;
 	
+	@Column(name = "complemento")
 	private String complemento;
 	
+	@NotEmpty
+	@Column(name = "bairro")
 	private String bairro;
 	
+	@NotEmpty
+	@Column(name = "cep")
 	private String cep;
 	
+	@Column(name = "numero")
 	private String numero;
 	
 	@JsonIgnore
@@ -42,11 +54,15 @@ public class Endereco implements Serializable{
 	
 	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name="paciente_id")
+	@JoinColumn(name="paciente_id",unique = true)
 	private Paciente paciente;
 	
+	@NotEmpty
+	@Column(name = "cidade")
 	private String cidade;
 	
+	@NotEmpty
+	@Column(name = "estado")
 	private String estado;
 	
 	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,

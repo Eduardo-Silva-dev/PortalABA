@@ -1,57 +1,90 @@
 package com.portalaba.apirest.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.portalaba.apirest.domain.Paciente;
 
 public class PacienteNewDTO {
 
+	private long id;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=8, max=16, message="O tamanho deve ser entre 8 e 16 caracteres")
     private String password; 
 
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String nome;
     
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
     
-    private String nomePai;
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
+    private String nomeResponsavel;
+
+    private LocalDate dataNascimentoResponsavel;
+
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=11, max=11, message="Preencha um cpf valido")
+    private String cpfResponsavel;
+
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=11, max=11, message="Preencha um numero de telefone valido valido")
+    private String contatoResponsavel;
+
+	@Length(min=11, max=11, message="Preencha um numero de telefone valido valido")
+    private String contatoAuxiliar;
     
-    private String nomeMae;
-    
-    private Integer dataNascimentoPai;
-    
-    private Integer dataNascimentoMae;
-    
+    @NotEmpty(message="Preenchimento obrigatório")
+	@Email(message="Email inválido")
     private String emailResponsavel;
 
-    private String cpfPaciente;
+    @NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=4, max=8, message="Escolha uma opção valida")
+    private String nivelAltismo;
     
-    private String cpfPai;
-    
-    private String cpfMae;
-    
-    private String contatoPaciente;
-
-    private String contatoPai;
-    
-    private String contatoMae;
-    
+    @NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String logradouro;
 	
 	private String complemento;
 	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String bairro;
 	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=8, max=8, message="Preencha um cep valido")
 	private String cep;
 	
 	private String numero;
     
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String cidade;
     
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=2, max=2, message="O tamanho deve ser de 2 caracteres")
 	private String estado;
-	
-	private long analista;
-	
-	private long acompanhante;
 	
 	public PacienteNewDTO() {
 		
+	}
+	
+	public PacienteNewDTO(Paciente paciente) {
+		
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPassword() {
@@ -70,44 +103,52 @@ public class PacienteNewDTO {
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public String getNomePai() {
-		return nomePai;
+	public String getNomeResponsavel() {
+		return nomeResponsavel;
 	}
 
-	public void setNomePai(String nomePai) {
-		this.nomePai = nomePai;
+	public void setNomeResponsavel(String nomeResponsavel) {
+		this.nomeResponsavel = nomeResponsavel;
 	}
 
-	public String getNomeMae() {
-		return nomeMae;
+	public LocalDate getDataNascimentoResponsavel() {
+		return dataNascimentoResponsavel;
 	}
 
-	public void setNomeMae(String nomeMae) {
-		this.nomeMae = nomeMae;
+	public void setDataNascimentoResponsavel(LocalDate dataNascimentoResponsavel) {
+		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
 	}
 
-	public Integer getDataNascimentoPai() {
-		return dataNascimentoPai;
+	public String getCpfResponsavel() {
+		return cpfResponsavel;
 	}
 
-	public void setDataNascimentoPai(Integer dataNascimentoPai) {
-		this.dataNascimentoPai = dataNascimentoPai;
+	public void setCpfResponsavel(String cpfResponsavel) {
+		this.cpfResponsavel = cpfResponsavel;
 	}
 
-	public Integer getDataNascimentoMae() {
-		return dataNascimentoMae;
+	public String getContatoResponsavel() {
+		return contatoResponsavel;
 	}
 
-	public void setDataNascimentoMae(Integer dataNascimentoMae) {
-		this.dataNascimentoMae = dataNascimentoMae;
+	public void setContatoResponsavel(String contatoResponsavel) {
+		this.contatoResponsavel = contatoResponsavel;
+	}
+
+	public String getContatoAuxiliar() {
+		return contatoAuxiliar;
+	}
+
+	public void setContatoAuxiliar(String contatoAuxiliar) {
+		this.contatoAuxiliar = contatoAuxiliar;
 	}
 
 	public String getEmailResponsavel() {
@@ -118,52 +159,12 @@ public class PacienteNewDTO {
 		this.emailResponsavel = emailResponsavel;
 	}
 
-	public String getCpfPaciente() {
-		return cpfPaciente;
+	public String getNivelAltismo() {
+		return nivelAltismo;
 	}
 
-	public void setCpfPaciente(String cpfPaciente) {
-		this.cpfPaciente = cpfPaciente;
-	}
-
-	public String getCpfPai() {
-		return cpfPai;
-	}
-
-	public void setCpfPai(String cpfPai) {
-		this.cpfPai = cpfPai;
-	}
-
-	public String getCpfMae() {
-		return cpfMae;
-	}
-
-	public void setCpfMae(String cpfMae) {
-		this.cpfMae = cpfMae;
-	}
-
-	public String getContatoPaciente() {
-		return contatoPaciente;
-	}
-
-	public void setContatoPaciente(String contatoPaciente) {
-		this.contatoPaciente = contatoPaciente;
-	}
-
-	public String getContatoPai() {
-		return contatoPai;
-	}
-
-	public void setContatoPai(String contatoPai) {
-		this.contatoPai = contatoPai;
-	}
-
-	public String getContatoMae() {
-		return contatoMae;
-	}
-
-	public void setContatoMae(String contatoMae) {
-		this.contatoMae = contatoMae;
+	public void setNivelAltismo(String nivelAltismo) {
+		this.nivelAltismo = nivelAltismo;
 	}
 
 	public String getLogradouro() {
@@ -220,21 +221,5 @@ public class PacienteNewDTO {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public long getAnalista() {
-		return analista;
-	}
-
-	public void setAnalista(long analista) {
-		this.analista = analista;
-	}
-
-	public long getAcompanhante() {
-		return acompanhante;
-	}
-
-	public void setAcompanhante(long acompanhante) {
-		this.acompanhante = acompanhante;
 	}
 }

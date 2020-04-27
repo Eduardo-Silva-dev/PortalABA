@@ -1,11 +1,9 @@
 package com.portalaba.apirest.service;
 
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.hibernate.ObjectNotFoundException;
+import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.portalaba.apirest.domain.Acompanhante;
@@ -19,7 +17,7 @@ import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
-
+import com.portalaba.apirest.repository.PacienteRepository;
 
 @Service
 public class AcompanhanteService {
@@ -30,40 +28,47 @@ public class AcompanhanteService {
 	@Autowired
 	private AnalistaRepository repoA;
 	
-	public AcompanhanteTotalDTO findTotal(long id) {
-		long endId = 0;
-		Acompanhante obj = repo.findByID(id);
-		for (int i =0;i<1;i++) {
-			endId = obj.getEnderecos().get(i).getId();
-		}
-		Endereco endereco = repo.findEnderecos(endId);
-		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
-		}
-		
-		AcompanhanteTotalDTO objTotalDTO = new AcompanhanteTotalDTO(obj, endereco);
-		
-			return objTotalDTO;
+	@Autowired
+	private PacienteRepository repoP;
+	
+	public Page<Acompanhante> findAll(Pageable pageable) {
+		return repo.findAll(pageable);
+	}
+
+	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) {
+		find(id);
+		return  repo.findAllPacientes(id,pageable); 
+	}
+
+	public Page<AnalistaDTO> findAllAnalistas(long id,Pageable pageable) {
+		find(id);
+		return repo.findAllAnalistas(id,pageable);
 	}
 	
 	public Acompanhante find(long id) {
 		Acompanhante obj =  repo.findByID(id);
-				if (obj == null) {
-					throw new ObjectNotFoundException(
-							"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
-				}
-					return obj;
-	}
-	
-	public AcompanhanteDTO findParcial(long id) {
-		Acompanhante obj = repo.findByID(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
 		}
+				return obj;
+	}
+	
+	public AcompanhanteDTO findParcial(long id) {
+		Acompanhante obj = find(id);
 		AcompanhanteDTO obgDTO = new AcompanhanteDTO(obj);
 		return obgDTO;
+	}
+	
+	public AcompanhanteTotalDTO findTotal(long id) {
+		Acompanhante obj = find(id);
+		Endereco endereco = repo.findEnderecos(obj.getEnderecos().getId());
+		if (endereco == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Endereco.class.getName(), null);
+		}
+		AcompanhanteTotalDTO objTotalDTO = new AcompanhanteTotalDTO(obj, endereco);
+		return objTotalDTO;
 	}
 	
 	public Acompanhante insert(Acompanhante obj) {
@@ -72,44 +77,65 @@ public class AcompanhanteService {
 	}
 	
 	public Acompanhante fromDTO(AcompanhanteNewDTO objDto) {
-		Analista analista = repoA.findByID(objDto.getAnalista());
 		
 		Acompanhante acompanhante = new Acompanhante(objDto.getPassword(),objDto.getNome(),objDto.getDataNascimento(),objDto.getTipoAcompanhante(), 
-		objDto.getEmailAcompanhante(),objDto.getCpfAcompanhante(),objDto.getContatoAcompanhante(),objDto.getCrpAcompanhante(),analista);
+		objDto.getEmailAcompanhante(),objDto.getCpfAcompanhante(),objDto.getContatoAcompanhante(),objDto.getCrpAcompanhante());
 		
 		Endereco endereco = new Endereco(objDto.getLogradouro(),objDto.getComplemento(),objDto.getBairro(),objDto.getCep(),
 		objDto.getNumero(),objDto.getCidade(),objDto.getEstado(),acompanhante);
 		
-		acompanhante.getAnalistas().add(analista);
-		acompanhante.getEnderecos().add(endereco);
+		acompanhante.setEnderecos(endereco);
 		
 		return acompanhante;
 	}
 
 	public Acompanhante update(Acompanhante obj,long id) {
 		obj.setId(id);
-		find(obj.getId());
+		Acompanhante end = find(obj.getId());
+		obj.getEnderecos().setId(end.getEnderecos().getId());
+		return repo.save(obj);
+	}
+	
+	public Acompanhante insertAnalista(long id,long idA) {
+		Acompanhante obj = find(id);
+		Analista analista = repoA.findByID(idA);
+		if (analista == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
+		}
+		obj.getAnalistas().add(analista);
+		analista.getAcompanhantes().add(obj);
+		repoA.save(analista);
 		return repo.save(obj);
 	}
 
 	public void delete(long id){
 		repo.deleteById(id);	
 	}
-
-	public List<Acompanhante> findAll() {
-		return (List<Acompanhante>) repo.findAll();
+	
+	public void removerPaciente(long id,long idP){
+		Acompanhante obj = find(id);
+		Paciente paciente = repoP.findByID(idP);
+		if (paciente == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idP + ", Tipo: " + Paciente.class.getName(), null);
+		}
+		obj.getPacientes().remove(paciente);
+		paciente.setAcompanhante(null);
+		repo.save(obj);
+		repoP.save(paciente);
 	}
-
-	public List<PacienteDTO> findAllPacientes(long id) {
-		List<Paciente> list = repo.findAllPacientes(id);
-		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList()); 
-		return listDto ;
+	
+	public void removerAnalista(long id,long idA){
+		Acompanhante obj = find(id);
+		Analista analista = repoA.findByID(idA);
+		if (analista == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idA + ", Tipo: " + Analista.class.getName(), null);
+		}
+		obj.getAnalistas().remove(analista);
+		analista.getAcompanhantes().remove(obj);
+		repo.save(obj);
+		repoA.save(analista);
 	}
-
-	public List<AnalistaDTO> findAllAnalistas(long id) {
-		List<Analista> list = repo.findAllAnalistas(id);
-		List<AnalistaDTO> listDto = list.stream().map(obj -> new AnalistaDTO(obj)).collect(Collectors.toList()); 
-		return listDto ;
-	}
-
 }

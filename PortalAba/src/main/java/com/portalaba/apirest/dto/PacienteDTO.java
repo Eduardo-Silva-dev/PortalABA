@@ -9,9 +9,11 @@ public class PacienteDTO {
 
     private String nome;
     
-    private String emailPaciente;
+    private String nomeResponsavel;
     
-    private String cpfPaciente;
+    private String contatoResponsavel;
+    
+    private String nivelAltismo;
 	
 	public PacienteDTO() {
 		
@@ -19,9 +21,10 @@ public class PacienteDTO {
 	
 	public PacienteDTO(Paciente obj) {
 		this.id = obj.getId();
-		this.cpfPaciente = obj.getCpfPaciente();
+		this.nomeResponsavel = obj.getNomeResponsavel();
 		this.nome = obj.getNome();
-		this.emailPaciente = obj.getEmailResponsavel();
+		this.contatoResponsavel = obj.getContatoResponsavel();
+		this.nivelAltismo = obj.getNivelAltismo();
 	}
 
 	public long getId() {
@@ -40,19 +43,27 @@ public class PacienteDTO {
 		this.nome = nome;
 	}
 
-	public String getEmailPaciente() {
-		return emailPaciente;
+	public String getNomeResponsavel() {
+		return nomeResponsavel;
 	}
 
-	public void setEmailPaciente(String emailPaciente) {
-		this.emailPaciente = emailPaciente;
+	public void setNomeResponsavel(String nomeResponsavel) {
+		this.nomeResponsavel = nomeResponsavel;
 	}
 
-	public String getCpfPaciente() {
-		return cpfPaciente;
+	public String getContatoResponsavel() {
+		return contatoResponsavel;
 	}
 
-	public void setCpfPaciente(String cpfPaciente) {
-		this.cpfPaciente = cpfPaciente;
+	public void setContatoResponsavel(String contatoResponsavel) {
+		this.contatoResponsavel = contatoResponsavel;
+	}
+	
+	public String getNivelAltismo() {
+		return nivelAltismo;
+	}
+
+	public void setNivelAltismo(String nivelAltismo) {
+		this.nivelAltismo = nivelAltismo;
 	}
 }

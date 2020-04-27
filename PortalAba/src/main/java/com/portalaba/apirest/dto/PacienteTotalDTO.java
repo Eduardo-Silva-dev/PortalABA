@@ -1,7 +1,8 @@
 package com.portalaba.apirest.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
@@ -16,29 +17,19 @@ public class PacienteTotalDTO implements Serializable {
 
     private String nome;
     
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
     
-    private String nomePai;
+    private String nomeResponsavel;
     
-    private String nomeMae;
-    
-    private Integer dataNascimentoPai;
-    
-    private Integer dataNascimentoMae;
+    private LocalDate dataNascimentoResponsavel;
     
     private String emailResponsavel;
-
-    private String cpfPaciente;
     
-    private String cpfPai;
+    private String cpfResponsavel;
     
-    private String cpfMae;
+    private String contatoResponsavel;
     
-    private String contatoPaciente;
-
-    private String contatoPai;
-    
-    private String contatoMae;
+    private String contatoAuxiliar;
     
     private String logradouro;
 	
@@ -53,6 +44,8 @@ public class PacienteTotalDTO implements Serializable {
 	private String cidade;
 	
 	private String estado;
+	
+	private String nivelAltismo;
     
 	
 	public PacienteTotalDTO() {
@@ -65,17 +58,12 @@ public class PacienteTotalDTO implements Serializable {
 		this.password = obj.getPassword();
 		this.nome = obj.getNome();
 		this.dataNascimento = obj.getDataNascimento();
-		nomePai = obj.getNomePai();
-		nomeMae = obj.getNomeMae();
-		dataNascimentoPai = obj.getDataNascimentoPai();
-		dataNascimentoMae = obj.getDataNascimentoMae();
-		emailResponsavel = obj.getEmailResponsavel();
-		cpfPaciente = obj.getCpfPaciente();
-		cpfPai = obj.getCpfPai();
-		cpfMae = obj.getCpfMae();
-		contatoPaciente = obj.getContatoPaciente();
-		contatoPai = obj.getContatoPai();
-		contatoMae = obj.getContatoMae();
+		this.nomeResponsavel = obj.getNomeResponsavel();
+		this.dataNascimentoResponsavel = obj.getDataNascimentoResponsavel();
+		this.emailResponsavel = obj.getEmailResponsavel();
+		this.cpfResponsavel = obj.getCpfResponsavel();
+		this.contatoResponsavel = obj.getContatoResponsavel();
+		this.contatoAuxiliar = obj.getContatoAuxiliar();
 		this.bairro = endereco.getBairro();
 		this.cep = endereco.getCep();
 		this.cidade = endereco.getCidade();
@@ -83,6 +71,7 @@ public class PacienteTotalDTO implements Serializable {
 		this.estado = endereco.getEstado();
 		this.logradouro = endereco.getLogradouro();
 		this.numero = endereco.getNumero();
+		this.nivelAltismo = obj.getNivelAltismo();
 	}
 
 	public long getId() {
@@ -109,44 +98,29 @@ public class PacienteTotalDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
-		return dataNascimento;
+	public String getDataNascimento() {
+		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return dataNascimento.format(formatter);
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public String getNomePai() {
-		return nomePai;
+	public String getNomeResponsavel() {
+		return nomeResponsavel;
 	}
 
-	public void setNomePai(String nomePai) {
-		this.nomePai = nomePai;
+	public void setNomeResponsavel(String nomeResponsavel) {
+		this.nomeResponsavel = nomeResponsavel;
 	}
 
-	public String getNomeMae() {
-		return nomeMae;
+	public LocalDate getDataNascimentoResponsavel() {
+		return dataNascimentoResponsavel;
 	}
 
-	public void setNomeMae(String nomeMae) {
-		this.nomeMae = nomeMae;
-	}
-
-	public Integer getDataNascimentoPai() {
-		return dataNascimentoPai;
-	}
-
-	public void setDataNascimentoPai(Integer dataNascimentoPai) {
-		this.dataNascimentoPai = dataNascimentoPai;
-	}
-
-	public Integer getDataNascimentoMae() {
-		return dataNascimentoMae;
-	}
-
-	public void setDataNascimentoMae(Integer dataNascimentoMae) {
-		this.dataNascimentoMae = dataNascimentoMae;
+	public void setDataNascimentoResponsavel(LocalDate dataNascimentoResponsavel) {
+		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
 	}
 
 	public String getEmailResponsavel() {
@@ -157,52 +131,28 @@ public class PacienteTotalDTO implements Serializable {
 		this.emailResponsavel = emailResponsavel;
 	}
 
-	public String getCpfPaciente() {
-		return cpfPaciente;
+	public String getCpfResponsavel() {
+		return cpfResponsavel;
 	}
 
-	public void setCpfPaciente(String cpfPaciente) {
-		this.cpfPaciente = cpfPaciente;
+	public void setCpfResponsavel(String cpfResponsavel) {
+		this.cpfResponsavel = cpfResponsavel;
 	}
 
-	public String getCpfPai() {
-		return cpfPai;
+	public String getContatoResponsavel() {
+		return contatoResponsavel;
 	}
 
-	public void setCpfPai(String cpfPai) {
-		this.cpfPai = cpfPai;
+	public void setContatoResponsavel(String contatoResponsavel) {
+		this.contatoResponsavel = contatoResponsavel;
 	}
 
-	public String getCpfMae() {
-		return cpfMae;
+	public String getContatoAuxiliar() {
+		return contatoAuxiliar;
 	}
 
-	public void setCpfMae(String cpfMae) {
-		this.cpfMae = cpfMae;
-	}
-
-	public String getContatoPaciente() {
-		return contatoPaciente;
-	}
-
-	public void setContatoPaciente(String contatoPaciente) {
-		this.contatoPaciente = contatoPaciente;
-	}
-
-	public String getContatoPai() {
-		return contatoPai;
-	}
-
-	public void setContatoPai(String contatoPai) {
-		this.contatoPai = contatoPai;
-	}
-
-	public String getContatoMae() {
-		return contatoMae;
-	}
-
-	public void setContatoMae(String contatoMae) {
-		this.contatoMae = contatoMae;
+	public void setContatoAuxiliar(String contatoAuxiliar) {
+		this.contatoAuxiliar = contatoAuxiliar;
 	}
 
 	public String getLogradouro() {
@@ -259,5 +209,13 @@ public class PacienteTotalDTO implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public String getNivelAltismo() {
+		return nivelAltismo;
+	}
+
+	public void setNivelAltismo(String nivelAltismo) {
+		this.nivelAltismo = nivelAltismo;
 	}
 }

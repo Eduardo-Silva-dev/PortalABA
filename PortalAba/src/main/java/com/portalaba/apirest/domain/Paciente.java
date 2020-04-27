@@ -5,10 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
@@ -17,42 +14,33 @@ public class Paciente extends Pessoa  implements Serializable{
 
 	private static final long serialVersionUID = 1l;
 	
-    @Column(length=60)
-    private String nomePai;
-    
-    @Column(length=60)
-    private String nomeMae;
-    
-    @Column(length=8)
-    private Integer dataNascimentoPai;
-    
-    @Column(length=8)
-    private Integer dataNascimentoMae;
+	@Column(name = "nome_responsavel",length=60)
+    private String nomeResponsavel;
+
+    @Column(name = "dataNascimento_responsavel",length=8)
+    private LocalDate dataNascimentoResponsavel;
     
     @NotEmpty
-    @Column(length=60)
+    @Column(name = "emailResponsavel",length=60)
     private String emailResponsavel;
+    
+    @Column(name = "cpf_responsavel",length=11)
+    private String cpfResponsavel;
 
-    @Column(length=11)
-    private String cpfPaciente;
+    @Column(name = "contato_responsavel",length=11)
+    private String contatoResponsavel;
     
-    @Column(length=11)
-    private String cpfPai;
+    @Column(name = "contato_auxiliar",length=11)
+    private String contatoAuxiliar;
     
-    @Column(length=11)
-    private String cpfMae;
+    @Column(name = "nivel_altismo",length=8)
+    private String nivelAltismo;
     
-    @Column(length=11)
-    private String contatoPaciente;
-
-    @Column(length=11)
-    private String contatoPai;
+    @Column(name = "dataInicio",length=8)
+    private LocalDate dataInicio;
     
-    @Column(length=11)
-    private String contatoMae;
-    
-    @OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
-  	private List<Endereco> enderecos = new ArrayList<>();
+    @OneToOne(mappedBy="paciente", cascade=CascadeType.ALL)
+  	private Endereco enderecos = new Endereco();
     
     @JsonIgnore
 	@ManyToOne
@@ -64,62 +52,41 @@ public class Paciente extends Pessoa  implements Serializable{
 	@JoinColumn(name="analista_id")
     private Analista analista;
 
-	public Paciente(String password, String nome, Date dataNascimento,String nomePai, String nomeMae, Integer dataNascimentoPai, Integer dataNascimentoMae,
-			String emailResponsavel, String cpfPaciente, String cpfPai, String cpfMae,
-			String contatoPaciente, String contatoPai, String contatoMae,Analista analista, Acompanhante acompanhante) {
-		super();
-		setPassword(password);
-		setNome(nome);
-		setDataNascimento(dataNascimento);
-		this.nomePai = nomePai;
-		this.nomeMae = nomeMae;
-		this.dataNascimentoPai = dataNascimentoPai;
-		this.dataNascimentoMae = dataNascimentoMae;
-		this.emailResponsavel = emailResponsavel;
-		this.cpfPaciente = cpfPaciente;
-		this.cpfPai = cpfPai;
-		this.cpfMae = cpfMae;
-		this.contatoPaciente = contatoPaciente;
-		this.contatoPai = contatoPai;
-		this.contatoMae = contatoMae;
-		this.analista = (analista == null) ? null : analista;
-		this.acompanhante = (acompanhante == null) ? null : acompanhante;
-	}
-
 	public Paciente() {
 		
 	}
 
-	public String getNomePai() {
-		return nomePai;
+	public Paciente(String password,String nome,LocalDate dataNascimento,String nomeResponsavel, 
+			LocalDate dataNascimentoResponsavel, String emailResponsavel,
+			String cpfResponsavel, String contatoResponsavel, String contatoAuxiliar, String nivelAltismo) {
+		super();
+		setPassword(password);
+		setNome(nome);
+		setDataNascimento(dataNascimento);
+		this.nomeResponsavel = nomeResponsavel;
+		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
+		this.emailResponsavel = emailResponsavel;
+		this.cpfResponsavel = cpfResponsavel;
+		this.contatoResponsavel = contatoResponsavel;
+		this.contatoAuxiliar = contatoAuxiliar;
+		this.nivelAltismo = nivelAltismo;
+		this.dataInicio = LocalDate.now();
 	}
 
-	public void setNomePai(String nomePai) {
-		this.nomePai = nomePai;
+	public String getNomeResponsavel() {
+		return nomeResponsavel;
 	}
 
-	public String getNomeMae() {
-		return nomeMae;
+	public void setNomeResponsavel(String nomeResponsavel) {
+		this.nomeResponsavel = nomeResponsavel;
 	}
 
-	public void setNomeMae(String nomeMae) {
-		this.nomeMae = nomeMae;
+	public LocalDate getDataNascimentoResponsavel() {
+		return dataNascimentoResponsavel;
 	}
 
-	public Integer getDataNascimentoPai() {
-		return dataNascimentoPai;
-	}
-
-	public void setDataNascimentoPai(Integer dataNascimentoPai) {
-		this.dataNascimentoPai = dataNascimentoPai;
-	}
-
-	public Integer getDataNascimentoMae() {
-		return dataNascimentoMae;
-	}
-
-	public void setDataNascimentoMae(Integer dataNascimentoMae) {
-		this.dataNascimentoMae = dataNascimentoMae;
+	public void setDataNascimentoResponsavel(LocalDate dataNascimentoResponsavel) {
+		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
 	}
 
 	public String getEmailResponsavel() {
@@ -130,60 +97,60 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.emailResponsavel = emailResponsavel;
 	}
 
-	public String getCpfPaciente() {
-		return cpfPaciente;
+	public String getCpfResponsavel() {
+		return cpfResponsavel;
 	}
 
-	public void setCpfPaciente(String cpfPaciente) {
-		this.cpfPaciente = cpfPaciente;
+	public void setCpfResponsavel(String cpfResponsavel) {
+		this.cpfResponsavel = cpfResponsavel;
 	}
 
-	public String getCpfPai() {
-		return cpfPai;
+	public String getContatoResponsavel() {
+		return contatoResponsavel;
 	}
 
-	public void setCpfPai(String cpfPai) {
-		this.cpfPai = cpfPai;
+	public void setContatoResponsavel(String contatoResponsavel) {
+		this.contatoResponsavel = contatoResponsavel;
 	}
 
-	public String getCpfMae() {
-		return cpfMae;
+	public String getContatoAuxiliar() {
+		return contatoAuxiliar;
 	}
 
-	public void setCpfMae(String cpfMae) {
-		this.cpfMae = cpfMae;
+	public void setContatoAuxiliar(String contatoAuxiliar) {
+		this.contatoAuxiliar = contatoAuxiliar;
 	}
 
-	public String getContatoPaciente() {
-		return contatoPaciente;
+	public String getNivelAltismo() {
+		return nivelAltismo;
 	}
 
-	public void setContatoPaciente(String contatoPaciente) {
-		this.contatoPaciente = contatoPaciente;
+	public void setNivelAltismo(String nivelAltismo) {
+		this.nivelAltismo = nivelAltismo;
 	}
 
-	public String getContatoPai() {
-		return contatoPai;
+	public LocalDate getDataInicio() {
+		return dataInicio;
 	}
 
-	public void setContatoPai(String contatoPai) {
-		this.contatoPai = contatoPai;
+	public void setDataInicio(LocalDate dataInicio) {
+		this.dataInicio = dataInicio;
 	}
 
-	public String getContatoMae() {
-		return contatoMae;
-	}
-
-	public void setContatoMae(String contatoMae) {
-		this.contatoMae = contatoMae;
-	}
-
-	public List<Endereco> getEnderecos() {
+	public Endereco getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(Endereco enderecos) {
 		this.enderecos = enderecos;
+	}
+
+	public Acompanhante getAcompanhante() {
+		return acompanhante;
+	}
+
+	public void setAcompanhante(Acompanhante acompanhante) {
+		this.acompanhante = acompanhante;
 	}
 
 	public Analista getAnalista() {
@@ -194,11 +161,4 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.analista = analista;
 	}
 
-	public Acompanhante getAcompanhante() {
-		return acompanhante;
-	}
-
-	public void setAcompanhante(Acompanhante acompanhante) {
-		this.acompanhante = acompanhante;
-	}
 }

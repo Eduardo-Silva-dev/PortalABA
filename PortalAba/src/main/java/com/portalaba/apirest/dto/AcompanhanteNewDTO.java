@@ -1,39 +1,69 @@
 package com.portalaba.apirest.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 public class AcompanhanteNewDTO {
 
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=8, max=16, message="O tamanho deve ser entre 8 e 16 caracteres")
     private String password; 
 
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String nome;
     
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=1, max=20, message="O tamanho deve ser entre 1 e 20 caracteres")
     private String tipoAcompanhante;
     
+    @NotEmpty(message="Preenchimento obrigatório")
+	@Email(message="Email inválido")
     private String emailAcompanhante;
     
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=11, max=11, message="O tamanho deve ter 11 caracteres")
     private String cpfAcompanhante;
     
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=11, max=11, message="O tamanho deve ter 11 caracteres")
     private String contatoAcompanhante;
     
-    private Integer crpAcompanhante;
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=1, max=20, message="O tamanho deve ser entre 1 e 20 caracteres")
+    private String crpAcompanhante;
     
+    @NotEmpty(message="Preenchimento obrigatório")
+   	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String logradouro;
+   	
+   	private String complemento;
+   	
+   	@NotEmpty(message="Preenchimento obrigatório")
+   	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
+   	private String bairro;
+   	
+   	@NotEmpty(message="Preenchimento obrigatório")
+   	@Length(min=8, max=8, message="O tamanho deve ser de 8 caracteres")
+   	private String cep;
+   	
+   	private String numero;
+       
+   	@NotEmpty(message="Preenchimento obrigatório")
+   	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
+   	private String cidade;
+       
+   	@NotEmpty(message="Preenchimento obrigatório")
+   	@Length(min=2, max=2, message="O tamanho deve ser de 2 caracteres")
+   	private String estado;
 	
-	private String complemento;
-	
-	private String bairro;
-	
-	private String cep;
-	
-	private String numero;
-    
-	private String cidade;
-    
-	private String estado;
-	
+	//@NotBlank(message="Preenchimento obrigatório")
 	private long analista;
 	
 	public AcompanhanteNewDTO() {
@@ -56,11 +86,11 @@ public class AcompanhanteNewDTO {
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -96,11 +126,11 @@ public class AcompanhanteNewDTO {
 		this.contatoAcompanhante = contatoAcompanhante;
 	}
 
-	public Integer getCrpAcompanhante() {
+	public String getCrpAcompanhante() {
 		return crpAcompanhante;
 	}
 
-	public void setCrpAcompanhante(Integer crpAcompanhante) {
+	public void setCrpAcompanhante(String crpAcompanhante) {
 		this.crpAcompanhante = crpAcompanhante;
 	}
 

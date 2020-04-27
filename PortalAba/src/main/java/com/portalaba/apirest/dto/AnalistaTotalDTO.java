@@ -1,7 +1,8 @@
 package com.portalaba.apirest.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
+
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 
@@ -15,7 +16,7 @@ public class AnalistaTotalDTO implements Serializable {
 
     private String nome;
     
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     private String tipoAnalista;
     
@@ -25,7 +26,7 @@ public class AnalistaTotalDTO implements Serializable {
 
     private String contatoAnalista;
     
-    private Integer crpAnalista;
+    private String crpAnalista;
     
     private String cnpjAnalista;
     
@@ -92,11 +93,11 @@ public class AnalistaTotalDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -140,11 +141,11 @@ public class AnalistaTotalDTO implements Serializable {
 		this.contatoAnalista = contatoAnalista;
 	}
 
-	public Integer getCrpAnalista() {
+	public String getCrpAnalista() {
 		return crpAnalista;
 	}
 
-	public void setCrpAnalista(Integer crpAnalista) {
+	public void setCrpAnalista(String crpAnalista) {
 		this.crpAnalista = crpAnalista;
 	}
 
