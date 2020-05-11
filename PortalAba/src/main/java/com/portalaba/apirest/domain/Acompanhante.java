@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -51,16 +50,16 @@ public class Acompanhante extends Pessoa implements Serializable{
     @Column(name = "dataInicio",length=8)
     private Date dataInicio;
     
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "ANALISTA_ACOMPANHANTE",
-		joinColumns = @JoinColumn(name = "analista_id"),
-		inverseJoinColumns = @JoinColumn(name = "acompanhante_id")
-	)
+    @JsonIgnore
+	@ManyToMany(mappedBy="acompanhantes")
 	private List<Analista> analistas = new ArrayList<>();
     
 	@JsonIgnore
-    @OneToMany(mappedBy="acompanhante", cascade=CascadeType.ALL)
+	@ManyToMany
+	@JoinTable(name = "ACOMPANHANTE_PACIENTE",
+		joinColumns = @JoinColumn(name = "paciente_id"),
+		inverseJoinColumns = @JoinColumn(name = "acompanhante_id")
+	)
 	private List<Paciente> pacientes = new ArrayList<>();
 
 	public Acompanhante(String password,String nome,LocalDate dataNascimento,String tipoAcompanhante,
@@ -137,19 +136,19 @@ public class Acompanhante extends Pessoa implements Serializable{
 		this.pacientes = pacientes;
 	}
 
-	public List<Analista> getAnalistas() {
-		return analistas;
-	}
-
-	public void setAnalistas(List<Analista> acompanhantes) {
-		this.analistas = acompanhantes;
-	}
-
 	public Date getDataInicio() {
 		return dataInicio;
 	}
 
 	public void setDataInicio(Date dataInicio) {
 		this.dataInicio = dataInicio;
+	}
+
+	public List<Analista> getAnalistas() {
+		return analistas;
+	}
+
+	public void setAnalistas(List<Analista> analistas) {
+		this.analistas = analistas;
 	}
 }

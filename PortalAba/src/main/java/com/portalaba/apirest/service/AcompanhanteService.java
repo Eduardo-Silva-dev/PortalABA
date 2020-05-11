@@ -37,12 +37,16 @@ public class AcompanhanteService {
 
 	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) {
 		find(id);
-		return  repo.findAllPacientes(id,pageable); 
+		Page<Paciente> paciente = repo.findAllPacientes(id,pageable);
+		Page<PacienteDTO> listDto = paciente.map(obj -> new PacienteDTO(obj));  
+		return  listDto; 
 	}
 
 	public Page<AnalistaDTO> findAllAnalistas(long id,Pageable pageable) {
 		find(id);
-		return repo.findAllAnalistas(id,pageable);
+		Page<Analista> analista = repo.findAllAnalistas(id,pageable);
+		Page<AnalistaDTO> listDto = analista.map(obj -> new AnalistaDTO(obj));  
+		return listDto ;
 	}
 	
 	public Acompanhante find(long id) {
@@ -109,6 +113,19 @@ public class AcompanhanteService {
 		return repo.save(obj);
 	}
 
+	public Acompanhante insertPaciente(long id,long idA) {
+		Acompanhante obj = find(id);
+		Paciente paciente = repoP.findByID(idA);
+		if (paciente == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		}
+		obj.getPacientes().add(paciente);
+		paciente.setAcompanhante(obj);
+		repoP.save(paciente);
+		return repo.save(obj);
+	}
+	
 	public void delete(long id){
 		repo.deleteById(id);	
 	}

@@ -1,19 +1,23 @@
 package com.portalaba.apirest.service;
 
-import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
+import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
+import com.portalaba.apirest.repository.PacienteRepository;
+import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
 public class AnalistaService {
@@ -21,18 +25,27 @@ public class AnalistaService {
 	@Autowired
 	private AnalistaRepository repo;
 	
+	@Autowired
+	private PacienteRepository repoP;
+	
+	@Autowired
+	private AcompanhanteRepository repoA;
+	
 	public Page<Analista> findAll(Pageable pageable) {
 		return repo.findAll(pageable);
 	}
 
 	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) {
-		find(id);
-		return repo.findAllPacientes(id,pageable);
+		Analista analista = find(id);
+		Page<PacienteDTO> pacientes = repoP.findAllPacientes(analista,pageable);
+		return pacientes;
 	}
 
 	public Page<AcompanhanteDTO> findAllAcompanhantes(long id,Pageable pageable) {
 		find(id);
-		return repo.findAllAcompanhantes(id,pageable);
+		Page<Acompanhante> acompanhantes = repo.findAllAcompanhantes(id,pageable);
+		Page<AcompanhanteDTO> listDto = acompanhantes.map(obj -> new AcompanhanteDTO(obj));  
+		return listDto;
 	}
 	
 	public Analista find(long id) {
@@ -83,8 +96,59 @@ public class AnalistaService {
 		return repo.save(obj);
 	}
 	
+	public Analista insertAcompanhante(long id,long idA) {
+		Analista obj = find(id);
+		Acompanhante acompanhante = repoA.findByID(idA);
+		if (acompanhante == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
+		}
+		obj.getAcompanhantes().add(acompanhante);
+		acompanhante.getAnalistas().add(obj);
+		repoA.save(acompanhante);
+		return repo.save(obj);
+	}
+	
+	public Analista insertPaciente(long id,long idA) {
+		Analista obj = find(id);
+		Paciente paciente = repoP.findByID(idA);
+		if (paciente == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		}
+		obj.getPacientes().add(paciente);
+		paciente.setAnalista(obj);
+		repoP.save(paciente);
+		return repo.save(obj);		
+	}
+	
 	public void delete(long id){
 		repo.deleteById(id);	
 	}
-
+	
+	public void removerPaciente(long id,long idP){
+		Analista obj = find(id);
+		Paciente paciente = repoP.findByID(idP);
+		if (paciente == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idP + ", Tipo: " + Paciente.class.getName(), null);
+		}
+		obj.getPacientes().remove(paciente);
+		paciente.setAnalista(null);
+		repo.save(obj);
+		repoP.save(paciente);
+	}
+	
+	public void removerAcompanhante(long id,long idP){
+		Analista obj = find(id);
+		Acompanhante acompanhante = repoA.findByID(idP);
+		if (acompanhante == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idP + ", Tipo: " + Acompanhante.class.getName(), null);
+		}
+		obj.getAcompanhantes().remove(acompanhante);
+		acompanhante.getAnalistas().remove(obj);
+		repo.save(obj);
+		repoA.save(acompanhante);
+	}
 }

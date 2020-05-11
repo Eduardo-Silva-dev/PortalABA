@@ -1,9 +1,7 @@
 package com.portalaba.apirest.resource;
 
 import java.net.URI;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,9 +72,33 @@ public class AnalistaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PutMapping("/{idP}/acompanhante/{idA}")
+	public ResponseEntity<Void> inserirAcompanhante(@PathVariable long idP,@PathVariable long idA){
+		analsitaservice.insertAcompanhante(idP,idA);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping("/{id}/paciente/{idA}")
+	public ResponseEntity<Void> insertPaciente(@PathVariable long id,@PathVariable long idA){
+		analsitaservice.insertPaciente(id,idA);
+		return ResponseEntity.noContent().build();
+	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		analsitaservice.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping("/{id}/paciente/{idP}")
+	public ResponseEntity<Void> removerPaciente(@PathVariable long id,@PathVariable long idP){
+		analsitaservice.removerPaciente(id, idP);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping("/{id}/acompanhante/{idA}")
+	public ResponseEntity<Void> removerAnalista(@PathVariable long id,@PathVariable long idA){
+		analsitaservice.removerAcompanhante(id, idA);
 		return ResponseEntity.noContent().build();
 	}
 

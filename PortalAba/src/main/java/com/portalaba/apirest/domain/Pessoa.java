@@ -2,13 +2,20 @@ package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
 public abstract class Pessoa  implements Serializable{
@@ -30,7 +37,15 @@ public abstract class Pessoa  implements Serializable{
     
     @Column(name = "dataNascimento",length=8)
     private LocalDate dataNascimento;
-
+    
+    @JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "PESSOA_TRATAMENTO",
+		joinColumns = @JoinColumn(name = "pessoa_id"),
+		inverseJoinColumns = @JoinColumn(name = "tratamento_id")
+	)
+    private List<Tratamento> tratamento = new ArrayList<>() ;
+    
     public Pessoa() {
     	
     }
@@ -48,6 +63,14 @@ public abstract class Pessoa  implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public List<Tratamento> getTratamento() {
+		return tratamento;
+	}
+
+	public void setTratamento(List<Tratamento> tratamento) {
+		this.tratamento = tratamento;
 	}
 
 	public String getPassword() {

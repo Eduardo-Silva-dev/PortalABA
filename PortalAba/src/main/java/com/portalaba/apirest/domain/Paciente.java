@@ -1,12 +1,18 @@
 package com.portalaba.apirest.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import javax.persistence.*;
 
 @Entity
 @Table(name="paciente")
@@ -160,5 +166,4 @@ public class Paciente extends Pessoa  implements Serializable{
 	public void setAnalista(Analista analista) {
 		this.analista = analista;
 	}
-
 }

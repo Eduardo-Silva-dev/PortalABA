@@ -1,10 +1,7 @@
 package com.portalaba.apirest.resource;
 
-
 import java.net.URI;
-
 import javax.validation.Valid;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,14 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AcompanhanteNewDTO;
 import com.portalaba.apirest.dto.AcompanhanteTotalDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
-import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.service.AcompanhanteService;
 
 @RestController
@@ -34,9 +29,6 @@ public class AcompanhanteResource {
 
 	@Autowired
 	private AcompanhanteService acompanhanteservice;
-
-	@Autowired
-	private AcompanhanteRepository acompanhanteRepository;
 	
 	@GetMapping
 	public ResponseEntity<Page<Acompanhante>> findAll(Pageable pageable) {
@@ -62,7 +54,7 @@ public class AcompanhanteResource {
 	
 	@GetMapping("/{id}/analistas")
 	public ResponseEntity<Page<AnalistaDTO>> findAllAnalistas(@PathVariable long id,Pageable pageable) {
-		return ResponseEntity.ok().body(acompanhanteRepository.findAllAnalistas(id,pageable));
+		return ResponseEntity.ok().body(acompanhanteservice.findAllAnalistas(id,pageable));
 	}
 	
 	@PostMapping
@@ -77,6 +69,12 @@ public class AcompanhanteResource {
 	@PutMapping("/{id}/analista/{idA}")
 	public ResponseEntity<Void> insertAnalista(@PathVariable long id,@PathVariable long idA){
 		acompanhanteservice.insertAnalista(id,idA);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/{id}/paciente/{idA}")
+	public ResponseEntity<Void> insertPaciente(@PathVariable long id,@PathVariable long idA){
+		acompanhanteservice.insertPaciente(id,idA);
 		return ResponseEntity.noContent().build();
 	}
 

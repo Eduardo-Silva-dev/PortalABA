@@ -94,5 +94,16 @@ public class PacienteResource {
 		pacienteService.delete(id);
 		return ResponseEntity.ok().build();
 	}
-
+	
+	@DeleteMapping("/{id}/acompanhante/{idP}")
+	public ResponseEntity<Void> removerPaciente(@PathVariable long id,@PathVariable long idP){
+		pacienteService.removerAcompanhante(id, idP);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping("/{id}/analista/{idA}")
+	public ResponseEntity<Void> removerAnalista(@PathVariable long id,@PathVariable long idA){
+		pacienteService.removerAnalista(id, idA);
+		return ResponseEntity.noContent().build();
+	}
 }

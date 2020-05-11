@@ -64,6 +64,7 @@ public class PacienteService {
 	
 	public AnalistaDTO findAnalista(long id){
 		Paciente paciente = find(id);
+		System.out.println(paciente.getAnalista().getId());
 		AnalistaDTO analistaDTO = new AnalistaDTO(repoA.findByID(paciente.getAnalista().getId()));
 		return analistaDTO;
 	}
@@ -123,5 +124,31 @@ public class PacienteService {
 	
 	public void delete(long id){
 		repo.deleteById(id);	
+	}
+	
+	public void removerAnalista(long id,long idP){
+		Paciente obj = find(id);
+		Analista analista = repoA.findByID(idP);
+		if (analista == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idP + ", Tipo: " + Analista.class.getName(), null);
+		}
+		obj.setAcompanhante(null);
+		analista.getPacientes().remove(obj);
+		repo.save(obj);
+		repoA.save(analista);
+	}
+	
+	public void removerAcompanhante(long id,long idP){
+		Paciente obj = find(id);
+		Acompanhante acompanhante = repoT.findByID(idP);
+		if (acompanhante == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + idP + ", Tipo: " + Acompanhante.class.getName(), null);
+		}
+		obj.setAcompanhante(null);
+		acompanhante.getPacientes().remove(obj);
+		repo.save(obj);
+		repoT.save(acompanhante);
 	}
 }

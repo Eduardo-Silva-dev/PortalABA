@@ -9,8 +9,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -46,8 +47,12 @@ public class Analista extends Pessoa implements Serializable{
     @Column(name = "cnpj",length=14,unique = true)
     private String cnpjAnalista;
     
-    @JsonIgnore
-	@ManyToMany(mappedBy="analistas")
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "ANALISTA_ACOMPANHANTE",
+		joinColumns = @JoinColumn(name = "acompanhante_id"),
+		inverseJoinColumns = @JoinColumn(name = "analista_id")
+	)
 	private List<Acompanhante> acompanhantes = new ArrayList<>();
     
     @Column(name = "dataInicio",length=8)
@@ -56,8 +61,12 @@ public class Analista extends Pessoa implements Serializable{
     @OneToOne(mappedBy="analista", cascade=CascadeType.ALL)
   	private Endereco enderecos = new Endereco();
     
-	@JsonIgnore
-    @OneToMany(mappedBy="analista", cascade=CascadeType.ALL)
+    @JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "ANALISTA_PACIENTE",
+		joinColumns = @JoinColumn(name = "paciente_id"),
+		inverseJoinColumns = @JoinColumn(name = "analista_id")
+	)
    	private List<Paciente> pacientes = new ArrayList<>();
 
 	public Analista(String password, String nome, LocalDate dataNascimento,
