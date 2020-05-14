@@ -7,10 +7,14 @@ A missão do Portal ABA é ajudar na progressão das pessoas com transtorno do E
 
 # Requesitos : 
 
- 1 - JDK 8 instalado
- 2 - IDE utilizada na construção (Eclipse)
- 3 - Spring Boot 2.2.6
- 4 - Mysql
+
+  1 - JDK 8 instalado
+
+  2 - IDE utilizada na construção (Eclipse)
+
+  3 - Spring Boot 2.2.6
+
+  4 - Mysql
  
  
  # Como Utilizar : 
