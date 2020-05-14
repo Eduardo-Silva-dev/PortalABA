@@ -22,6 +22,12 @@ public interface AcompanhanteRepository extends JpaRepository<Acompanhante, Long
 	@Query("select u.analistas from Acompanhante u where u.id = ?1")
 	Page<Analista> findAllAnalistas(long id,Pageable pageable);	
 	
+	@Query("select u.pacientes from Acompanhante u where u.id = ?1")
+	Paciente findPaciente(long id);
+
+	@Query("select u.analistas from Acompanhante u where u.id = ?1")
+	Analista findAnalista(long id);	
+	
 	@Query("select u from Endereco u where u.id = ?1")
 	Endereco findEnderecos(long id);
 }

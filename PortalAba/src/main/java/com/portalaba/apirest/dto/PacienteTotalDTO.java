@@ -98,9 +98,8 @@ public class PacienteTotalDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getDataNascimento() {
-		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return dataNascimento.format(formatter);
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
 	}
 
 	public void setDataNascimento(LocalDate dataNascimento) {

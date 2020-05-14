@@ -107,6 +107,11 @@ public class AcompanhanteService {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
 		}
+		Analista analist = repo.findAnalista(id);
+		if (analist != null) {
+			throw new ObjectNotFoundException(
+					"Analista já inserido! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
+		}
 		obj.getAnalistas().add(analista);
 		analista.getAcompanhantes().add(obj);
 		repoA.save(analista);
@@ -119,6 +124,12 @@ public class AcompanhanteService {
 		if (paciente == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		}
+
+		Paciente pacient = repo.findPaciente(id);
+		if (pacient != null) {
+			throw new ObjectNotFoundException(
+					"Paciente já inserido! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
 		}
 		obj.getPacientes().add(paciente);
 		paciente.setAcompanhante(obj);

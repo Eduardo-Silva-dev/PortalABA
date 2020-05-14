@@ -38,13 +38,13 @@ public abstract class Pessoa  implements Serializable{
     @Column(name = "dataNascimento",length=8)
     private LocalDate dataNascimento;
     
-    @JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "PESSOA_TRATAMENTO",
-		joinColumns = @JoinColumn(name = "pessoa_id"),
-		inverseJoinColumns = @JoinColumn(name = "tratamento_id")
-	)
-    private List<Tratamento> tratamento = new ArrayList<>() ;
+//    @JsonIgnore
+//	@ManyToMany
+//	@JoinTable(name = "PESSOA_TRATAMENTO",
+//		joinColumns = @JoinColumn(name = "pessoa_id"),
+//		inverseJoinColumns = @JoinColumn(name = "tratamento_id")
+//	)
+//    private List<Tratamento> tratamento = new ArrayList<>() ;
     
     public Pessoa() {
     	
@@ -65,13 +65,13 @@ public abstract class Pessoa  implements Serializable{
 		this.id = id;
 	}
 	
-	public List<Tratamento> getTratamento() {
-		return tratamento;
-	}
-
-	public void setTratamento(List<Tratamento> tratamento) {
-		this.tratamento = tratamento;
-	}
+//	public List<Tratamento> getTratamento() {
+//		return tratamento;
+//	}
+//
+//	public void setTratamento(List<Tratamento> tratamento) {
+//		this.tratamento = tratamento;
+//	}
 
 	public String getPassword() {
 		return password;
