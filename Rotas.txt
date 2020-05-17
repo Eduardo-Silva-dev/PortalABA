@@ -29,16 +29,16 @@
 |Delete  |http://localhost:8080/analistas/{id}/paciente/{idP}     	|Remove o paciente de um determinado analista passado na url
 
 												Entidade Acompanhantes
-|HTTP    |            Rota                                        	    |                           O que faz
+|HTTP    |            Rota                                        	|                           O que faz
 |Get     |http://localhost:8080/acompanhantes                         	|Retorna todos os acompanhante
 |Get     |http://localhost:8080/acompanhantes/{id}                    	|Retorna os dados do acompanhante(minimos) passado por id
 |Get     |http://localhost:8080/acompanhantes/total/{id}              	|Retorna todos os dados do acompanhante passado por id
 |Get     |http://localhost:8080/acompanhantes/{id}/analistas           	|Retorna o analistas do acompanhante passado por id
-|Get     |http://localhost:8080/acompanhantes/{id}/pacientes      	    |Retorna o pacientes do acompanhante passado por id
+|Get     |http://localhost:8080/acompanhantes/{id}/pacientes      	|Retorna o pacientes do acompanhante passado por id
 |Post    |http://localhost:8080/acompanhantes                         	|Inseri um novo acompanhante
 |Put     |http://localhost:8080/acompanhantes/{id}                    	|Altera os dados do acompanhante
-|Put     |http://localhost:8080/acompanhantes/{id}/paciente/{idP}	    |Inseri ou altera o pacientes de um determinado acompanhante passado na url
+|Put     |http://localhost:8080/acompanhantes/{id}/paciente/{idP}	|Inseri ou altera o pacientes de um determinado acompanhante passado na url
 |Put     |http://localhost:8080/acompanhantes/{id}/analista/{idA}     	|Inseri ou altera o analista de um determinado acompanhante passado na url
 |Delete  |http://localhost:8080/acompanhantes/{id}                    	|Deleta o acompanhante passado por id
-|Delete  |http://localhost:8080/acompanhantes/{id}/paciente/{idP} 	    |Remove o paciente de um determinado acompanhante passado na url
+|Delete  |http://localhost:8080/acompanhantes/{id}/paciente/{idP} 	|Remove o paciente de um determinado acompanhante passado na url
 |Delete  |http://localhost:8080/acompanhantes/{id}/analista/{idA}     	|Remove o analista de um determinado acompanhante passado na url
