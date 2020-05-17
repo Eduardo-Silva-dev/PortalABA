@@ -1,4 +1,4 @@
-												Entidade Pacientes
+							Entidade Pacientes
 |HTTP    |            Rota                                         	|                           O que faz
 |Get     |http://localhost:8080/pacientes                         	|Retorna todos os pacientes
 |Get     |http://localhost:8080/pacientes/{id}                    	|Retorna os dados do paciente(minimos) passado por id
@@ -13,7 +13,7 @@
 |Delete  |http://localhost:8080/pacientes/{id}/acompanhante/{idP} 	|Remove o acompanhante de um determinado paciente passado na url
 |Delete  |http://localhost:8080/pacientes/{id}/analista/{idA}     	|Remove o analista de um determinado paciente passado na url
 
-												Entidade Analistas
+							Entidade Analistas
 |HTTP    |            Rota                                    	  	|                           O que faz
 |Get     |http://localhost:8080/analistas                         	|Retorna todos os analistas
 |Get     |http://localhost:8080/analistas/{id}                    	|Retorna os dados do analista(minimos) passado por id
@@ -28,7 +28,7 @@
 |Delete  |http://localhost:8080/analistas/{id}/acompanhante/{idA} 	|Remove o acompanhante de um determinado analista passado na url
 |Delete  |http://localhost:8080/analistas/{id}/paciente/{idP}     	|Remove o paciente de um determinado analista passado na url
 
-												Entidade Acompanhantes
+						       Entidade Acompanhantes
 |HTTP    |            Rota                                        	|                           O que faz
 |Get     |http://localhost:8080/acompanhantes                         	|Retorna todos os acompanhante
 |Get     |http://localhost:8080/acompanhantes/{id}                    	|Retorna os dados do acompanhante(minimos) passado por id
