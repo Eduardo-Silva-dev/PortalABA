@@ -1,10 +1,16 @@
 package com.portalaba.apirest.resource;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+
+import javax.activation.FileTypeMap;
 import javax.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
@@ -57,10 +65,20 @@ public class AcompanhanteResource {
 		return ResponseEntity.ok().body(acompanhanteservice.findAllAnalistas(id,pageable));
 	}
 	
+	@GetMapping("/image/{id}")
+	public ResponseEntity<byte[]> getImage(@PathVariable long id) throws IOException{
+		Acompanhante acompanhante = acompanhanteservice.find(id);
+	    File img = new File(acompanhante.getImage().toString());
+	    return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap()
+	    		.getContentType(img)))
+	    	    .body(Files.readAllBytes(img.toPath()));
+	}
+	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody AcompanhanteNewDTO objDto){
+		MultipartFile file = null;
 		Acompanhante obj = acompanhanteservice.fromDTO(objDto);
-		obj = acompanhanteservice.insert(obj);
+		obj = acompanhanteservice.insert(obj,file);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -78,6 +96,14 @@ public class AcompanhanteResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	@PutMapping("/{id}/image")
+	public ResponseEntity <Void> uploadToLocalFileSystem(@RequestParam("file") MultipartFile file,@PathVariable long id) {
+		Acompanhante obj = acompanhanteservice.updateImage(id,file);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@PathVariable long id, @RequestBody AcompanhanteNewDTO objDto){
 		Acompanhante obj = acompanhanteservice.fromDTO(objDto);

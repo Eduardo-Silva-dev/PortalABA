@@ -1,10 +1,19 @@
 package com.portalaba.apirest.service;
 
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
@@ -47,6 +56,9 @@ public class PacienteService {
 	public PacienteDTO findParcial(long id) {
 		Paciente obj = find(id);
 		PacienteDTO obgDTO = new PacienteDTO(obj);
+		if(obj.getImage() != null) {
+		File img = new File(obj.getImage().toString());
+		 obgDTO.setImg(img);}
 		return obgDTO;
 	}
 	
@@ -64,7 +76,6 @@ public class PacienteService {
 	
 	public AnalistaDTO findAnalista(long id){
 		Paciente paciente = find(id);
-		System.out.println(paciente.getAnalista().getId());
 		AnalistaDTO analistaDTO = new AnalistaDTO(repoA.findByID(paciente.getAnalista().getId()));
 		return analistaDTO;
 	}
@@ -75,8 +86,16 @@ public class PacienteService {
 		return obj;
 	}
 	
-	public Paciente insert(Paciente obj) {
+	public Paciente insert(Paciente obj,MultipartFile file) {
 		obj = repo.save(obj);
+		if(file == null) { return obj; }
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfResponsavel()+".jpg");
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		obj.setImage(path.toString());
 		return obj;
 	}
 	
@@ -96,7 +115,7 @@ public class PacienteService {
 		Paciente paciente = new Paciente(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomeResponsavel(),
 				objDto.getDataNascimentoResponsavel(),objDto.getEmailResponsavel(),objDto.getCpfResponsavel(),objDto.getContatoResponsavel(),
 				objDto.getContatoAuxiliar(),objDto.getNivelAltismo());
-		
+		 
 		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), objDto.getNumero(),paciente,objDto.getCidade(),objDto.getEstado());
 		
 		paciente.setEnderecos(endereco);
@@ -122,7 +141,22 @@ public class PacienteService {
 		return repo.save(obj);
 	}
 	
+	public Paciente updateImage(long id,MultipartFile file) {
+		Paciente obj = find(id);
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfResponsavel()+".jpg");
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		obj.setImage(path.toString());
+		return repo.save(obj);
+	}
+	
 	public void delete(long id){
+		Paciente obj = find(id);
+		obj.setAnalista(null);
+		obj.setAcompanhante(null);
 		repo.deleteById(id);	
 	}
 	
@@ -133,7 +167,7 @@ public class PacienteService {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + idP + ", Tipo: " + Analista.class.getName(), null);
 		}
-		obj.setAcompanhante(null);
+		obj.setAnalista(null);
 		analista.getPacientes().remove(obj);
 		repo.save(obj);
 		repoA.save(analista);

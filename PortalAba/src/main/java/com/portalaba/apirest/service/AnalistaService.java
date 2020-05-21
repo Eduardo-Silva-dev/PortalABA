@@ -1,9 +1,17 @@
 package com.portalaba.apirest.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
@@ -60,6 +68,9 @@ public class AnalistaService {
 	public AnalistaDTO findParcial(long id) {
 		Analista obj = find(id);
 		AnalistaDTO obgDTO = new AnalistaDTO(obj);
+		if(obj.getImage() != null) {
+			File img = new File(obj.getImage().toString());
+			 obgDTO.setImg(img);}
 		return obgDTO;
 	}
 	
@@ -75,8 +86,16 @@ public class AnalistaService {
 			return obgTotalDTO;
 	}
 
-	public Analista insert(Analista obj) {
+	public Analista insert(Analista obj,MultipartFile file) {
 		obj = repo.save(obj);
+		if(file == null) { return obj; }
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfAnalista()+".jpg");
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		obj.setImage(path.toString());
 		return obj;
 	}
 	
@@ -93,6 +112,18 @@ public class AnalistaService {
 		obj.setId(id);
 		Analista end = find(obj.getId());
 		obj.getEnderecos().setId(end.getEnderecos().getId());
+		return repo.save(obj);
+	}
+	
+	public Analista updateImage(long id,MultipartFile file) {
+		Analista obj = find(id);
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfAnalista()+".jpg");
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		obj.setImage(path.toString());
 		return repo.save(obj);
 	}
 	

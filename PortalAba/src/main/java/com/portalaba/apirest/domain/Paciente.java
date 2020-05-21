@@ -1,6 +1,7 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
@@ -11,7 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import java.util.Calendar;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -24,7 +27,8 @@ public class Paciente extends Pessoa  implements Serializable{
     private String nomeResponsavel;
 
     @Column(name = "dataNascimento_responsavel",length=8)
-    private LocalDate dataNascimentoResponsavel;
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private Date dataNascimentoResponsavel;
     
     @NotEmpty
     @Column(name = "emailResponsavel",length=60)
@@ -32,6 +36,9 @@ public class Paciente extends Pessoa  implements Serializable{
     
     @Column(name = "cpf_responsavel",length=11)
     private String cpfResponsavel;
+    
+    @Column(name = "image",unique = true)
+    private String image;
 
     @Column(name = "contato_responsavel",length=11)
     private String contatoResponsavel;
@@ -63,7 +70,7 @@ public class Paciente extends Pessoa  implements Serializable{
 	}
 
 	public Paciente(String password,String nome,LocalDate dataNascimento,String nomeResponsavel, 
-			LocalDate dataNascimentoResponsavel, String emailResponsavel,
+			Date dataNascimentoResponsavel, String emailResponsavel,
 			String cpfResponsavel, String contatoResponsavel, String contatoAuxiliar, String nivelAltismo) {
 		super();
 		setPassword(password);
@@ -87,11 +94,11 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.nomeResponsavel = nomeResponsavel;
 	}
 
-	public LocalDate getDataNascimentoResponsavel() {
-		return dataNascimentoResponsavel;
+	public Date getDataNascimentoResponsavel() {
+		return  dataNascimentoResponsavel;
 	}
 
-	public void setDataNascimentoResponsavel(LocalDate dataNascimentoResponsavel) {
+	public void setDataNascimentoResponsavel(Date dataNascimentoResponsavel) {
 		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
 	}
 
@@ -165,5 +172,13 @@ public class Paciente extends Pessoa  implements Serializable{
 
 	public void setAnalista(Analista analista) {
 		this.analista = analista;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

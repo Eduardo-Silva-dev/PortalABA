@@ -59,10 +59,6 @@
 //	
 //	@Column(name = "intruçõesSimples")
 //	private List<String> intruçõesSimples = new ArrayList<>();
-//	
-//    @JsonIgnore
-//	@ManyToMany(mappedBy="tratamento")
-//	private List<Pessoa> pessoas = new ArrayList<>();
 //    
 //    @Column(name = "dataInicio",length=8)
 //    private Date dataInicio;

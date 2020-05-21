@@ -1,9 +1,13 @@
 package com.portalaba.apirest.dto;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 
@@ -20,8 +24,8 @@ public class PacienteTotalDTO implements Serializable {
     private LocalDate dataNascimento;
     
     private String nomeResponsavel;
-    
-    private LocalDate dataNascimentoResponsavel;
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private Date dataNascimentoResponsavel;
     
     private String emailResponsavel;
     
@@ -114,11 +118,11 @@ public class PacienteTotalDTO implements Serializable {
 		this.nomeResponsavel = nomeResponsavel;
 	}
 
-	public LocalDate getDataNascimentoResponsavel() {
+	public Date getDataNascimentoResponsavel() {
 		return dataNascimentoResponsavel;
 	}
 
-	public void setDataNascimentoResponsavel(LocalDate dataNascimentoResponsavel) {
+	public void setDataNascimentoResponsavel(Date dataNascimentoResponsavel) {
 		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
 	}
 

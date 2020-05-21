@@ -31,6 +31,9 @@ public class Analista extends Pessoa implements Serializable{
 	@NotEmpty
     @Column(name = "email",length=60,unique = true)
     private String emailAnalista;
+	
+    @Column(name = "image",unique = true)
+    private String image;
     
 	@NotEmpty
     @Column(name = "cpf",length=11,unique = true)
@@ -50,8 +53,8 @@ public class Analista extends Pessoa implements Serializable{
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "ANALISTA_ACOMPANHANTE",
-		joinColumns = @JoinColumn(name = "acompanhante_id"),
-		inverseJoinColumns = @JoinColumn(name = "analista_id")
+		joinColumns = @JoinColumn(name = "analista_id"),
+		inverseJoinColumns = @JoinColumn(name = "acompanhante_id")
 	)
 	private List<Acompanhante> acompanhantes = new ArrayList<>();
     
@@ -64,8 +67,8 @@ public class Analista extends Pessoa implements Serializable{
     @JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "ANALISTA_PACIENTE",
-		joinColumns = @JoinColumn(name = "paciente_id"),
-		inverseJoinColumns = @JoinColumn(name = "analista_id")
+		joinColumns = @JoinColumn(name = "analista_id"),
+		inverseJoinColumns = @JoinColumn(name = "paciente_id")
 	)
    	private List<Paciente> pacientes = new ArrayList<>();
 
@@ -87,6 +90,14 @@ public class Analista extends Pessoa implements Serializable{
 
 	public Analista() {
 		
+	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public String getTipoAnalista() {
