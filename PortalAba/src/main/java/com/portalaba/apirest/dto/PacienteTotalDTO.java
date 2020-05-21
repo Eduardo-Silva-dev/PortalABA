@@ -24,6 +24,7 @@ public class PacienteTotalDTO implements Serializable {
     private LocalDate dataNascimento;
     
     private String nomeResponsavel;
+    
     @JsonFormat(pattern="dd/MM/yyyy")
     private Date dataNascimentoResponsavel;
     
