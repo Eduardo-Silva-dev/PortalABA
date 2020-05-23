@@ -26,12 +26,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.portalaba.apirest.domain.Analista;
+import com.portalaba.apirest.domain.Tratamento;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.TratamentoNewDTO;
 import com.portalaba.apirest.service.AnalistaService;
+import com.portalaba.apirest.service.TratamentoService;
 
 @RestController
 @RequestMapping(value="/analistas")
@@ -39,6 +42,9 @@ public class AnalistaResource {
 
 	@Autowired
 	private AnalistaService analsitaservice;
+	
+	@Autowired
+	private TratamentoService tratamentoService;
 	
 	@GetMapping
 	public ResponseEntity<Page<Analista>> findAll(Pageable pageable) {
@@ -66,7 +72,7 @@ public class AnalistaResource {
 		return ResponseEntity.ok().body(analsitaservice.findAllAcompanhantes(id,pageable));
 	}
 	
-	@GetMapping("/image/{id}")
+	@GetMapping("/{id}/image")
 	public ResponseEntity<byte[]> getImage(@PathVariable long id) throws IOException{
 		Analista analista = analsitaservice.find(id);
 	    File img = new File(analista.getImage().toString());
@@ -82,6 +88,16 @@ public class AnalistaResource {
 		obj = analsitaservice.insert(obj,file);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+
+	@PostMapping("/{id}/tratamento")
+	public ResponseEntity<Void> insertTratamento(@PathVariable long id,@RequestParam("file") MultipartFile file,
+		@RequestParam("acompanhante") long acom,@RequestParam("paciente") long pac){
+		TratamentoNewDTO objDto = new TratamentoNewDTO(acom,pac);
+		Tratamento tratamento = analsitaservice.fromDTOTratamento(objDto,id,file);
+		tratamentoService.save(tratamento);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	

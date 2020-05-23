@@ -1,7 +1,6 @@
 package com.portalaba.apirest.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -18,7 +17,8 @@ public class PacienteTotalDTO implements Serializable {
 
     private String nome;
     
-    private LocalDate dataNascimento;
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private Date dataNascimento;
     
     private String nomeResponsavel;
     
@@ -100,11 +100,11 @@ public class PacienteTotalDTO implements Serializable {
 		this.nome = nome;
 	}
 
-	public LocalDate getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(LocalDate dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

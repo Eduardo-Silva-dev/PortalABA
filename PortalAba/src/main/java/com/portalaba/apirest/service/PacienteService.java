@@ -89,7 +89,7 @@ public class PacienteService {
 	public Paciente insert(Paciente obj,MultipartFile file) {
 		obj = repo.save(obj);
 		if(file == null) { return obj; }
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfResponsavel()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
@@ -143,7 +143,7 @@ public class PacienteService {
 	
 	public Paciente updateImage(long id,MultipartFile file) {
 		Paciente obj = find(id);
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfResponsavel()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

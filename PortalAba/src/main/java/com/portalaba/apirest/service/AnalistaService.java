@@ -17,14 +17,17 @@ import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
+import com.portalaba.apirest.domain.Tratamento;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.TratamentoNewDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
+import com.portalaba.apirest.repository.TratamentoRepository;
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
@@ -38,6 +41,9 @@ public class AnalistaService {
 	
 	@Autowired
 	private AcompanhanteRepository repoA;
+	
+	@Autowired
+	private TratamentoRepository repoT;
 	
 	public Page<Analista> findAll(Pageable pageable) {
 		return repo.findAll(pageable);
@@ -89,7 +95,7 @@ public class AnalistaService {
 	public Analista insert(Analista obj,MultipartFile file) {
 		obj = repo.save(obj);
 		if(file == null) { return obj; }
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfAnalista()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
@@ -99,6 +105,19 @@ public class AnalistaService {
 		return obj;
 	}
 	
+	private String insertFile (MultipartFile file,String nome) {
+			Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/tratamentos/"  + nome +".jpg");
+			try {
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String nomeArquivo = path.toString();
+			System.out.println(nomeArquivo);
+			return nomeArquivo;
+			
+	}
+	
 	public Analista fromDTO(AnalistaNewDTO objDto) {
 		Analista analista = new Analista(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getTipoAnalista(), 
 		objDto.getEmailAnalista(), objDto.getCpfAnalista(), objDto.getContatoAnalista(),objDto.getCrpAnalista(),objDto.getCnpjAnalista());
@@ -106,6 +125,13 @@ public class AnalistaService {
 				objDto.getNumero(),objDto.getCidade(),objDto.getEstado(),analista);
 		analista.setEnderecos(endereco);
 		return analista;
+	}
+	
+	public Tratamento fromDTOTratamento (TratamentoNewDTO objDto,long id,MultipartFile file) {
+		String nomeArquivo = "teste";
+		String caminho = insertFile(file,nomeArquivo);
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),caminho);
+		return tratamento;
 	}
 
 	public Analista update(Analista obj,long id) {
@@ -117,7 +143,7 @@ public class AnalistaService {
 	
 	public Analista updateImage(long id,MultipartFile file) {
 		Analista obj = find(id);
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/analista/"  + obj.getCpfAnalista()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

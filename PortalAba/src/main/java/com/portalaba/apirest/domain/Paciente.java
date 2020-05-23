@@ -68,7 +68,7 @@ public class Paciente extends Pessoa  implements Serializable{
 		
 	}
 
-	public Paciente(String password,String nome,LocalDate dataNascimento,String nomeResponsavel, 
+	public Paciente(String password,String nome, Date dataNascimento,String nomeResponsavel, 
 			Date dataNascimentoResponsavel, String emailResponsavel,
 			String cpfResponsavel, String contatoResponsavel, String contatoAuxiliar, String nivelAltismo) {
 		super();

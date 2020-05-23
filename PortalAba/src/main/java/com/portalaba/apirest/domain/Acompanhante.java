@@ -1,7 +1,6 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +64,7 @@ public class Acompanhante extends Pessoa implements Serializable{
 	)
 	private List<Paciente> pacientes = new ArrayList<>();
 
-	public Acompanhante(String password,String nome,LocalDate dataNascimento,String tipoAcompanhante,
+	public Acompanhante(String password,String nome,Date dataNascimento,String tipoAcompanhante,
 			String emailAcompanhante,String cpfAcompanhante,String contatoAcompanhante,String crpAcompanhante) {
 		super();
 		setPassword(password);

@@ -90,7 +90,7 @@ public class AcompanhanteService {
 	public Acompanhante insert(Acompanhante obj,MultipartFile file) {
 		obj = repo.save(obj);
 		if(file == null) { return obj; }
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
@@ -122,7 +122,7 @@ public class AcompanhanteService {
 	
 	public Acompanhante updateImage(long id,MultipartFile file) {
 		Acompanhante obj = find(id);
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/java/com/portalaba/apirest/imagens/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

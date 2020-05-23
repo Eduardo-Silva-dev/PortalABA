@@ -1,8 +1,6 @@
 package com.portalaba.apirest.dto;
 
 import java.util.Date;
-import java.time.LocalDate;
-import java.util.Calendar;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -25,8 +23,8 @@ public class PacienteNewDTO {
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String nome;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate dataNascimento;
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date dataNascimento;
     
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
@@ -110,11 +108,11 @@ public class PacienteNewDTO {
 		this.nome = nome;
 	}
 
-	public LocalDate getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(LocalDate dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 

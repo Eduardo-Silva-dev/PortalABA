@@ -1,7 +1,6 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +71,7 @@ public class Analista extends Pessoa implements Serializable{
 	)
    	private List<Paciente> pacientes = new ArrayList<>();
 
-	public Analista(String password, String nome, LocalDate dataNascimento,
+	public Analista(String password, String nome, Date dataNascimento,
 			String tipoAnalista, String emailAnalista, String cpfAnalista, String contatoAnalista,
 			String crpAnalista, String cnpjAnalista) {
 		super();
