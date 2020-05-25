@@ -3,18 +3,17 @@ package com.portalaba.apirest.service;
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
@@ -53,12 +52,15 @@ public class PacienteService {
 				return obj;
 	}
 	
-	public PacienteDTO findParcial(long id) {
+	public PacienteDTO findParcial(long id) throws IOException {
 		Paciente obj = find(id);
 		PacienteDTO obgDTO = new PacienteDTO(obj);
 		if(obj.getImage() != null) {
 		File img = new File(obj.getImage().toString());
-		 obgDTO.setImg(img);}
+		FileInputStream fis = new FileInputStream(img);
+		byte[] data = new byte[fis.available()];
+		fis.read(data);
+		obgDTO.setImage(data);}
 		return obgDTO;
 	}
 	
@@ -89,7 +91,7 @@ public class PacienteService {
 	public Paciente insert(Paciente obj,MultipartFile file) {
 		obj = repo.save(obj);
 		if(file == null) { return obj; }
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
@@ -143,7 +145,7 @@ public class PacienteService {
 	
 	public Paciente updateImage(long id,MultipartFile file) {
 		Paciente obj = find(id);
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

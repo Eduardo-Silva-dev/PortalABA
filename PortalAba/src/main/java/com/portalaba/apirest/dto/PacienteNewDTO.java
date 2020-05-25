@@ -6,7 +6,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.portalaba.apirest.domain.Paciente;
@@ -30,7 +29,7 @@ public class PacienteNewDTO {
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String nomeResponsavel;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern="dd/MM/yyyy")
     private Date dataNascimentoResponsavel;
 
 	@NotEmpty(message="Preenchimento obrigatório")

@@ -25,6 +25,9 @@ public class Tratamento implements Serializable{
 
 	@Column(name = "acompanhante_id")
 	private long acompanhante;
+	
+	@Column(name = "nome_tratamento")
+	private String nome;
 
 	@Column(name = "paciente_id")
 	private long paciente;
@@ -35,12 +38,12 @@ public class Tratamento implements Serializable{
 	@Column(name = "data_Cadastro")
 	private Date data_Cadastro;
 
-	public Tratamento(long analista,long acompanhante ,long paciente, String file) {
+	public Tratamento(long analista,long acompanhante ,long paciente,String nome) {
 		super();
 		this.analista = analista;
 		this.acompanhante = acompanhante;
 		this.paciente = paciente;
-		this.file = file;
+		this.nome = nome;
 		this.data_Cadastro = new Date();
 	}
 	
@@ -94,5 +97,62 @@ public class Tratamento implements Serializable{
 
 	public void setData_Cadastro(Date data_Cadastro) {
 		this.data_Cadastro = data_Cadastro;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (acompanhante ^ (acompanhante >>> 32));
+		result = prime * result + (int) (analista ^ (analista >>> 32));
+		result = prime * result + ((data_Cadastro == null) ? 0 : data_Cadastro.hashCode());
+		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + (int) (paciente ^ (paciente >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tratamento other = (Tratamento) obj;
+		if (acompanhante != other.acompanhante)
+			return false;
+		if (analista != other.analista)
+			return false;
+		if (data_Cadastro == null) {
+			if (other.data_Cadastro != null)
+				return false;
+		} else if (!data_Cadastro.equals(other.data_Cadastro))
+			return false;
+		if (file == null) {
+			if (other.file != null)
+				return false;
+		} else if (!file.equals(other.file))
+			return false;
+		if (id != other.id)
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (paciente != other.paciente)
+			return false;
+		return true;
 	}
 }

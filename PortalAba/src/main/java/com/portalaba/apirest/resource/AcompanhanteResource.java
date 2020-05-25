@@ -44,7 +44,7 @@ public class AcompanhanteResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AcompanhanteDTO> find(@PathVariable long id) {
+	public ResponseEntity<AcompanhanteDTO> find(@PathVariable long id) throws IOException {
 		AcompanhanteDTO obj = acompanhanteservice.findParcial(id);
 		return ResponseEntity.ok().body(obj);
 	}
@@ -56,22 +56,21 @@ public class AcompanhanteResource {
 	}
 	
 	@GetMapping("/{id}/pacientes")
-	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) {
+	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(acompanhanteservice.findAllPacientes(id,pageable));
 	}
 	
 	@GetMapping("/{id}/analistas")
-	public ResponseEntity<Page<AnalistaDTO>> findAllAnalistas(@PathVariable long id,Pageable pageable) {
+	public ResponseEntity<Page<AnalistaDTO>> findAllAnalistas(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(acompanhanteservice.findAllAnalistas(id,pageable));
 	}
 	
-	@GetMapping("/image/{id}")
+	@GetMapping("/{id}/image")
 	public ResponseEntity<byte[]> getImage(@PathVariable long id) throws IOException{
 		Acompanhante acompanhante = acompanhanteservice.find(id);
 	    File img = new File(acompanhante.getImage().toString());
 	    return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap()
-	    		.getContentType(img)))
-	    	    .body(Files.readAllBytes(img.toPath()));
+	    		.getContentType(img))).body(Files.readAllBytes(img.toPath()));
 	}
 	
 	@PostMapping
@@ -79,8 +78,7 @@ public class AcompanhanteResource {
 		MultipartFile file = null;
 		Acompanhante obj = acompanhanteservice.fromDTO(objDto);
 		obj = acompanhanteservice.insert(obj,file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
@@ -99,8 +97,7 @@ public class AcompanhanteResource {
 	@PutMapping("/{id}/image")
 	public ResponseEntity <Void> uploadToLocalFileSystem(@RequestParam("file") MultipartFile file,@PathVariable long id) {
 		Acompanhante obj = acompanhanteservice.updateImage(id,file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	

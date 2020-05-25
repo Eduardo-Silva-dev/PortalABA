@@ -1,9 +1,5 @@
 package com.portalaba.apirest.dto;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
 import com.portalaba.apirest.domain.Acompanhante;
 
 public class AcompanhanteDTO {
@@ -16,17 +12,27 @@ public class AcompanhanteDTO {
     
     private String cpfAcompanhante;
     
-    private File img = null;
-	
+    private String img;
+   
+    private byte[] image;
+    
+	public AcompanhanteDTO(String nome, String emailAcompanhante, String cpfAcompanhante, String image) {
+		super();
+		this.nome = nome;
+		this.emailAcompanhante = emailAcompanhante;
+		this.cpfAcompanhante = cpfAcompanhante;
+	}
+
 	public AcompanhanteDTO() {
 		
 	}
-	
+
 	public AcompanhanteDTO(Acompanhante obj) {
 		this.id = obj.getId();
-		this.cpfAcompanhante = obj.getCpfAcompanhante();
 		this.nome = obj.getNome();
 		this.emailAcompanhante = obj.getEmailAcompanhante();
+		this.cpfAcompanhante = obj.getCpfAcompanhante();
+		this.img = obj.getImage();
 	}
 
 	public long getId() {
@@ -61,18 +67,19 @@ public class AcompanhanteDTO {
 		this.cpfAcompanhante = cpfAcompanhante;
 	}
 
-	public byte[] getImg() {
-		 if(img != null) {
-			try {
-				return Files.readAllBytes(img.toPath());
-			} catch (IOException e) {
-				return null;
-			}
-		 }
-	  return null;
+	public String getImg() {
+	  return img;
 	}
 
-	public void setImg(File img) {
+	public void setImg(String img) {
 		this.img = img;
+	}
+
+	public byte[] getImage() {
+			return image;
+	}
+
+	public void setImage(byte[] img) {
+		this.image = img;
 	}
 }

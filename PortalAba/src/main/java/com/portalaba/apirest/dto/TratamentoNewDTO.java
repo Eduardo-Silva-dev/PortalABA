@@ -7,14 +7,17 @@ public class TratamentoNewDTO {
 	private long acompanhante;
 	
 	private long paciente;
+	
+	private String nome;
 
 	public TratamentoNewDTO() {
 		
 	}
 	
-	public TratamentoNewDTO(long acompanhante,long paciente) {
+	public TratamentoNewDTO(long acompanhante,long paciente,String nome) {
 		this.acompanhante = acompanhante;
 		this.paciente = paciente;
+		this.nome = nome;
 	}
 
 	public long getId() {
@@ -39,5 +42,13 @@ public class TratamentoNewDTO {
 
 	public void setPaciente(long paciente) {
 		this.paciente = paciente;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 }

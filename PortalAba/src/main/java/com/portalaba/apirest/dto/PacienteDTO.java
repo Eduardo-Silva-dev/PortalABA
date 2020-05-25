@@ -1,10 +1,5 @@
 package com.portalaba.apirest.dto;
 
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
 import com.portalaba.apirest.domain.Paciente;
 
 public class PacienteDTO {
@@ -19,7 +14,7 @@ public class PacienteDTO {
     
     private String nivelAltismo;
     
-    private File img = null;
+    private byte[] image;
 	
 	public PacienteDTO() {
 		
@@ -73,18 +68,11 @@ public class PacienteDTO {
 		this.nivelAltismo = nivelAltismo;
 	}
 	
-	public byte[] getImg() {
-		 if(img != null) {
-			try {
-				return Files.readAllBytes(img.toPath());
-			} catch (IOException e) {
-				return null;
-			}
-		 }
-	  return null;
+	public byte[] getImage() {
+	  return image;
 	}
 
-	public void setImg(File img) {
-		this.img = img;
+	public void setImage(byte[] img) {
+		this.image = img;
 	}
 }

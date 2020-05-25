@@ -1,18 +1,17 @@
 package com.portalaba.apirest.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
@@ -23,6 +22,7 @@ import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.TratamentoDTO;
 import com.portalaba.apirest.dto.TratamentoNewDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
@@ -43,22 +43,39 @@ public class AnalistaService {
 	private AcompanhanteRepository repoA;
 	
 	@Autowired
+	private TratamentoService tratamentoService;
+	
+	@Autowired
 	private TratamentoRepository repoT;
 	
 	public Page<Analista> findAll(Pageable pageable) {
 		return repo.findAll(pageable);
 	}
 
-	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) {
+	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) throws IOException {
 		Analista analista = find(id);
 		Page<PacienteDTO> pacientes = repoP.findAllPacientes(analista,pageable);
+		for (PacienteDTO p : pacientes){
+			File img = new File(p.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			p.setImage(data);
+		}
 		return pacientes;
 	}
 
-	public Page<AcompanhanteDTO> findAllAcompanhantes(long id,Pageable pageable) {
+	public Page<AcompanhanteDTO> findAllAcompanhantes(long id,Pageable pageable) throws IOException {
 		find(id);
 		Page<Acompanhante> acompanhantes = repo.findAllAcompanhantes(id,pageable);
-		Page<AcompanhanteDTO> listDto = acompanhantes.map(obj -> new AcompanhanteDTO(obj));  
+		Page<AcompanhanteDTO> listDto = acompanhantes.map(obj -> new AcompanhanteDTO(obj));
+		for (AcompanhanteDTO p : listDto){
+			File img = new File(p.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			p.setImage(data);
+		}
 		return listDto;
 	}
 	
@@ -68,15 +85,23 @@ public class AnalistaService {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
 		}
-					return obj;
+		return obj;
 	}
 	
-	public AnalistaDTO findParcial(long id) {
+	public Page<Tratamento> findTratamentos(long id,long idP,Pageable pageable) {
+		Page<Tratamento> tratamento = repoT.findTratamentos(id,idP,pageable);
+		return tratamento;
+	}
+	
+	public AnalistaDTO findParcial(long id) throws IOException {
 		Analista obj = find(id);
 		AnalistaDTO obgDTO = new AnalistaDTO(obj);
 		if(obj.getImage() != null) {
 			File img = new File(obj.getImage().toString());
-			 obgDTO.setImg(img);}
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			obgDTO.setImage(data);}
 		return obgDTO;
 	}
 	
@@ -95,7 +120,7 @@ public class AnalistaService {
 	public Analista insert(Analista obj,MultipartFile file) {
 		obj = repo.save(obj);
 		if(file == null) { return obj; }
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
@@ -106,7 +131,7 @@ public class AnalistaService {
 	}
 	
 	private String insertFile (MultipartFile file,String nome) {
-			Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/tratamentos/"  + nome +".jpg");
+			Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/tratamentos/"  + nome +".pdf");
 			try {
 				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
@@ -128,9 +153,13 @@ public class AnalistaService {
 	}
 	
 	public Tratamento fromDTOTratamento (TratamentoNewDTO objDto,long id,MultipartFile file) {
-		String nomeArquivo = "teste";
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		tratamentoService.save(tratamento);
+		System.out.println(tratamento.getId());
+		String nomeArquivo = String.valueOf(tratamento.getId());
 		String caminho = insertFile(file,nomeArquivo);
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),caminho);
+		tratamento.setFile(caminho);
+		tratamentoService.save(tratamento);
 		return tratamento;
 	}
 
@@ -143,7 +172,7 @@ public class AnalistaService {
 	
 	public Analista updateImage(long id,MultipartFile file) {
 		Analista obj = find(id);
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

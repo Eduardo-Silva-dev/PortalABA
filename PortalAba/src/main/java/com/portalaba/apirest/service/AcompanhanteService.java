@@ -3,18 +3,17 @@ package com.portalaba.apirest.service;
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
@@ -44,17 +43,31 @@ public class AcompanhanteService {
 		return repo.findAll(pageable);
 	}
 
-	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) {
+	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) throws IOException {
 		find(id);
 		Page<Paciente> paciente = repo.findAllPacientes(id,pageable);
 		Page<PacienteDTO> listDto = paciente.map(obj -> new PacienteDTO(obj));  
+		for (PacienteDTO p : listDto){
+			File img = new File(p.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			p.setImage(data);
+		}
 		return  listDto; 
 	}
 
-	public Page<AnalistaDTO> findAllAnalistas(long id,Pageable pageable) {
+	public Page<AnalistaDTO> findAllAnalistas(long id,Pageable pageable) throws IOException {
 		find(id);
 		Page<Analista> analista = repo.findAllAnalistas(id,pageable);
 		Page<AnalistaDTO> listDto = analista.map(obj -> new AnalistaDTO(obj));  
+		for (AnalistaDTO p : listDto){
+			File img = new File(p.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			p.setImage(data);
+		}
 		return listDto ;
 	}
 	
@@ -67,12 +80,15 @@ public class AcompanhanteService {
 				return obj;
 	}
 	
-	public AcompanhanteDTO findParcial(long id) {
+	public AcompanhanteDTO findParcial(long id) throws IOException {
 		Acompanhante obj = find(id);
 		AcompanhanteDTO obgDTO = new AcompanhanteDTO(obj);
 		if(obj.getImage() != null) {
 			File img = new File(obj.getImage().toString());
-			 obgDTO.setImg(img);}
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			obgDTO.setImage(data);}
 		return obgDTO;
 	}
 	
@@ -90,7 +106,7 @@ public class AcompanhanteService {
 	public Acompanhante insert(Acompanhante obj,MultipartFile file) {
 		obj = repo.save(obj);
 		if(file == null) { return obj; }
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
@@ -122,7 +138,7 @@ public class AcompanhanteService {
 	
 	public Acompanhante updateImage(long id,MultipartFile file) {
 		Acompanhante obj = find(id);
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

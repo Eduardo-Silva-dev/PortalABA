@@ -8,6 +8,7 @@ import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.dto.PacienteDTO;
+import org.springframework.data.domain.Pageable;
 
 public interface PacienteRepository extends PagingAndSortingRepository<Paciente, Long>{
 
@@ -18,5 +19,5 @@ public interface PacienteRepository extends PagingAndSortingRepository<Paciente,
 	Endereco findEnderecos(long id);
 	
 	@Query("select u from Paciente u where u.analista = ?1")
-	Page<PacienteDTO> findAllPacientes(Analista id,org.springframework.data.domain.Pageable pageable);
+	Page<PacienteDTO> findAllPacientes(Analista id,Pageable pageable);
 }

@@ -45,7 +45,7 @@ public class PacienteResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<PacienteDTO> find(@PathVariable long id) {
+	public ResponseEntity<PacienteDTO> find(@PathVariable long id) throws IOException {
 		PacienteDTO obj = pacienteService.findParcial(id);
 		return ResponseEntity.ok().body(obj);
 	}
@@ -73,8 +73,7 @@ public class PacienteResource {
 		Paciente paciente = pacienteService.find(id);
 	    File img = new File(paciente.getImage().toString());
 	    return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap()
-	    		.getContentType(img)))
-	    	    .body(Files.readAllBytes(img.toPath()));
+	    		.getContentType(img))).body(Files.readAllBytes(img.toPath()));
 	}
 	
 	@PostMapping
@@ -82,8 +81,7 @@ public class PacienteResource {
 		MultipartFile file = null;
 		Paciente obj = pacienteService.fromDTO(objDto);
 		obj = pacienteService.insert(obj,file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
@@ -110,8 +108,7 @@ public class PacienteResource {
 	@PutMapping("/{id}/image")
 	public ResponseEntity <Void> uploadToLocalFileSystem(@RequestParam("file") MultipartFile file,@PathVariable long id) {
 		Paciente obj = pacienteService.updateImage(id,file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	

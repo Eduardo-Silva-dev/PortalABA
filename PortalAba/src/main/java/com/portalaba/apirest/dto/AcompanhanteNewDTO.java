@@ -19,7 +19,7 @@ public class AcompanhanteNewDTO {
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String nome;
 	
-	//@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataNascimento;
 
 	@NotEmpty(message="Preenchimento obrigatório")

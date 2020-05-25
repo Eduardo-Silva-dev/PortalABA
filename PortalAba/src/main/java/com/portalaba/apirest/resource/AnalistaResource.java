@@ -1,16 +1,23 @@
 package com.portalaba.apirest.resource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.activation.FileTypeMap;
+import javax.annotation.Resource;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Tratamento;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
@@ -52,7 +58,7 @@ public class AnalistaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AnalistaDTO> find(@PathVariable long id) {
+	public ResponseEntity<AnalistaDTO> find(@PathVariable long id) throws IOException {
 		AnalistaDTO obj = analsitaservice.findParcial(id);
 		return ResponseEntity.ok().body(obj);
 	}	
@@ -63,12 +69,12 @@ public class AnalistaResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	@GetMapping("/{id}/pacientes")
-	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) {
+	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(analsitaservice.findAllPacientes(id,pageable));
 	}
 	
 	@GetMapping("/{id}/acompanhantes")
-	public ResponseEntity<Page<AcompanhanteDTO>> findAllAcompanhantes(@PathVariable long id,Pageable pageable) {
+	public ResponseEntity<Page<AcompanhanteDTO>> findAllAcompanhantes(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(analsitaservice.findAllAcompanhantes(id,pageable));
 	}
 	
@@ -77,8 +83,12 @@ public class AnalistaResource {
 		Analista analista = analsitaservice.find(id);
 	    File img = new File(analista.getImage().toString());
 	    return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap()
-	    		.getContentType(img)))
-	    	    .body(Files.readAllBytes(img.toPath()));
+	    		.getContentType(img))).body(Files.readAllBytes(img.toPath()));
+	}
+	
+	@GetMapping("/{id}/tratamento/{idP}")
+	public ResponseEntity<Page<Tratamento>> findTratamentos(@PathVariable long id,@PathVariable long idP,Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(analsitaservice.findTratamentos(id,idP,pageable));
 	}
 	
 	@PostMapping
@@ -86,17 +96,15 @@ public class AnalistaResource {
 		MultipartFile file = null;
 		Analista obj = analsitaservice.fromDTO(objDto);
 		obj = analsitaservice.insert(obj,file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PostMapping("/{id}/tratamento")
 	public ResponseEntity<Void> insertTratamento(@PathVariable long id,@RequestParam("file") MultipartFile file,
-		@RequestParam("acompanhante") long acom,@RequestParam("paciente") long pac){
-		TratamentoNewDTO objDto = new TratamentoNewDTO(acom,pac);
-		Tratamento tratamento = analsitaservice.fromDTOTratamento(objDto,id,file);
-		tratamentoService.save(tratamento);
+		@RequestParam("acompanhante") long acom,@RequestParam("paciente") long pac,@RequestParam("nome") String nome){
+		TratamentoNewDTO objDto = new TratamentoNewDTO(acom,pac,nome);
+		analsitaservice.fromDTOTratamento(objDto,id,file);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 		return ResponseEntity.created(uri).build();
 	}
@@ -121,10 +129,9 @@ public class AnalistaResource {
 	}
 	
 	@PutMapping("/{id}/image")
-	public ResponseEntity <Void> uploadToLocalFileSystem(@RequestParam("file") MultipartFile file,@PathVariable long id) {
+	public ResponseEntity <Void> insertImage(@RequestParam("file") MultipartFile file,@PathVariable long id) {
 		Analista obj = analsitaservice.updateImage(id,file);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	

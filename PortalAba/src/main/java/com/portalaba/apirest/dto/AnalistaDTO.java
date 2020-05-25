@@ -1,9 +1,5 @@
 package com.portalaba.apirest.dto;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
 import com.portalaba.apirest.domain.Analista;
 
 public class AnalistaDTO {
@@ -16,7 +12,7 @@ public class AnalistaDTO {
     
     private String cpf;
     
-    private File img = null;
+    private byte[] image;
 	
 	public AnalistaDTO() {
 		
@@ -61,18 +57,11 @@ public class AnalistaDTO {
 		this.cpf = cpf;
 	}
 
-	public byte[] getImg() {
-		 if(img != null) {
-			try {
-				return Files.readAllBytes(img.toPath());
-			} catch (IOException e) {
-				return null;
-			}
-		 }
-	  return null;
+	public byte[] getImage() {
+	  return image;
 	}
 
-	public void setImg(File img) {
-		this.img = img;
+	public void setImage(byte[] img) {
+		this.image = img;
 	}
 }
