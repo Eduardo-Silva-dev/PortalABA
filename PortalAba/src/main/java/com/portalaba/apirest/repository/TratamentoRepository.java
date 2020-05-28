@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import com.portalaba.apirest.domain.Tratamento;
 
 public interface TratamentoRepository extends JpaRepository<Tratamento, Long>{

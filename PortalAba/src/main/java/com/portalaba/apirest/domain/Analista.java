@@ -71,9 +71,12 @@ public class Analista extends Pessoa implements Serializable{
 	)
    	private List<Paciente> pacientes = new ArrayList<>();
 
-	public Analista(String password, String nome, Date dataNascimento,
-			String tipoAnalista, String emailAnalista, String cpfAnalista, String contatoAnalista,
-			String crpAnalista, String cnpjAnalista) {
+	public Analista() {
+		
+	}
+
+	public Analista(String password, String nome, Date dataNascimento,String tipoAnalista, String emailAnalista, String cpfAnalista,
+			String contatoAnalista,String crpAnalista, String cnpjAnalista) {
 		super();
 		setPassword(password);
 		setNome(nome);
@@ -85,10 +88,6 @@ public class Analista extends Pessoa implements Serializable{
 		this.crpAnalista = crpAnalista;
 		this.cnpjAnalista = cnpjAnalista;
 		this.dataInicio = new Date();
-	}
-
-	public Analista() {
-		
 	}
 	
 	public String getImage() {

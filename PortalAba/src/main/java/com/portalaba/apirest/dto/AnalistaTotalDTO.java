@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.portalaba.apirest.domain.Analista;
-import com.portalaba.apirest.domain.Endereco;
 
 public class AnalistaTotalDTO implements Serializable {
 	
@@ -46,29 +46,34 @@ public class AnalistaTotalDTO implements Serializable {
     
 	private String estado;
 	
+	@JsonIgnore
+	private String imagem;
+    
+    private byte[] image;
+	
 	public AnalistaTotalDTO() {
 		
 	}
 
-	public AnalistaTotalDTO(Analista obj, Endereco endereco) {
-		super();
-		this.id = obj.getId();
-		this.password = obj.getPassword();
-		this.nome = obj.getNome();
-		this.dataNascimento = obj.getDataNascimento();
-		this.tipoAnalista = obj.getTipoAnalista();
-		this.emailAnalista = obj.getEmailAnalista();
-		this.cnpjAnalista = obj.getCnpjAnalista();
-		this.cpfAnalista = obj.getCpfAnalista();
-		this.contatoAnalista = obj.getContatoAnalista();
-		this.crpAnalista = obj.getCrpAnalista();
-		this.bairro = endereco.getBairro();
-		this.cep = endereco.getCep();
-		this.cidade = endereco.getCidade();
-		this.complemento = endereco.getComplemento();
-		this.estado = endereco.getEstado();
-		this.logradouro = endereco.getLogradouro();
-		this.numero = endereco.getNumero();
+	public AnalistaTotalDTO(Analista analista) {
+		this.id = analista.getId();
+		this.password = analista.getPassword();
+		this.nome = analista.getNome();
+		this.dataNascimento = analista.getDataNascimento();
+		this.tipoAnalista = analista.getTipoAnalista();
+		this.emailAnalista = analista.getEmailAnalista();
+		this.cnpjAnalista = analista.getCnpjAnalista();
+		this.cpfAnalista = analista.getCpfAnalista();
+		this.contatoAnalista = analista.getContatoAnalista();
+		this.crpAnalista = analista.getCrpAnalista();
+		this.bairro = analista.getEnderecos().getBairro();
+		this.cep = analista.getEnderecos().getCep();
+		this.cidade = analista.getEnderecos().getCidade();
+		this.complemento = analista.getEnderecos().getComplemento();
+		this.estado = analista.getEnderecos().getEstado();
+		this.logradouro = analista.getEnderecos().getLogradouro();
+		this.numero = analista.getEnderecos().getNumero();
+		this.imagem = analista.getImage();
 	}
 
 	public long getId() {
@@ -205,5 +210,21 @@ public class AnalistaTotalDTO implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	public byte[] getImage() {
+	  return image;
+	}
+
+	public void setImage(byte[] img) {
+		this.image = img;
 	}
 }

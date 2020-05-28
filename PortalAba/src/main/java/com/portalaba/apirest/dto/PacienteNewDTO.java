@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.portalaba.apirest.domain.Paciente;
 
 public class PacienteNewDTO {

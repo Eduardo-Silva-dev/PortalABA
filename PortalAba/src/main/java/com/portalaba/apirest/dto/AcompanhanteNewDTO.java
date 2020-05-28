@@ -66,9 +66,6 @@ public class AcompanhanteNewDTO {
    	@Length(min=2, max=2, message="O tamanho deve ser de 2 caracteres")
    	private String estado;
 	
-	//@NotBlank(message="Preenchimento obrigatório")
-	private long analista;
-	
 	public AcompanhanteNewDTO() {
 		
 	}
@@ -191,13 +188,5 @@ public class AcompanhanteNewDTO {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public long getAnalista() {
-		return analista;
-	}
-
-	public void setAnalista(long analista) {
-		this.analista = analista;
 	}
 }

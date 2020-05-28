@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.portalaba.apirest.domain.Acompanhante;
-import com.portalaba.apirest.domain.Endereco;
 
 public class AcompanhanteTotalDTO implements Serializable {
 	
@@ -44,28 +44,33 @@ public class AcompanhanteTotalDTO implements Serializable {
 	
 	private String estado;
 	
+	private byte[] image;
+	
+	@JsonIgnore
+	private String imagem;
+	
 	public AcompanhanteTotalDTO() {
 		
 	}
-
-	public AcompanhanteTotalDTO(Acompanhante obj, Endereco endereco) {
-		super();
-		this.id = obj.getId();
-		this.password = obj.getPassword();
-		this.nome = obj.getNome();
-		this.dataNascimento = obj.getDataNascimento();
-		this.tipoAcompanhante = obj.getTipoAcompanhante();
-		this.emailAcompanhante = obj.getEmailAcompanhante();
-		this.cpfAcompanhante = obj.getCpfAcompanhante();
-		this.contatoAcompanhante = obj.getContatoAcompanhante();
-		this.crpAcompanhante = obj.getCrpAcompanhante();
-		this.bairro = endereco.getBairro();
-		this.cep = endereco.getCep();
-		this.cidade = endereco.getCidade();
-		this.complemento = endereco.getComplemento();
-		this.estado = endereco.getEstado();
-		this.logradouro = endereco.getLogradouro();
-		this.numero = endereco.getNumero();
+	
+	public AcompanhanteTotalDTO(Acompanhante acompanhante) {
+		this.id = acompanhante.getId();
+		this.password = acompanhante.getPassword();
+		this.nome = acompanhante.getNome();
+		this.dataNascimento = acompanhante.getDataNascimento();
+		this.tipoAcompanhante = acompanhante.getTipoAcompanhante();
+		this.emailAcompanhante = acompanhante.getEmailAcompanhante();
+		this.cpfAcompanhante = acompanhante.getCpfAcompanhante();
+		this.contatoAcompanhante = acompanhante.getContatoAcompanhante();
+		this.crpAcompanhante = acompanhante.getCrpAcompanhante();
+		this.bairro = acompanhante.getEnderecos().getBairro();
+		this.cep = acompanhante.getEnderecos().getCep();
+		this.cidade = acompanhante.getEnderecos().getCidade();
+		this.complemento = acompanhante.getEnderecos().getComplemento();
+		this.estado = acompanhante.getEnderecos().getEstado();
+		this.logradouro = acompanhante.getEnderecos().getLogradouro();
+		this.numero = acompanhante.getEnderecos().getNumero();
+		this.imagem = acompanhante.getImage();
 	}
 
 	public long getId() {
@@ -194,5 +199,21 @@ public class AcompanhanteTotalDTO implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	
+	public byte[] getImage() {
+			return image;
+	}
+
+	public void setImage(byte[] img) {
+		this.image = img;
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
 }

@@ -155,4 +155,11 @@ public class Tratamento implements Serializable{
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Tratamento [id=" + id + ", analista=" + analista + ", acompanhante=" + acompanhante + ", nome=" + nome
+				+ ", paciente=" + paciente + ", file=" + file + ", data_Cadastro=" + data_Cadastro + "]";
+	}
+	
 }

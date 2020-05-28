@@ -3,12 +3,12 @@ package com.portalaba.apirest.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.domain.Pageable;
 
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.dto.PacienteDTO;
-import org.springframework.data.domain.Pageable;
 
 public interface PacienteRepository extends PagingAndSortingRepository<Paciente, Long>{
 

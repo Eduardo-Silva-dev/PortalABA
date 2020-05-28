@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.portalaba.apirest.domain.Endereco;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.portalaba.apirest.domain.Paciente;
 
 public class PacienteTotalDTO implements Serializable {
@@ -47,33 +47,38 @@ public class PacienteTotalDTO implements Serializable {
 	
 	private String estado;
 	
-	private String nivelAltismo;
+	private String nivelAutismo;
     
+	@JsonIgnore
+    private String imagem;
+    
+    private byte[] image;
 	
 	public PacienteTotalDTO() {
 		
 	}
-
-	public PacienteTotalDTO(Paciente obj,Endereco endereco) {
+	
+	public PacienteTotalDTO(Paciente paciente) {
 		super();
-		this.id = obj.getId();
-		this.password = obj.getPassword();
-		this.nome = obj.getNome();
-		this.dataNascimento = obj.getDataNascimento();
-		this.nomeResponsavel = obj.getNomeResponsavel();
-		this.dataNascimentoResponsavel = obj.getDataNascimentoResponsavel();
-		this.emailResponsavel = obj.getEmailResponsavel();
-		this.cpfResponsavel = obj.getCpfResponsavel();
-		this.contatoResponsavel = obj.getContatoResponsavel();
-		this.contatoAuxiliar = obj.getContatoAuxiliar();
-		this.bairro = endereco.getBairro();
-		this.cep = endereco.getCep();
-		this.cidade = endereco.getCidade();
-		this.complemento = endereco.getComplemento();
-		this.estado = endereco.getEstado();
-		this.logradouro = endereco.getLogradouro();
-		this.numero = endereco.getNumero();
-		this.nivelAltismo = obj.getNivelAltismo();
+		this.id = paciente.getId();
+		this.password = paciente.getPassword();
+		this.nome = paciente.getNome();
+		this.dataNascimento = paciente.getDataNascimento();
+		this.nomeResponsavel = paciente.getNomeResponsavel();
+		this.dataNascimentoResponsavel = paciente.getDataNascimentoResponsavel();
+		this.emailResponsavel = paciente.getEmailResponsavel();
+		this.cpfResponsavel = paciente.getCpfResponsavel();
+		this.contatoResponsavel = paciente.getContatoResponsavel();
+		this.contatoAuxiliar = paciente.getContatoAuxiliar();
+		this.bairro = paciente.getEnderecos().getBairro();
+		this.cep = paciente.getEnderecos().getCep();
+		this.cidade = paciente.getEnderecos().getCidade();
+		this.complemento = paciente.getEnderecos().getComplemento();
+		this.estado = paciente.getEnderecos().getEstado();
+		this.logradouro = paciente.getEnderecos().getLogradouro();
+		this.numero = paciente.getEnderecos().getNumero();
+		this.nivelAutismo = paciente.getNivelAltismo();
+		this.imagem = paciente.getImage();
 	}
 
 	public long getId() {
@@ -212,11 +217,27 @@ public class PacienteTotalDTO implements Serializable {
 		this.estado = estado;
 	}
 
-	public String getNivelAltismo() {
-		return nivelAltismo;
+	public String getNivelAutismo() {
+		return nivelAutismo;
 	}
 
-	public void setNivelAltismo(String nivelAltismo) {
-		this.nivelAltismo = nivelAltismo;
+	public void setNivelAutismo(String nivelAutismo) {
+		this.nivelAutismo = nivelAutismo;
+	}
+	
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	public byte[] getImage() {
+	    return image;
+	}
+
+	public void setImage(byte[] img) {
+		this.image = img;
 	}
 }

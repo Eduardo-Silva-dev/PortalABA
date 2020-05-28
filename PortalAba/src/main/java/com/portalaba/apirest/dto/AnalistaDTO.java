@@ -20,9 +20,9 @@ public class AnalistaDTO {
 	
 	public AnalistaDTO(Analista obj) {
 		this.id = obj.getId();
-		this.email = obj.getCpfAnalista();
+		this.email = obj.getEmailAnalista();
 		this.nome = obj.getNome();
-		this.cpf = obj.getEmailAnalista();
+		this.cpf = obj.getCpfAnalista();
 	}
 
 	public long getId() {

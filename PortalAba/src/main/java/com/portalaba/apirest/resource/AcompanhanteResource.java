@@ -39,7 +39,7 @@ public class AcompanhanteResource {
 	private AcompanhanteService acompanhanteservice;
 	
 	@GetMapping
-	public ResponseEntity<Page<Acompanhante>> findAll(Pageable pageable) {
+	public ResponseEntity<Page<AcompanhanteTotalDTO>> findAll(Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(acompanhanteservice.findAll(pageable));
 	}
 	
@@ -50,7 +50,7 @@ public class AcompanhanteResource {
 	}
 	
 	@GetMapping("/total/{id}")
-	public ResponseEntity<AcompanhanteTotalDTO> findTotal(@PathVariable long id) {
+	public ResponseEntity<AcompanhanteTotalDTO> findTotal(@PathVariable long id) throws IOException {
 		AcompanhanteTotalDTO obj = acompanhanteservice.findTotal(id);
 		return ResponseEntity.ok().body(obj);
 	}

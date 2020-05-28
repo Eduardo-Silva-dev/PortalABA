@@ -1,13 +1,20 @@
 package com.portalaba.apirest.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class TratamentoNewDTO {
-
+	
+	@NotNull(message = "Codigo é obrigatório")
 	private long id;
-
+	
+	@NotNull(message = "Codigo é obrigatório")
 	private long acompanhante;
 	
+	@NotNull(message = "Codigo é obrigatório")
 	private long paciente;
 	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private String nome;
 
 	public TratamentoNewDTO() {

@@ -40,7 +40,7 @@ public class PacienteResource {
 	private PacienteService pacienteService;
 	
 	@GetMapping
-	public ResponseEntity<Page<Paciente>> findAll(Pageable pageable) {
+	public ResponseEntity<Page<PacienteTotalDTO>> findAll(Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(pacienteService.findAll(pageable));
 	}
 	
@@ -51,7 +51,7 @@ public class PacienteResource {
 	}
 	
 	@GetMapping("/total/{id}")
-	public ResponseEntity<PacienteTotalDTO> findTotal(@PathVariable long id) {
+	public ResponseEntity<PacienteTotalDTO> findTotal(@PathVariable long id) throws IOException {
 		PacienteTotalDTO obj = pacienteService.findTotal(id);
 		return ResponseEntity.ok().body(obj);
 	}

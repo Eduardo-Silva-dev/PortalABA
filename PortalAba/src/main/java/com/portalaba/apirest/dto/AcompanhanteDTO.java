@@ -11,17 +11,8 @@ public class AcompanhanteDTO {
     private String emailAcompanhante;
     
     private String cpfAcompanhante;
-    
-    private String img;
    
     private byte[] image;
-    
-	public AcompanhanteDTO(String nome, String emailAcompanhante, String cpfAcompanhante, String image) {
-		super();
-		this.nome = nome;
-		this.emailAcompanhante = emailAcompanhante;
-		this.cpfAcompanhante = cpfAcompanhante;
-	}
 
 	public AcompanhanteDTO() {
 		
@@ -32,7 +23,6 @@ public class AcompanhanteDTO {
 		this.nome = obj.getNome();
 		this.emailAcompanhante = obj.getEmailAcompanhante();
 		this.cpfAcompanhante = obj.getCpfAcompanhante();
-		this.img = obj.getImage();
 	}
 
 	public long getId() {
@@ -65,14 +55,6 @@ public class AcompanhanteDTO {
 
 	public void setCpfAcompanhante(String cpfAcompanhante) {
 		this.cpfAcompanhante = cpfAcompanhante;
-	}
-
-	public String getImg() {
-	  return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
 	}
 
 	public byte[] getImage() {
