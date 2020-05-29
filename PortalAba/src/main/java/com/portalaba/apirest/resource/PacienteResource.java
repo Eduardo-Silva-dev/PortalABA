@@ -57,13 +57,13 @@ public class PacienteResource {
 	}
 	
 	@GetMapping("/{id}/analista")
-	public  ResponseEntity<AnalistaDTO> findAnalista(@PathVariable long id) {
+	public  ResponseEntity<AnalistaDTO> findAnalista(@PathVariable long id) throws IOException {
 		AnalistaDTO obj = pacienteService.findAnalista(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@GetMapping("/{id}/acompanhante")
-	public  ResponseEntity<AcompanhanteDTO> findAcompanhante(@PathVariable long id) {
+	public  ResponseEntity<AcompanhanteDTO> findAcompanhante(@PathVariable long id) throws IOException {
 		AcompanhanteDTO obj = pacienteService.findAcompanhante(id);
 		return ResponseEntity.ok().body(obj);
 	}

@@ -49,6 +49,10 @@ public class Analista extends Pessoa implements Serializable{
     @Column(name = "cnpj",length=14,unique = true)
     private String cnpjAnalista;
     
+    @JsonIgnore
+   	@ManyToMany(mappedBy="analistas")
+   	private List<Empresa> empresas = new ArrayList<>();
+    
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "ANALISTA_ACOMPANHANTE",
@@ -88,6 +92,21 @@ public class Analista extends Pessoa implements Serializable{
 		this.crpAnalista = crpAnalista;
 		this.cnpjAnalista = cnpjAnalista;
 		this.dataInicio = new Date();
+	}
+
+	public Analista(Analista analista) {
+		super();
+		setId(analista.getId());;
+		setPassword(analista.getPassword());
+		setNome(analista.getNome());
+		setDataNascimento(analista.getDataNascimento());
+		this.tipoAnalista = analista.getTipoAnalista();
+		this.emailAnalista = analista.getEmailAnalista();
+		this.cpfAnalista = analista.getCpfAnalista();
+		this.contatoAnalista = analista.getContatoAnalista();
+		this.crpAnalista = analista.getCrpAnalista();
+		this.cnpjAnalista = analista.getCnpjAnalista();
+		this.image = analista.getImage();
 	}
 	
 	public String getImage() {
@@ -176,5 +195,13 @@ public class Analista extends Pessoa implements Serializable{
 
 	public void setDataInicio(Date dataInicio) {
 		this.dataInicio = dataInicio;
+	}
+
+	public List<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
 	}
 }

@@ -16,7 +16,7 @@ public interface AnalistaRepository extends JpaRepository<Analista, Long>{
 	Analista findByID(long id);
 	
 	@Query("select u.acompanhantes from Analista u where u.id=?1")
-	Page<Acompanhante> findAllAcompanhantes(long id,Pageable pageable);
+	Page<Acompanhante> findAllAcompanhantes(long id,Pageable pageable );
 	
 	Page<Analista> findAll(Pageable pageable);
 	

@@ -63,6 +63,11 @@ public class Paciente extends Pessoa  implements Serializable{
     @ManyToOne
 	@JoinColumn(name="analista_id")
     private Analista analista;
+	
+	@JsonIgnore
+    @ManyToOne
+	@JoinColumn(name="empresa_id")
+    private Empresa empresa;
 
 	public Paciente() {
 		
@@ -83,6 +88,22 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.contatoAuxiliar = contatoAuxiliar;
 		this.nivelAltismo = nivelAltismo;
 		this.dataInicio = LocalDate.now();
+	}
+	
+	public Paciente(Paciente paciente) {
+		super();
+		setId(paciente.getId());
+		setPassword(paciente.getPassword());
+		setNome(paciente.getNome());
+		setDataNascimento(paciente.getDataNascimento());
+		this.nomeResponsavel = paciente.getNomeResponsavel();
+		this.dataNascimentoResponsavel = paciente.getDataNascimentoResponsavel();
+		this.emailResponsavel = paciente.getEmailResponsavel();
+		this.cpfResponsavel = paciente.getCpfResponsavel();
+		this.contatoResponsavel = paciente.getContatoResponsavel();
+		this.contatoAuxiliar = paciente.getContatoAuxiliar();
+		this.nivelAltismo = paciente.getNivelAltismo();
+		this.image = paciente.getImage();
 	}
 
 	public String getNomeResponsavel() {
@@ -179,5 +200,13 @@ public class Paciente extends Pessoa  implements Serializable{
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }

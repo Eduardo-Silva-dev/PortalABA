@@ -10,9 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,12 +54,15 @@ public class AcompanhanteService {
 		Page<AcompanhanteTotalDTO> listDto = acompanhante.map(obj -> new AcompanhanteTotalDTO(obj));  
 		
 		for (AcompanhanteTotalDTO p : listDto){
+			
 			if(p.getImagem() != null) {
+				
 				File img = new File(p.getImagem().toString());
 				FileInputStream fis = new FileInputStream(img);
 				byte[] data = new byte[fis.available()];
 				fis.read(data);
 				p.setImage(data);
+				
 			}
 		}
 		
@@ -102,19 +108,27 @@ public class AcompanhanteService {
 		
 		Page<Paciente> paciente = repo.findAllPacientes(id,pageable);
 		
-		Page<PacienteDTO> listDto = paciente.map(obj -> new PacienteDTO(obj));  
+		List<Paciente> list = paciente.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
 		
-		for (PacienteDTO p : listDto){
-			if(p.getImage() != null) {
-			File img = new File(p.getImage().toString());
-			FileInputStream fis = new FileInputStream(img);
-			byte[] data = new byte[fis.available()];
-			fis.read(data);
-			p.setImage(data);
+		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());  
+		
+		for (int i = 0; i<list.size() ; i++) {
+				
+			if(list.get(i).getImage() != null) {
+				
+				File img = new File(list.get(i).getImage().toString());
+				FileInputStream fis = new FileInputStream(img);
+				byte[] data = new byte[fis.available()];
+				fis.read(data);
+				
+				listDto.get(i).setImage(data);
 			}
-		}
 		
-		return  listDto; 
+		}
+
+		Page<PacienteDTO> pages = new PageImpl<PacienteDTO>(listDto);
+		
+		return pages;
 	}
 
 	public Page<AnalistaDTO> findAllAnalistas(long id,Pageable pageable) throws IOException {
@@ -123,17 +137,27 @@ public class AcompanhanteService {
 		
 		Page<Analista> analista = repo.findAllAnalistas(id,pageable);
 		
-		Page<AnalistaDTO> listDto = analista.map(obj -> new AnalistaDTO(obj));  
+		List<Analista> list = analista.stream().map(obj -> new Analista(obj)).collect(Collectors.toList());  
 		
-		for (AnalistaDTO p : listDto){
-			File img = new File(p.getImage().toString());
-			FileInputStream fis = new FileInputStream(img);
-			byte[] data = new byte[fis.available()];
-			fis.read(data);
-			p.setImage(data);
+		List<AnalistaDTO> listDto = list.stream().map(obj -> new AnalistaDTO(obj)).collect(Collectors.toList());  
+		
+		for (int i = 0; i<list.size() ; i++) {
+				
+			if(list.get(i).getImage() != null) {
+				
+				File img = new File(list.get(i).getImage().toString());
+				FileInputStream fis = new FileInputStream(img);
+				byte[] data = new byte[fis.available()];
+				fis.read(data);
+				
+				listDto.get(i).setImage(data);
+			}
+		
 		}
+
+		Page<AnalistaDTO> pages = new PageImpl<AnalistaDTO>(listDto);
 		
-		return listDto ;
+		return pages;
 	}
 	
 	public Acompanhante find(long id) {

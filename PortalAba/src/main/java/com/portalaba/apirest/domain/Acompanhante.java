@@ -56,6 +56,10 @@ public class Acompanhante extends Pessoa implements Serializable{
 	@ManyToMany(mappedBy="acompanhantes")
 	private List<Analista> analistas = new ArrayList<>();
     
+    @JsonIgnore
+	@ManyToMany(mappedBy="acompanhantes")
+	private List<Empresa> empresas = new ArrayList<>();
+    
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "ACOMPANHANTE_PACIENTE",
@@ -77,11 +81,26 @@ public class Acompanhante extends Pessoa implements Serializable{
 		this.crpAcompanhante = crpAcompanhante;
 		this.dataInicio = new Date();
 	}
-    
-   public Acompanhante() {
+   
+    public Acompanhante(Acompanhante acompanhante) {
+	   super();
+	    setId(acompanhante.getId());
+		setPassword(acompanhante.getPassword());
+		setNome(acompanhante.getNome());
+		setDataNascimento(acompanhante.getDataNascimento());
+		this.tipoAcompanhante = acompanhante.getTipoAcompanhante();
+		this.emailAcompanhante = acompanhante.getEmailAcompanhante();
+		this.cpfAcompanhante = acompanhante.getCpfAcompanhante();
+		this.contatoAcompanhante = acompanhante.getContatoAcompanhante();
+		this.crpAcompanhante = acompanhante.getCrpAcompanhante();
+		this.dataInicio = new Date();
+		this.image = acompanhante.getImage();
+	}
+   
+    public Acompanhante() {
 	   
-   }
-	
+    }
+   
 	public String getTipoAcompanhante() {
 		return tipoAcompanhante;
 	}
@@ -161,4 +180,13 @@ public class Acompanhante extends Pessoa implements Serializable{
 	public void setImage(String image) {
 		this.image = image;
 	}
+
+	public List<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
+	}
 }
+

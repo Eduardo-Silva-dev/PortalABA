@@ -19,5 +19,5 @@ public interface PacienteRepository extends PagingAndSortingRepository<Paciente,
 	Endereco findEnderecos(long id);
 	
 	@Query("select u from Paciente u where u.analista = ?1")
-	Page<PacienteDTO> findAllPacientes(Analista id,Pageable pageable);
+	Page<Paciente> findAllPacientes(Analista id,Pageable pageable);
 }

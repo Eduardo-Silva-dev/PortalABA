@@ -54,6 +54,11 @@ public class Endereco implements Serializable{
 	
 	@JsonIgnore
 	@OneToOne
+	@JoinColumn(name="empresa_id")
+	private Empresa empresa;
+	
+	@JsonIgnore
+	@OneToOne
 	@JoinColumn(name="paciente_id",unique = true)
 	private Paciente paciente;
 	
@@ -104,6 +109,18 @@ public class Endereco implements Serializable{
 		this.paciente = paciente;
 	}
 
+	public Endereco(String logradouro, String complemento, String bairro, String cep, String numero,Empresa empresa,
+			String cidade, String estado) {
+		super();
+		this.logradouro = logradouro;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.empresa = empresa;
+	}
 	public Endereco(Endereco endereco) {
 
 	}
@@ -200,27 +217,12 @@ public class Endereco implements Serializable{
 		this.acompanhante = acompanhante;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Endereco other = (Endereco) obj;
-		if (id != other.id)
-			return false;
-		return true;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
-	
 }

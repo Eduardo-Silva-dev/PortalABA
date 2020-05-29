@@ -10,9 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +26,7 @@ import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 
 import com.portalaba.apirest.dto.AcompanhanteDTO;
+import com.portalaba.apirest.dto.AcompanhanteTotalDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.dto.PacienteNewDTO;
@@ -48,19 +52,27 @@ public class PacienteService {
 		
 		Page<Paciente> paciente = repo.findAll(pageable);
 		
-		Page<PacienteTotalDTO> listDto = paciente.map(obj -> new PacienteTotalDTO(obj));  
+		List<Paciente> list = paciente.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
 		
-		for (PacienteTotalDTO p : listDto){
-			if(p.getImagem() != null) {
-				File img = new File(p.getImage().toString());
+		List<PacienteTotalDTO> listDto = list.stream().map(obj -> new PacienteTotalDTO(obj)).collect(Collectors.toList());  
+		
+		for (int i = 0; i<list.size() ; i++) {
+				
+			if(list.get(i).getImage() != null) {
+				
+				File img = new File(list.get(i).getImage().toString());
 				FileInputStream fis = new FileInputStream(img);
 				byte[] data = new byte[fis.available()];
 				fis.read(data);
-				p.setImage(data);
+				
+				listDto.get(i).setImage(data);
 			}
-		}
 		
-		return listDto;
+		}
+
+		Page<PacienteTotalDTO> pages = new PageImpl<PacienteTotalDTO>(listDto);
+		
+		return pages;
 	}
 	
 	public Paciente find(long id) {
@@ -88,6 +100,7 @@ public class PacienteService {
 			byte[] data = new byte[fis.available()];
 			fis.read(data);
 			obgDTO.setImage(data);
+			
 		}
 	
 		return obgDTO;
@@ -106,25 +119,49 @@ public class PacienteService {
 			byte[] data = new byte[fis.available()];
 			fis.read(data);
 			obgTotalDTO.setImage(data);
+			
 		}
 		
 		return obgTotalDTO;
 	}
 	
-	public AnalistaDTO findAnalista(long id){
+	public AnalistaDTO findAnalista(long id) throws IOException{
 		
 		Paciente paciente = find(id);
 		
-		AnalistaDTO analistaDTO = new AnalistaDTO(repoA.findByID(paciente.getAnalista().getId()));
+		Analista analista = repoA.findByID(paciente.getAnalista().getId());
+		
+		AnalistaDTO analistaDTO = new AnalistaDTO(analista);
+		
+		if(analista.getImage() != null) {
+			
+			File img = new File(analista.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			analistaDTO.setImage(data);
+		}
 		
 		return analistaDTO;
 	}
 	
-	public AcompanhanteDTO findAcompanhante(long id){
+	public AcompanhanteDTO findAcompanhante(long id) throws IOException{
 		
 		Paciente paciente = find(id);
 		
-		AcompanhanteDTO obj = new AcompanhanteDTO(repoT.findByID(paciente.getAcompanhante().getId()));
+		Acompanhante acompanhante = repoT.findByID(paciente.getAcompanhante().getId());
+		
+		AcompanhanteDTO obj = new AcompanhanteDTO(acompanhante);
+		
+		if(acompanhante.getImage() != null) {
+			
+			File img = new File(acompanhante.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			obj.setImage(data);
+			
+		}
 		
 		return obj;
 	}
@@ -137,7 +174,7 @@ public class PacienteService {
 			return obj; 
 		}
 		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/paciente/"  + obj.getCpfResponsavel()+".jpg");
 		
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
@@ -210,7 +247,7 @@ public class PacienteService {
 		
 		Paciente obj = find(id);
 		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfResponsavel()+".jpg");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/paciente/"  + obj.getCpfResponsavel()+".jpg");
 		
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
