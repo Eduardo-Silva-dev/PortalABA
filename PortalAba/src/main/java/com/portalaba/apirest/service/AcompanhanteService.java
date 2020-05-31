@@ -47,6 +47,18 @@ public class AcompanhanteService {
 	@Autowired
 	private PacienteRepository repoP;
 	
+	public Acompanhante find(long id) {
+		
+		Acompanhante obj =  repo.findByID(id);
+		
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
+		}
+		
+		return obj;
+	}
+	
 	public Page<AcompanhanteTotalDTO> findAll(Pageable pageable) throws IOException {
 		
 		Page<Acompanhante> acompanhante = repo.findAll(pageable);
@@ -160,16 +172,17 @@ public class AcompanhanteService {
 		return pages;
 	}
 	
-	public Acompanhante find(long id) {
+	public Acompanhante fromDTO(AcompanhanteNewDTO objDto) {
 		
-		Acompanhante obj =  repo.findByID(id);
+		Acompanhante acompanhante = new Acompanhante(objDto.getPassword(),objDto.getNome(),objDto.getDataNascimento(),objDto.getTipoAcompanhante(), 
+		objDto.getEmailAcompanhante(),objDto.getCpfAcompanhante(),objDto.getContatoAcompanhante(),objDto.getCrpAcompanhante());
 		
-		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
-		}
+		Endereco endereco = new Endereco(objDto.getLogradouro(),objDto.getComplemento(),objDto.getBairro(),objDto.getCep(),
+		objDto.getNumero(),objDto.getCidade(),objDto.getEstado(),acompanhante);
 		
-		return obj;
+		acompanhante.setEnderecos(endereco);
+		
+		return acompanhante;
 	}
 	
 	public Acompanhante insert(Acompanhante obj,MultipartFile file) {
@@ -189,47 +202,6 @@ public class AcompanhanteService {
 		obj.setImage(path.toString());
 		
 		return obj;
-	}
-	
-	public Acompanhante fromDTO(AcompanhanteNewDTO objDto) {
-		
-		Acompanhante acompanhante = new Acompanhante(objDto.getPassword(),objDto.getNome(),objDto.getDataNascimento(),objDto.getTipoAcompanhante(), 
-		objDto.getEmailAcompanhante(),objDto.getCpfAcompanhante(),objDto.getContatoAcompanhante(),objDto.getCrpAcompanhante());
-		
-		Endereco endereco = new Endereco(objDto.getLogradouro(),objDto.getComplemento(),objDto.getBairro(),objDto.getCep(),
-		objDto.getNumero(),objDto.getCidade(),objDto.getEstado(),acompanhante);
-		
-		acompanhante.setEnderecos(endereco);
-		
-		return acompanhante;
-	}
-
-	public Acompanhante update(Acompanhante obj,long id) {
-		
-		obj.setId(id);
-		
-		Acompanhante end = find(obj.getId());
-		
-		obj.getEnderecos().setId(end.getEnderecos().getId());
-		
-		return repo.save(obj);
-	}
-	
-	public Acompanhante updateImage(long id,MultipartFile file) {
-		
-		Acompanhante obj = find(id);
-		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
-		
-		try {
-			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		obj.setImage(path.toString());
-		
-		return repo.save(obj);
 	}
 	
 	public Acompanhante insertAnalista(long id,long idA) {
@@ -285,8 +257,37 @@ public class AcompanhanteService {
 		
 		return repo.save(obj);
 	}
+
+	public Acompanhante update(Acompanhante obj,long id) {
+		
+		obj.setId(id);
+		
+		Acompanhante end = find(obj.getId());
+		
+		obj.getEnderecos().setId(end.getEnderecos().getId());
+		
+		return repo.save(obj);
+	}
+	
+	public Acompanhante updateImage(long id,MultipartFile file) {
+		
+		Acompanhante obj = find(id);
+		
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
+		
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		obj.setImage(path.toString());
+		
+		return repo.save(obj);
+	}
 	
 	public void delete(long id){
+		
 		repo.deleteById(id);	
 	}
 	

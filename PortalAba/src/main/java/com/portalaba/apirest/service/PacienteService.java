@@ -26,7 +26,6 @@ import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 
 import com.portalaba.apirest.dto.AcompanhanteDTO;
-import com.portalaba.apirest.dto.AcompanhanteTotalDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.dto.PacienteNewDTO;
@@ -47,6 +46,18 @@ public class PacienteService {
 	
 	@Autowired
 	private AcompanhanteRepository repoT;
+	
+	public Paciente find(long id) {
+		
+		Paciente obj =  repo.findByID(id);
+		
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		}
+	    
+		return obj;
+	}
 	
 	public Page<PacienteTotalDTO> findAll(Pageable pageable) throws IOException {
 		
@@ -73,18 +84,6 @@ public class PacienteService {
 		Page<PacienteTotalDTO> pages = new PageImpl<PacienteTotalDTO>(listDto);
 		
 		return pages;
-	}
-	
-	public Paciente find(long id) {
-		
-		Paciente obj =  repo.findByID(id);
-		
-		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
-		}
-	    
-		return obj;
 	}
 	
 	public PacienteDTO findParcial(long id) throws IOException {
@@ -166,6 +165,19 @@ public class PacienteService {
 		return obj;
 	}
 	
+	public Paciente fromDTO(PacienteNewDTO objDto) {
+		
+		Paciente paciente = new Paciente(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomeResponsavel(),
+				objDto.getDataNascimentoResponsavel(),objDto.getEmailResponsavel(),objDto.getCpfResponsavel(),objDto.getContatoResponsavel(),
+				objDto.getContatoAuxiliar(),objDto.getNivelAltismo());
+		 
+		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), objDto.getNumero(),paciente,objDto.getCidade(),objDto.getEstado());
+		
+		paciente.setEnderecos(endereco);
+		
+		return paciente; 
+	}
+	
 	public Paciente insert(Paciente obj,MultipartFile file) {
 		
 		obj = repo.save(obj);
@@ -201,19 +213,6 @@ public class PacienteService {
 		paciente.setAcompanhante(acompanhante);
 		
 		return repo.save(paciente);
-	}
-	
-	public Paciente fromDTO(PacienteNewDTO objDto) {
-		
-		Paciente paciente = new Paciente(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomeResponsavel(),
-				objDto.getDataNascimentoResponsavel(),objDto.getEmailResponsavel(),objDto.getCpfResponsavel(),objDto.getContatoResponsavel(),
-				objDto.getContatoAuxiliar(),objDto.getNivelAltismo());
-		 
-		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), objDto.getNumero(),paciente,objDto.getCidade(),objDto.getEstado());
-		
-		paciente.setEnderecos(endereco);
-		
-		return paciente; 
 	}
 	
 	public Paciente insertAnalista(long id,long idA) {

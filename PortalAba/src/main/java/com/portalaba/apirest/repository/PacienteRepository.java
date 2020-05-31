@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
-import com.portalaba.apirest.dto.PacienteDTO;
 
 public interface PacienteRepository extends PagingAndSortingRepository<Paciente, Long>{
 

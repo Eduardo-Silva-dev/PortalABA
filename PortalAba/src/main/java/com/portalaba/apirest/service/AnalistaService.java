@@ -22,15 +22,18 @@ import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.domain.Tratamento;
+
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
 import com.portalaba.apirest.repository.TratamentoRepository;
+
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
@@ -47,6 +50,18 @@ public class AnalistaService {
 	
 	@Autowired
 	private TratamentoRepository repoT;
+	
+	public Analista find(long id) {
+		
+		Analista obj =  repo.findByID(id);
+		
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
+		}
+		
+		return obj;
+	}
 	
 	public Page<AnalistaTotalDTO> findAll(Pageable pageable) throws IOException {
 		
@@ -65,6 +80,43 @@ public class AnalistaService {
 		}
 		
 		return listDto;
+	}
+	
+	public AnalistaDTO findParcial(long id) throws IOException {
+		
+		Analista obj = find(id);
+		
+		AnalistaDTO obgDTO = new AnalistaDTO(obj);
+		
+		if(obj.getImage() != null) {
+		
+			File img = new File(obj.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			
+			obgDTO.setImage(data);
+		}
+		
+		return obgDTO;
+	}
+	
+	public AnalistaTotalDTO findTotal(long id) throws IOException {
+		
+		Analista obj = find(id);
+		
+		AnalistaTotalDTO obgTotalDTO = new AnalistaTotalDTO(obj);
+		
+		if(obj.getImage() != null) {
+		
+			File img = new File(obj.getImage().toString());
+			FileInputStream fis = new FileInputStream(img);
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			obgTotalDTO.setImage(data);
+		}
+		
+		return obgTotalDTO;
 	}
 
 	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) throws IOException {
@@ -125,18 +177,6 @@ public class AnalistaService {
 		return pages;
 	}
 	
-	public Analista find(long id) {
-		
-		Analista obj =  repo.findByID(id);
-		
-		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
-		}
-		
-		return obj;
-	}
-	
 	public Page<Tratamento> findTratamentos(long id,long idP,Pageable pageable) {
 		
 		Page<Tratamento> tratamento = repoT.findTratamentos(id,idP,pageable);
@@ -144,43 +184,16 @@ public class AnalistaService {
 		return tratamento;
 	}
 	
-	public AnalistaDTO findParcial(long id) throws IOException {
+	public Analista fromDTO(AnalistaNewDTO objDto) {
 		
-		Analista obj = find(id);
+		Analista analista = new Analista(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getTipoAnalista(), 
+		objDto.getEmailAnalista(), objDto.getCpfAnalista(), objDto.getContatoAnalista(),objDto.getCrpAnalista(),objDto.getCnpjAnalista());
 		
-		AnalistaDTO obgDTO = new AnalistaDTO(obj);
+		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), 
+				objDto.getNumero(),objDto.getCidade(),objDto.getEstado(),analista);
+		analista.setEnderecos(endereco);
 		
-		if(obj.getImage() != null) {
-		
-			File img = new File(obj.getImage().toString());
-			FileInputStream fis = new FileInputStream(img);
-			byte[] data = new byte[fis.available()];
-			fis.read(data);
-			
-			obgDTO.setImage(data);
-		}
-		
-		return obgDTO;
-	}
-	
-	public AnalistaTotalDTO findTotal(long id) throws IOException {
-		
-		long endId = 0;
-		
-		Analista obj = find(id);
-		
-		AnalistaTotalDTO obgTotalDTO = new AnalistaTotalDTO(obj);
-		
-		if(obj.getImage() != null) {
-		
-			File img = new File(obj.getImage().toString());
-			FileInputStream fis = new FileInputStream(img);
-			byte[] data = new byte[fis.available()];
-			fis.read(data);
-			obgTotalDTO.setImage(data);
-		}
-		
-		return obgTotalDTO;
+		return analista;
 	}
 
 	public Analista insert(Analista obj,MultipartFile file) {
@@ -202,47 +215,6 @@ public class AnalistaService {
 		obj.setImage(path.toString());
 		
 		return obj;
-	}
-	
-	public Analista fromDTO(AnalistaNewDTO objDto) {
-		
-		Analista analista = new Analista(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getTipoAnalista(), 
-		objDto.getEmailAnalista(), objDto.getCpfAnalista(), objDto.getContatoAnalista(),objDto.getCrpAnalista(),objDto.getCnpjAnalista());
-		
-		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), 
-				objDto.getNumero(),objDto.getCidade(),objDto.getEstado(),analista);
-		analista.setEnderecos(endereco);
-		
-		return analista;
-	}
-
-
-	public Analista update(Analista obj,long id) {
-		
-		obj.setId(id);
-		
-		Analista end = find(obj.getId());
-		
-		obj.getEnderecos().setId(end.getEnderecos().getId());
-		
-		return repo.save(obj);
-	}
-	
-	public Analista updateImage(long id,MultipartFile file) {
-		
-		Analista obj = find(id);
-		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
-		
-		try {
-			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		obj.setImage(path.toString());
-		
-		return repo.save(obj);
 	}
 	
 	public Analista insertAcompanhante(long id,long idA) {
@@ -297,6 +269,34 @@ public class AnalistaService {
 		repoP.save(paciente);
 		
 		return repo.save(obj);		
+	}
+
+	public Analista update(Analista obj,long id) {
+		
+		obj.setId(id);
+		
+		Analista end = find(obj.getId());
+		
+		obj.getEnderecos().setId(end.getEnderecos().getId());
+		
+		return repo.save(obj);
+	}
+	
+	public Analista updateImage(long id,MultipartFile file) {
+		
+		Analista obj = find(id);
+		
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
+		
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		obj.setImage(path.toString());
+		
+		return repo.save(obj);
 	}
 	
 	public void delete(long id){

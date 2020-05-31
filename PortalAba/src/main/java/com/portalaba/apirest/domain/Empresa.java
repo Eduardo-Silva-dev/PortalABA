@@ -29,7 +29,7 @@ public class Empresa implements Serializable {
 	@Id
 	@Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;  
+	private long id;  
 	
 	@NotEmpty
 	@Column(name = "password",length=60)

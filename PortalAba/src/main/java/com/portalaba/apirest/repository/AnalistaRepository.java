@@ -20,6 +20,9 @@ public interface AnalistaRepository extends JpaRepository<Analista, Long>{
 	
 	Page<Analista> findAll(Pageable pageable);
 	
+	@Query("select u from Analista u where u.empresas = ?1")
+	Page<Analista> findAllAnalistas(long id, Pageable pageable);
+	
 	@Query("select u from Endereco u where u.id = ?1")
 	Endereco findEnderecos(long id);
 	
