@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,15 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Empresa;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
-import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.EmpresaDTO;
 import com.portalaba.apirest.dto.EmpresaNewDTO;
 import com.portalaba.apirest.dto.EmpresaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+
 import com.portalaba.apirest.service.EmpresaService;
 
 @RestController
@@ -67,6 +68,16 @@ public class EmpresaResource {
 	public ResponseEntity<Page<AnalistaDTO>> findAllAnalistas(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(empresaService.findAllAnalista(id,pageable));
 	}
+	
+	@GetMapping("/{id}/analistas/{idA}/pacientes")
+	public ResponseEntity<Page<PacienteDTO>> findAllPacienteAnalistas(@PathVariable long id,@PathVariable long idA,Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(empresaService.findAnalista_Paciente(id,idA,pageable));
+	}
+	
+//	@GetMapping("/{id}/acompanhantes/{idA}/pacientes")
+//	public ResponseEntity<Page<PacienteDTO>> findAllPacienteAcompanhante(@PathVariable long id,@PathVariable long idA,Pageable pageable) throws IOException {
+//		return ResponseEntity.ok().body(empresaService.findAcomapanhante_Paciente(id,idA,pageable));
+//	}
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody EmpresaNewDTO objDto){
@@ -124,6 +135,4 @@ public class EmpresaResource {
 		empresaService.removerAnalista(id, idA);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
 }

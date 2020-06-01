@@ -11,6 +11,10 @@ public class EmpresaNewDTO {
 	@Length(min=8, max=16, message="O tamanho deve ser entre 8 e 16 caracteres")
     private String password; 
 
+    @NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=14, max=14, message="O tamanho deve ter 14 caracteres")
+    private String cnpj;
+
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private	String razao_social;	
@@ -18,26 +22,22 @@ public class EmpresaNewDTO {
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private	String nome_fantasia;	
-	
-    @NotEmpty(message="Preenchimento obrigatório")
-	@Email(message="Email inválido")
-    private String email;
-
-    @NotEmpty(message="Preenchimento obrigatório")
-	@Length(min=14, max=14, message="O tamanho deve ter 14 caracteres")
-    private String cnpj;
 
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
     private String contato;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=10, max=11, message="O tamanho deve ser entre 10 e 11 caracteres")
+    private String telefone;
 
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(min=11, max=11, message="O tamanho deve ter 11 caracteres")
     private String celular;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
-	@Length(min=10, max=11, message="O tamanho deve ser entre 10 e 11 caracteres")
-    private String telefone;
+    @NotEmpty(message="Preenchimento obrigatório")
+	@Email(message="Email inválido")
+    private String email;
 	
     @NotEmpty(message="Preenchimento obrigatório")
    	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")

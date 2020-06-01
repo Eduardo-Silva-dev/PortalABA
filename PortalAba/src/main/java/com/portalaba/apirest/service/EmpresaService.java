@@ -2,12 +2,7 @@ package com.portalaba.apirest.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
@@ -26,8 +20,6 @@ import com.portalaba.apirest.domain.Paciente;
 
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
-import com.portalaba.apirest.dto.AnalistaNewDTO;
-import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.EmpresaDTO;
 import com.portalaba.apirest.dto.EmpresaNewDTO;
 import com.portalaba.apirest.dto.EmpresaTotalDTO;
@@ -37,7 +29,6 @@ import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.EmpresaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
-import com.portalaba.apirest.repository.TratamentoRepository;
 
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
@@ -55,9 +46,6 @@ public class EmpresaService {
 	
 	@Autowired
 	private AcompanhanteRepository repoA;
-	
-	@Autowired
-	private TratamentoRepository repoT;
 
 	public Empresa find(long id) {
 		
@@ -114,7 +102,6 @@ public class EmpresaService {
 				FileInputStream fis = new FileInputStream(img);
 				byte[] data = new byte[fis.available()];
 				fis.read(data);
-				
 				listDto.get(i).setImage(data);
 			}
 		
@@ -142,7 +129,6 @@ public class EmpresaService {
 				FileInputStream fis = new FileInputStream(img);
 				byte[] data = new byte[fis.available()];
 				fis.read(data);
-				
 				listDto.get(i).setImage(data);
 			}
 		
@@ -169,7 +155,6 @@ public class EmpresaService {
 				FileInputStream fis = new FileInputStream(img);
 				byte[] data = new byte[fis.available()];
 				fis.read(data);
-				
 				listDto.get(i).setImage(data);
 			}
 		
@@ -180,11 +165,72 @@ public class EmpresaService {
 		return pages;
 		
 	}
+
+	public Page<PacienteDTO> findAnalista_Paciente (long idE,long id, Pageable pageable) throws IOException{
+		
+		Analista analista = repoAn.findByID(id);
+		
+		Empresa empresa = find(idE);
+		
+		Page<Paciente> paciente = repoP.findPacientesAnalista(analista,empresa, pageable);
+		
+		List<Paciente> list = paciente.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
+		
+		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());  
+		
+		for (int i = 0; i<list.size() ; i++) {
+				
+			if(list.get(i).getImage() != null) {
+				
+				File img = new File(list.get(i).getImage().toString());
+				FileInputStream fis = new FileInputStream(img);
+				byte[] data = new byte[fis.available()];
+				fis.read(data);
+				listDto.get(i).setImage(data);
+			}
+		}
+
+		Page<PacienteDTO> pages = new PageImpl<PacienteDTO>(listDto);
+		
+		return pages;
+		
+	}
+
+//	public Page<PacienteDTO> findAcomapanhante_Paciente (long idE,long id, Pageable pageable) throws IOException{
+//			
+//			Acompanhante acompanhante = repoA.findByID(id);
+//			
+//			Empresa empresa = find(idE);
+//			
+//			Page<Paciente> paciente = repoP.findPacientesAcompanhante(acompanhante,empresa, pageable);
+//			
+//			List<Paciente> list = paciente.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
+//			
+//			List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());  
+//			
+//			for (int i = 0; i<list.size() ; i++) {
+//					
+//				if(list.get(i).getImage() != null) {
+//					
+//					File img = new File(list.get(i).getImage().toString());
+//					FileInputStream fis = new FileInputStream(img);
+//					byte[] data = new byte[fis.available()];
+//					fis.read(data);
+//					listDto.get(i).setImage(data);
+//				}
+//			
+//			}
+//
+//		Page<PacienteDTO> pages = new PageImpl<PacienteDTO>(listDto);
+//		
+//		return pages;
+//		
+//	}
 	
 	public Empresa fromDTO(EmpresaNewDTO objDto) {
-		
-		Empresa empresa = new Empresa(objDto.getPassword(),objDto.getCelular(),objDto.getCnpj(),objDto.getEmail(),
-				objDto.getNome_fantasia(),objDto.getTelefone(),objDto.getRazao_social(),objDto.getContato());
+
+		Empresa empresa = new Empresa(objDto.getPassword(),objDto.getCnpj(),objDto.getRazao_social(),objDto.getNome_fantasia(),
+				objDto.getContato(),objDto.getTelefone(),objDto.getCelular(),objDto.getEmail());
 		
 		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), 
 				objDto.getNumero(),empresa,objDto.getCidade(),objDto.getEstado());
@@ -263,11 +309,11 @@ public class EmpresaService {
 	public Empresa update(Empresa obj,long id) {
 		
 		obj.setId(id);
-		
+
 		Empresa end = find(obj.getId());
-		
+
 		obj.getEnderecos().setId(end.getEnderecos().getId());
-		
+
 		return repo.save(obj);
 	}
 	
