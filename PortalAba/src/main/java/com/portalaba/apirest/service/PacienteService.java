@@ -47,6 +47,15 @@ public class PacienteService {
 	@Autowired
 	private AcompanhanteRepository repoT;
 	
+	@Autowired
+	private AnalistaService analistaService;
+	
+	@Autowired
+	private AcompanhanteService acompanhanteService;
+	
+	@Autowired
+	private EmpresaService empresaService;
+	
 	public Paciente find(long id) {
 		
 		Paciente obj =  repo.findByID(id);
@@ -262,10 +271,15 @@ public class PacienteService {
 	public void delete(long id){
 		
 		Paciente obj = find(id);
-		
-		obj.setAnalista(null);
-		
-		obj.setAcompanhante(null);
+		if(obj.getAnalista() != null) {
+		analistaService.removerPaciente(obj.getAnalista().getId(),id);
+		obj.setAnalista(null);}
+		if(obj.getAcompanhante() != null) {
+		acompanhanteService.removerPaciente(obj.getAcompanhante().getId(), id);
+		obj.setAcompanhante(null);}
+		if(obj.getEmpresa() != null) {
+		empresaService.removerPaciente(obj.getEmpresa().getId(), id);
+		obj.setEmpresa(null);}
 		
 		repo.deleteById(id);	
 	}

@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.method.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +40,10 @@ import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
 public class AnalistaService {
-
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
+	
 	@Autowired
 	private AnalistaRepository repo;
 	
@@ -49,7 +54,16 @@ public class AnalistaService {
 	private AcompanhanteRepository repoA;
 	
 	@Autowired
-	private TratamentoRepository repoT;
+	private TratamentoRepository repoT;	
+	
+	@Autowired
+	private PacienteService pacienteService;
+	
+	@Autowired
+	private AcompanhanteService acompanhanteService;
+	
+	@Autowired
+	private EmpresaService empresaService;
 	
 	public Analista find(long id) {
 		
@@ -186,7 +200,7 @@ public class AnalistaService {
 	
 	public Analista fromDTO(AnalistaNewDTO objDto) {
 		
-		Analista analista = new Analista(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getTipoAnalista(), 
+		Analista analista = new Analista(pe.encode(objDto.getPassword()), objDto.getNome(), objDto.getDataNascimento(), objDto.getTipoAnalista(), 
 		objDto.getEmailAnalista(), objDto.getCpfAnalista(), objDto.getContatoAnalista(),objDto.getCrpAnalista(),objDto.getCnpjAnalista());
 		
 		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), 

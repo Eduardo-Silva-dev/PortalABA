@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
@@ -14,6 +15,9 @@ public interface AnalistaRepository extends JpaRepository<Analista, Long>{
 	
 	@Query("select u from Analista u where u.id = ?1")
 	Analista findByID(long id);
+	
+	@Query("select u from Analista u where u.emailAnalista = ?1")
+	Analista findByEmail(String email);
 	
 	@Query("select u.acompanhantes from Analista u where u.id=?1")
 	Page<Acompanhante> findAllAcompanhantes(long id,Pageable pageable );

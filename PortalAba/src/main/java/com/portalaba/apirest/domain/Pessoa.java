@@ -11,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
 public abstract class Pessoa  implements Serializable{
@@ -23,7 +24,8 @@ public abstract class Pessoa  implements Serializable{
     protected long id;  
 	
 	@NotEmpty
-	@Column(name = "password",length=60)
+	@Column(name = "password")
+	//@JsonIgnore
     private String password; 
 
 	@NotEmpty
