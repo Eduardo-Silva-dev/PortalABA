@@ -104,7 +104,6 @@ public class PacienteResource {
 		pacienteService.insertAnalista(id,idA);
 		return ResponseEntity.noContent().build();
 	}
-	
 
 	@PutMapping("/{id}/image")
 	public ResponseEntity <Void> uploadToLocalFileSystem(@RequestParam("file") MultipartFile file,@PathVariable long id) {

@@ -3,11 +3,17 @@ package com.portalaba.apirest.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +25,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.portalaba.apirest.domain.enums.Perfil;
 
 @Entity
 @Table(name = "empresas")
@@ -32,7 +39,7 @@ public class Empresa implements Serializable {
 	private long id;  
 	
 	@NotEmpty
-	@Column(name = "password",length=60)
+	@Column(name = "password")
     private String password; 
 	
 	@NotEmpty
@@ -92,9 +99,8 @@ public class Empresa implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "analista_id")
 	)
    	private List<Analista> analistas = new ArrayList<>();
-
 	public Empresa() {
-		super();
+		//addPerfil(Perfil.EMPRESA);
 	}
 
 	public Empresa(String password,String cnpj, String razao_social, String nome_fantasia, String contato,
@@ -109,6 +115,7 @@ public class Empresa implements Serializable {
 		this.celular = celular;
 		this.email = email;
 		this.dataInicio = new Date();
+		//addPerfil(Perfil.EMPRESA);
 	}
 
 	public long getId() {
@@ -223,103 +230,4 @@ public class Empresa implements Serializable {
 		this.analistas = analistas;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((acompanhantes == null) ? 0 : acompanhantes.hashCode());
-		result = prime * result + ((analistas == null) ? 0 : analistas.hashCode());
-		result = prime * result + ((celular == null) ? 0 : celular.hashCode());
-		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
-		result = prime * result + ((contato == null) ? 0 : contato.hashCode());
-		result = prime * result + ((dataInicio == null) ? 0 : dataInicio.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((enderecos == null) ? 0 : enderecos.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((nome_fantasia == null) ? 0 : nome_fantasia.hashCode());
-		result = prime * result + ((pacientes == null) ? 0 : pacientes.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((razao_social == null) ? 0 : razao_social.hashCode());
-		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Empresa other = (Empresa) obj;
-		if (acompanhantes == null) {
-			if (other.acompanhantes != null)
-				return false;
-		} else if (!acompanhantes.equals(other.acompanhantes))
-			return false;
-		if (analistas == null) {
-			if (other.analistas != null)
-				return false;
-		} else if (!analistas.equals(other.analistas))
-			return false;
-		if (celular == null) {
-			if (other.celular != null)
-				return false;
-		} else if (!celular.equals(other.celular))
-			return false;
-		if (cnpj == null) {
-			if (other.cnpj != null)
-				return false;
-		} else if (!cnpj.equals(other.cnpj))
-			return false;
-		if (contato == null) {
-			if (other.contato != null)
-				return false;
-		} else if (!contato.equals(other.contato))
-			return false;
-		if (dataInicio == null) {
-			if (other.dataInicio != null)
-				return false;
-		} else if (!dataInicio.equals(other.dataInicio))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (enderecos == null) {
-			if (other.enderecos != null)
-				return false;
-		} else if (!enderecos.equals(other.enderecos))
-			return false;
-		if (id != other.id)
-			return false;
-		if (nome_fantasia == null) {
-			if (other.nome_fantasia != null)
-				return false;
-		} else if (!nome_fantasia.equals(other.nome_fantasia))
-			return false;
-		if (pacientes == null) {
-			if (other.pacientes != null)
-				return false;
-		} else if (!pacientes.equals(other.pacientes))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (razao_social == null) {
-			if (other.razao_social != null)
-				return false;
-		} else if (!razao_social.equals(other.razao_social))
-			return false;
-		if (telefone == null) {
-			if (other.telefone != null)
-				return false;
-		} else if (!telefone.equals(other.telefone))
-			return false;
-		return true;
-	}
 }

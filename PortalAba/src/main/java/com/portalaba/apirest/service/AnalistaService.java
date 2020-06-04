@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.portalaba.apirest.domain.Acompanhante;
@@ -24,7 +24,7 @@ import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.domain.Tratamento;
-
+import com.portalaba.apirest.domain.enums.Perfil;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
@@ -34,8 +34,10 @@ import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
+//import com.portalaba.apirest.repository.PacienteRepository;
 import com.portalaba.apirest.repository.TratamentoRepository;
-
+import com.portalaba.apirest.security.UserSS;
+import com.portalaba.apirest.service.exception.AuthorizationException;
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
@@ -56,15 +58,6 @@ public class AnalistaService {
 	@Autowired
 	private TratamentoRepository repoT;	
 	
-	@Autowired
-	private PacienteService pacienteService;
-	
-	@Autowired
-	private AcompanhanteService acompanhanteService;
-	
-	@Autowired
-	private EmpresaService empresaService;
-	
 	public Analista find(long id) {
 		
 		Analista obj =  repo.findByID(id);
@@ -78,6 +71,14 @@ public class AnalistaService {
 	}
 	
 	public Page<AnalistaTotalDTO> findAll(Pageable pageable) throws IOException {
+		
+		UserSS user = UserService.authenticated();
+		
+		if (user==null || !user.hasRole(Perfil.ADMIN) || !user.hasRole(Perfil.EMPRESA)) {
+			
+			throw new AuthorizationException("Acesso negado");
+			
+		}
 		
 		Page<Analista> analista = repo.findAll(pageable);
 		
@@ -96,7 +97,7 @@ public class AnalistaService {
 		return listDto;
 	}
 	
-	public AnalistaDTO findParcial(long id) throws IOException {
+	public AnalistaDTO findParcial(Integer id) throws IOException {
 		
 		Analista obj = find(id);
 		
@@ -210,23 +211,12 @@ public class AnalistaService {
 		return analista;
 	}
 
-	public Analista insert(Analista obj,MultipartFile file) {
+	@Transactional
+	public Analista insert(Analista obj) {
 	
 		obj = repo.save(obj);
-		
-		if(file == null) { 
-			return obj; 
-		}
-		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
-		
-		try {
-			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		obj.setImage(path.toString());
+
+		obj.setImage(null);
 		
 		return obj;
 	}

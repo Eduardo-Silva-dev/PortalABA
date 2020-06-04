@@ -54,6 +54,7 @@ public class EmpresaResource {
 		EmpresaTotalDTO obj = empresaService.findTotal(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
 	@GetMapping("/{id}/pacientes")
 	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(empresaService.findAllPaciente(id,pageable));

@@ -3,11 +3,17 @@ package com.portalaba.apirest.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -16,6 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.portalaba.apirest.domain.enums.Perfil;
 
 @Entity
 @Table(name="acompanhante")
@@ -80,6 +87,7 @@ public class Acompanhante extends Pessoa implements Serializable{
 		this.contatoAcompanhante = contatoAcompanhante;
 		this.crpAcompanhante = crpAcompanhante;
 		this.dataInicio = new Date();
+		//addPerfil(Perfil.ACOMPANHANTE);
 	}
    
     public Acompanhante(Acompanhante acompanhante) {
@@ -98,7 +106,7 @@ public class Acompanhante extends Pessoa implements Serializable{
 	}
    
     public Acompanhante() {
-	   
+		//addPerfil(Perfil.ACOMPANHANTE);
     }
    
 	public String getTipoAcompanhante() {

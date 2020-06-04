@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +38,9 @@ import com.portalaba.apirest.repository.PacienteRepository;
 
 @Service
 public class AcompanhanteService {
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	@Autowired
 	private AcompanhanteRepository repo;
@@ -174,7 +178,7 @@ public class AcompanhanteService {
 	
 	public Acompanhante fromDTO(AcompanhanteNewDTO objDto) {
 		
-		Acompanhante acompanhante = new Acompanhante(objDto.getPassword(),objDto.getNome(),objDto.getDataNascimento(),objDto.getTipoAcompanhante(), 
+		Acompanhante acompanhante = new Acompanhante(pe.encode(objDto.getPassword()),objDto.getNome(),objDto.getDataNascimento(),objDto.getTipoAcompanhante(), 
 		objDto.getEmailAcompanhante(),objDto.getCpfAcompanhante(),objDto.getContatoAcompanhante(),objDto.getCrpAcompanhante());
 		
 		Endereco endereco = new Endereco(objDto.getLogradouro(),objDto.getComplemento(),objDto.getBairro(),objDto.getCep(),

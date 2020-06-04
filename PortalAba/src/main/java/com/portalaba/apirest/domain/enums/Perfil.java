@@ -3,10 +3,10 @@ package com.portalaba.apirest.domain.enums;
 public enum Perfil {
 	
 	ADMIN(1, "ROLE_ADMIN"),
-	EMPRESA(2, "ROLE_CLIENTE"),
-	ANALISTA(3, "ROLE_CLIENTE"),
-	ACOMPANHANTE(4, "ROLE_CLIENTE"),
-	PACIENTE(5, "ROLE_CLIENTE");
+	EMPRESA(2, "ROLE_EMPRESA"),
+	ANALISTA(3, "ROLE_ANALISTA"),
+	ACOMPANHANTE(4, "ROLE_ACOMPANHANTE"),
+	PACIENTE(5, "ROLE_PACIENTE");
 	
 	private int cod;
 	private String descricao;

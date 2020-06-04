@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +38,9 @@ import com.portalaba.apirest.repository.PacienteRepository;
 
 @Service
 public class PacienteService {
+	
+//	@Autowired
+//	private BCryptPasswordEncoder pe;
 
 	@Autowired
 	private PacienteRepository repo;
@@ -176,7 +180,7 @@ public class PacienteService {
 	
 	public Paciente fromDTO(PacienteNewDTO objDto) {
 		
-		Paciente paciente = new Paciente(objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomeResponsavel(),
+		Paciente paciente = new Paciente(/*pe.encode(objDto.getPassword())*/objDto.getPassword(), objDto.getNome(), objDto.getDataNascimento(), objDto.getNomeResponsavel(),
 				objDto.getDataNascimentoResponsavel(),objDto.getEmailResponsavel(),objDto.getCpfResponsavel(),objDto.getContatoResponsavel(),
 				objDto.getContatoAuxiliar(),objDto.getNivelAltismo());
 		 

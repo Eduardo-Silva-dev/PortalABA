@@ -29,6 +29,7 @@ import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+//import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.service.AnalistaService;
 
 @RestController
@@ -38,13 +39,14 @@ public class AnalistaResource {
 	@Autowired
 	private AnalistaService analsitaservice;
 	
+	@PreAuthorize("hasAnyRole('ADMIN','EMPRESA')")
 	@GetMapping
 	public ResponseEntity<Page<AnalistaTotalDTO>> findAll(Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(analsitaservice.findAll(pageable));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AnalistaDTO> find(@PathVariable long id) throws IOException {
+	public ResponseEntity<AnalistaDTO> find(@PathVariable Integer id) throws IOException {
 		AnalistaDTO obj = analsitaservice.findParcial(id);
 		return ResponseEntity.ok().body(obj);
 	}	
@@ -54,6 +56,7 @@ public class AnalistaResource {
 		AnalistaTotalDTO obj = analsitaservice.findTotal(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
 	@GetMapping("/{id}/pacientes")
 	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(analsitaservice.findAllPacientes(id,pageable));
@@ -74,9 +77,8 @@ public class AnalistaResource {
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody AnalistaNewDTO objDto){
-		MultipartFile file = null;
 		Analista obj = analsitaservice.fromDTO(objDto);
-		obj = analsitaservice.insert(obj,file);
+		obj = analsitaservice.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.portalaba.apirest.domain.Acompanhante;
@@ -34,6 +35,9 @@ import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
 public class EmpresaService {
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	@Autowired
 	private EmpresaRepository repo;
@@ -229,7 +233,7 @@ public class EmpresaService {
 	
 	public Empresa fromDTO(EmpresaNewDTO objDto) {
 
-		Empresa empresa = new Empresa(objDto.getPassword(),objDto.getCnpj(),objDto.getRazao_social(),objDto.getNome_fantasia(),
+		Empresa empresa = new Empresa(pe.encode(objDto.getPassword()),objDto.getCnpj(),objDto.getRazao_social(),objDto.getNome_fantasia(),
 				objDto.getContato(),objDto.getTelefone(),objDto.getCelular(),objDto.getEmail());
 		
 		Endereco endereco = new Endereco(objDto.getLogradouro(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), 

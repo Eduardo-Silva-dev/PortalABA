@@ -56,10 +56,6 @@ public class Analista extends Pessoa implements Serializable{
     @Column(name = "cnpj",length=14,unique = true)
     private String cnpjAnalista;	
     
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="PERFIS")
-	private Set<Integer> perfis = new HashSet<>();
-    
     @JsonIgnore
    	@ManyToMany(mappedBy="analistas")
    	private List<Empresa> empresas = new ArrayList<>();
@@ -72,6 +68,10 @@ public class Analista extends Pessoa implements Serializable{
 	)
 	private List<Acompanhante> acompanhantes = new ArrayList<>();
     
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
     @Column(name = "dataInicio",length=8)
     private Date dataInicio;
     
@@ -87,7 +87,7 @@ public class Analista extends Pessoa implements Serializable{
    	private List<Paciente> pacientes = new ArrayList<>();
 
 	public Analista() {
-		addPerfil(Perfil.ANALISTA);
+		
 	}
 
 	public Analista(String password, String nome, Date dataNascimento,String tipoAnalista, String emailAnalista, String cpfAnalista,
@@ -184,14 +184,6 @@ public class Analista extends Pessoa implements Serializable{
 	public void setEnderecos(Endereco enderecos) {
 		this.enderecos = enderecos;
 	}	
-	
-	public Set<Perfil> getPerfis() {
-		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
-	}
-	
-	public void addPerfil(Perfil perfil) {
-		perfis.add(perfil.getCod());
-	}
 
 	public List<Acompanhante> getAcompanhantes() {
 		return acompanhantes;
@@ -223,5 +215,13 @@ public class Analista extends Pessoa implements Serializable{
 
 	public void setEmpresas(List<Empresa> empresas) {
 		this.empresas = empresas;
+	}
+	
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 }

@@ -2,11 +2,17 @@ package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -15,6 +21,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.portalaba.apirest.domain.enums.Perfil;
 
 @Entity
 @Table(name="paciente")
@@ -70,7 +77,7 @@ public class Paciente extends Pessoa  implements Serializable{
     private Empresa empresa;
 
 	public Paciente() {
-		
+		//addPerfil(Perfil.PACIENTE);
 	}
 
 	public Paciente(String password,String nome, Date dataNascimento,String nomeResponsavel, 
@@ -88,6 +95,8 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.contatoAuxiliar = contatoAuxiliar;
 		this.nivelAltismo = nivelAltismo;
 		this.dataInicio = LocalDate.now();
+		//addPerfil(Perfil.PACIENTE);
+		
 	}
 	
 	public Paciente(Paciente paciente) {
