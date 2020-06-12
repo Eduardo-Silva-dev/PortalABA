@@ -66,6 +66,31 @@ public class EmpresaNewDTO {
 	public EmpresaNewDTO() {
 		super();
 	}
+	
+	
+
+	public EmpresaNewDTO(String password,String cnpj,String razao_social,String nome_fantasia,String contato,
+			String telefone,String celular,String email,String logradouro,String complemento, String bairro,
+			String cep,String numero,String cidade,String estado) {
+		super();
+		this.password = password;
+		this.cnpj = cnpj;
+		this.razao_social = razao_social;
+		this.nome_fantasia = nome_fantasia;
+		this.contato = contato;
+		this.telefone = telefone;
+		this.celular = celular;
+		this.email = email;
+		this.logradouro = logradouro;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
+	}
+
+
 
 	public String getPassword() {
 		return password;

@@ -33,9 +33,6 @@ public class TratamentoService {
 	@Autowired
 	private AcompanhanteRepository repoA;
 	
-	@Autowired
-	private EmailService emailService;
-	
 	public String findEnd(long id) {
 	
 		Tratamento tratamento = tratamentoRepository.findByID(id);
@@ -60,7 +57,7 @@ public class TratamentoService {
 		
 		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
 		
-		emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
+		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
 		
 		return tratamento;
 	}
@@ -68,6 +65,42 @@ public class TratamentoService {
 	private String insertPDF (MultipartFile file,String nome) {
 		
 		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/tratamentos/"  + nome +".pdf");
+		
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String nomeArquivo = path.toString();
+		
+		return nomeArquivo;	
+	}
+	
+	public Tratamento fromDTOR (TratamentoNewDTO objDto,long id,MultipartFile file) {
+		
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		
+		tratamentoRepository.save(tratamento);
+		
+		String caminho = retornoTratamentoPDF(file,String.valueOf(tratamento.getId()));
+		
+		tratamento.setFile(caminho);
+		
+		tratamentoRepository.save(tratamento);
+		
+		Paciente paciente = repoP.findByID(objDto.getPaciente());
+		
+		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
+		
+		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
+		
+		return tratamento;
+	}
+	
+	private String retornoTratamentoPDF (MultipartFile file,String nome) {
+		
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/retorno-tratamento/"  + nome +".pdf");
 		
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
@@ -96,14 +129,14 @@ public class TratamentoService {
 		
 		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
 		
-		emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
+		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
 		
 		return tratamento;
 	}
 			
 	private String insertMP4 (MultipartFile file,String nome) {
 		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/tratamentos-video/"  + nome +".mp4");
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/tratamento-video/"  + nome +".mp4");
 		
 		try {
 			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
@@ -114,5 +147,42 @@ public class TratamentoService {
 		String nomeArquivo = path.toString();
 		
 		return nomeArquivo;
-}
+	}
+	
+	public Tratamento fromDTORelatorio (TratamentoNewDTO objDto,long id,MultipartFile file) {
+		
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		
+		tratamentoRepository.save(tratamento);
+		
+		String caminho = RelatorioAnalistaPaciente(file,String.valueOf(tratamento.getId()));
+		
+		tratamento.setFile(caminho);
+		
+		tratamentoRepository.save(tratamento);
+		
+		Paciente paciente = repoP.findByID(objDto.getPaciente());
+		
+		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
+		
+		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
+		
+		return tratamento;
+	}
+	
+	private String RelatorioAnalistaPaciente (MultipartFile file,String nome) {
+		
+		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/relatorio/"  + nome +".pdf");
+		
+		try {
+			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String nomeArquivo = path.toString();
+		
+		return nomeArquivo;	
+	}
+
 }

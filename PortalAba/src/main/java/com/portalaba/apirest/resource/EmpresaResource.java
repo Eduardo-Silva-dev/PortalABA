@@ -107,13 +107,20 @@ public class EmpresaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PutMapping("/{id}/permissao/{permissao}")
+	public ResponseEntity<Void> permissao(@PathVariable long id,@PathVariable String permissao){
+		Empresa obj = empresaService.find(id);
+		obj.setPerfil(permissao);
+		obj = empresaService.insert(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
 	@PutMapping("/{id}/analista/{idP}")
 	public ResponseEntity<Void> insertAnalista(@PathVariable long id,@PathVariable long idP){
 		empresaService.insertAnalista(id,idP);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		empresaService.delete(id);

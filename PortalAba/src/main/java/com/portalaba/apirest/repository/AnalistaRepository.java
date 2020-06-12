@@ -30,8 +30,8 @@ public interface AnalistaRepository extends JpaRepository<Analista, Long>{
 	@Query("select u from Endereco u where u.id = ?1")
 	Endereco findEnderecos(long id);
 	
-	@Query("select u.acompanhantes from Analista u where u.id=?1")
-	Acompanhante findAcompanhante(long id);
+	@Query("select u.acompanhantes from Analista u where u.acompanhantes=?1")
+	Acompanhante findAcompanhante(Acompanhante id);
 	
 	@Query("select u.pacientes from Analista u where u.id=?1")
 	Paciente findPaciente(long id);

@@ -29,18 +29,9 @@ import com.portalaba.apirest.domain.enums.Perfil;
 
 @Entity
 @Table(name = "empresas")
-public class Empresa implements Serializable {
+public class Empresa extends Pessoa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;  
-	
-	@NotEmpty
-	@Column(name = "password")
-    private String password; 
 	
 	@NotEmpty
     @Column(name = "cnpj",length=14,unique = true)
@@ -99,14 +90,18 @@ public class Empresa implements Serializable {
 		inverseJoinColumns = @JoinColumn(name = "analista_id")
 	)
    	private List<Analista> analistas = new ArrayList<>();
+    
 	public Empresa() {
-		//addPerfil(Perfil.EMPRESA);
+		this.dataInicio = new Date();
+		setPerfil("EMPRESA");
 	}
 
 	public Empresa(String password,String cnpj, String razao_social, String nome_fantasia, String contato,
 			String telefone, String celular, String email) {
 		super();
-		this.password = password;
+		setPassword(password);
+		setNome(nome_fantasia);
+		setPerfil("EMPRESA");
 		this.cnpj = cnpj;
 		this.razao_social = razao_social;
 		this.nome_fantasia = nome_fantasia;
@@ -115,23 +110,6 @@ public class Empresa implements Serializable {
 		this.celular = celular;
 		this.email = email;
 		this.dataInicio = new Date();
-		//addPerfil(Perfil.EMPRESA);
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getCnpj() {
@@ -229,5 +207,4 @@ public class Empresa implements Serializable {
 	public void setAnalistas(List<Analista> analistas) {
 		this.analistas = analistas;
 	}
-
 }

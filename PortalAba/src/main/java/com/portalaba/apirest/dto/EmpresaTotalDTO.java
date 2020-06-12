@@ -36,6 +36,8 @@ public class EmpresaTotalDTO {
     
 	private String estado;
 
+	private	String perfil;
+
 	public EmpresaTotalDTO() {
 		super();
 	}
@@ -45,6 +47,7 @@ public class EmpresaTotalDTO {
 		this.id = empresa.getId();
 		this.password = empresa.getPassword();
 		this.cnpj = empresa.getCnpj();
+		this.perfil = empresa.getPerfil();
 		this.razao_social = empresa.getRazao_social();
 		this.nome_fantasia = empresa.getNome_fantasia();
 		this.contato = empresa.getContato();
@@ -106,6 +109,14 @@ public class EmpresaTotalDTO {
 
 	public void setContato(String contato) {
 		this.contato = contato;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	public String getTelefone() {

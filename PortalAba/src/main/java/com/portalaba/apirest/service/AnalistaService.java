@@ -21,23 +21,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.portalaba.apirest.domain.Acompanhante;
 import com.portalaba.apirest.domain.Analista;
+import com.portalaba.apirest.domain.Empresa;
 import com.portalaba.apirest.domain.Endereco;
 import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.domain.Tratamento;
-import com.portalaba.apirest.domain.enums.Perfil;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
-
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
+import com.portalaba.apirest.repository.EmpresaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
 //import com.portalaba.apirest.repository.PacienteRepository;
 import com.portalaba.apirest.repository.TratamentoRepository;
-import com.portalaba.apirest.security.UserSS;
-import com.portalaba.apirest.service.exception.AuthorizationException;
 import com.portalaba.apirest.service.exception.ObjectNotFoundException;
 
 @Service
@@ -53,10 +51,33 @@ public class AnalistaService {
 	private PacienteRepository repoP;
 	
 	@Autowired
+	private EmpresaRepository repoE;
+	
+	@Autowired
 	private AcompanhanteRepository repoA;
 	
 	@Autowired
-	private TratamentoRepository repoT;	
+	private TratamentoRepository repoT;
+	
+	public String permissao(long id) {
+		Analista obj =  repo.findByID(id);
+		if (obj != null) {
+			return obj.getPerfil();
+		}
+		Paciente obj1 =  repoP.findByID(id);
+		if (obj1 != null) {
+			return obj1.getPerfil();
+		}
+		Acompanhante obj2 =  repoA.findByID(id);
+		if (obj2 != null) {
+			return obj2.getPerfil();
+		}
+		Empresa obj3 =  repoE.findByID(id);
+		if (obj3 != null) {
+			return obj3.getPerfil();
+		}
+		return "Objeto não encontrado!";
+	}
 	
 	public Analista find(long id) {
 		
@@ -70,31 +91,26 @@ public class AnalistaService {
 		return obj;
 	}
 	
-	public Page<AnalistaTotalDTO> findAll(Pageable pageable) throws IOException {
-		
-		UserSS user = UserService.authenticated();
-		
-		if (user==null || !user.hasRole(Perfil.ADMIN) || !user.hasRole(Perfil.EMPRESA)) {
+	public Page<AnalistaTotalDTO> findAll(String permissao ,Pageable pageable) throws IOException {
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN")) {
+			Page<Analista> analista = repo.findAll(pageable);
 			
-			throw new AuthorizationException("Acesso negado");
+			Page<AnalistaTotalDTO> listDto = analista.map(obj -> new AnalistaTotalDTO(obj));  
 			
-		}
-		
-		Page<Analista> analista = repo.findAll(pageable);
-		
-		Page<AnalistaTotalDTO> listDto = analista.map(obj -> new AnalistaTotalDTO(obj));  
-		
-		for (AnalistaTotalDTO p : listDto){
-			if(p.getImagem() != null) {
-				File img = new File(p.getImagem().toString());
-				FileInputStream fis = new FileInputStream(img);
-				byte[] data = new byte[fis.available()];
-				fis.read(data);
-				p.setImage(data);
+			for (AnalistaTotalDTO p : listDto){
+				if(p.getImagem() != null) {
+					File img = new File(p.getImagem().toString());
+					FileInputStream fis = new FileInputStream(img);
+					byte[] data = new byte[fis.available()];
+					fis.read(data);
+					p.setImage(data);
+				}
 			}
-		}
-		
-		return listDto;
+			
+			return listDto;
+		}else {
+		throw new ObjectNotFoundException(
+				"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);}
 	}
 	
 	public AnalistaDTO findParcial(Integer id) throws IOException {
@@ -135,7 +151,8 @@ public class AnalistaService {
 	}
 
 	public Page<PacienteDTO> findAllPacientes(long id,Pageable pageable) throws IOException {
-		
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		Analista analista = find(id);
 		
 		Page<Paciente> pacientes = repoP.findAllPacientes(analista,pageable);
@@ -161,9 +178,15 @@ public class AnalistaService {
 		Page<PacienteDTO> pages = new PageImpl<PacienteDTO>(listDto);
 		
 		return pages;
+		}else {
+		throw new ObjectNotFoundException(
+				"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+		}
 	}
 
 	public Page<AcompanhanteDTO> findAllAcompanhantes(long id,Pageable pageable) throws IOException {
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 
 		find(id);
 		
@@ -190,6 +213,10 @@ public class AnalistaService {
 		Page<AcompanhanteDTO> pages = new PageImpl<AcompanhanteDTO>(listDto);
 		
 		return pages;
+		}else {
+		throw new ObjectNotFoundException(
+				"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+		}
 	}
 	
 	public Page<Tratamento> findTratamentos(long id,long idP,Pageable pageable) {
@@ -213,7 +240,6 @@ public class AnalistaService {
 
 	@Transactional
 	public Analista insert(Analista obj) {
-	
 		obj = repo.save(obj);
 
 		obj.setImage(null);
@@ -222,21 +248,23 @@ public class AnalistaService {
 	}
 	
 	public Analista insertAcompanhante(long id,long idA) {
-		
+
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		Analista obj = find(id);
 		
 		Acompanhante acompanhante = repoA.findByID(idA);
 		
 		if (acompanhante == null) {
 			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
+					"Objeto não encontrado! Id: " + idA + ", Tipo: " + Acompanhante.class.getName(), null);
 		}
 		
-		Acompanhante acom = repo.findAcompanhante(id);
-		
-		if (acom != null) {
-			throw new ObjectNotFoundException(
-					"Acompanhante já inserido! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
+		for (int i = 0; i<obj.getAcompanhantes().size() ; i++) {
+			if(idA == obj.getAcompanhantes().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Acompanhante.class.getName(), null);
+			}
 		}
 		
 		obj.getAcompanhantes().add(acompanhante);
@@ -246,24 +274,30 @@ public class AnalistaService {
 		repoA.save(acompanhante);
 		
 		return repo.save(obj);
+	}else {
+	throw new ObjectNotFoundException(
+			"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+	}
 	}
 	
 	public Analista insertPaciente(long id,long idA) {
-		
+
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		Analista obj = find(id);
 		
 		Paciente paciente = repoP.findByID(idA);
 		
 		if (paciente == null) {
 			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
+					"Objeto não encontrado! Id: " + idA + ", Tipo: " + Paciente.class.getName(), null);
 		}
 		
-		Paciente paci = repo.findPaciente(id);
-		
-		if (paci != null) {
-			throw new ObjectNotFoundException(
-					"Paciente já inserido! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		for (int i = 0; i<obj.getPacientes().size() ; i++) {
+			if(idA == obj.getPacientes().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Paciente.class.getName(), null);
+			}
 		}
 		
 		obj.getPacientes().add(paciente);
@@ -273,10 +307,16 @@ public class AnalistaService {
 		repoP.save(paciente);
 		
 		return repo.save(obj);		
+	}else {
+	throw new ObjectNotFoundException(
+			"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+	}
 	}
 
 	public Analista update(Analista obj,long id) {
-		
+
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		obj.setId(id);
 		
 		Analista end = find(obj.getId());
@@ -284,10 +324,16 @@ public class AnalistaService {
 		obj.getEnderecos().setId(end.getEnderecos().getId());
 		
 		return repo.save(obj);
+	}else {
+	throw new ObjectNotFoundException(
+			"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+	}
 	}
 	
 	public Analista updateImage(long id,MultipartFile file) {
-		
+
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		Analista obj = find(id);
 		
 		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/analista/"  + obj.getCpfAnalista()+".jpg");
@@ -301,6 +347,10 @@ public class AnalistaService {
 		obj.setImage(path.toString());
 		
 		return repo.save(obj);
+	}else {
+	throw new ObjectNotFoundException(
+			"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+	}
 	}
 	
 	public void delete(long id){
@@ -308,7 +358,9 @@ public class AnalistaService {
 	}
 	
 	public void removerPaciente(long id,long idP){
-		
+
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		Analista obj = find(id);
 		
 		Paciente paciente = repoP.findByID(idP);
@@ -325,10 +377,16 @@ public class AnalistaService {
 		repo.save(obj);
 		
 		repoP.save(paciente);
+	}else {
+	throw new ObjectNotFoundException(
+			"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+	}
 	}
 	
 	public void removerAcompanhante(long id,long idP){
-		
+
+		String permissao = permissao(id);
+		if(permissao.equals("EMPRESA")|| permissao.equals("ADMIN" ) || permissao.equals("ANALISTA")) {
 		Analista obj = find(id);
 		
 		Acompanhante acompanhante = repoA.findByID(idP);
@@ -345,5 +403,9 @@ public class AnalistaService {
 		repo.save(obj);
 		
 		repoA.save(acompanhante);
+	}else {
+	throw new ObjectNotFoundException(
+			"Sem Permissão para a função! Id: " + permissao + ", Tipo: " + Analista.class.getName(), null);
+	}
 	}
 }

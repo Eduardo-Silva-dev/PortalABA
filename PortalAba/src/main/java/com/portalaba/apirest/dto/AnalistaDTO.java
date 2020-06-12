@@ -10,6 +10,8 @@ public class AnalistaDTO {
     
     private String email;
     
+    private String perfil;
+    
     private String cpf;
     
     private byte[] image;
@@ -23,6 +25,7 @@ public class AnalistaDTO {
 		this.email = obj.getEmailAnalista();
 		this.nome = obj.getNome();
 		this.cpf = obj.getCpfAnalista();
+		this.perfil = obj.getPerfil();
 	}
 
 	public long getId() {
@@ -47,6 +50,14 @@ public class AnalistaDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	public String getCpf() {

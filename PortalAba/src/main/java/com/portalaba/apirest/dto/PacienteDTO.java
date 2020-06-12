@@ -13,7 +13,9 @@ public class PacienteDTO {
     private String contatoResponsavel;
     
     private String nivelAltismo;
-    
+
+	private	String perfil;
+	
     private byte[] image;
 	
 	public PacienteDTO() {
@@ -26,6 +28,7 @@ public class PacienteDTO {
 		this.nome = obj.getNome();
 		this.contatoResponsavel = obj.getContatoResponsavel();
 		this.nivelAltismo = obj.getNivelAltismo();
+		this.perfil = obj.getPerfil();
 	}
 
 	public long getId() {
@@ -66,6 +69,14 @@ public class PacienteDTO {
 
 	public void setNivelAltismo(String nivelAltismo) {
 		this.nivelAltismo = nivelAltismo;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 	
 	public byte[] getImage() {

@@ -30,6 +30,8 @@ public class AcompanhanteTotalDTO implements Serializable {
     
     private String crpAcompanhante;
     
+    private String perfil;
+    
     private String logradouro;
 	
 	private String complemento;
@@ -57,6 +59,7 @@ public class AcompanhanteTotalDTO implements Serializable {
 		this.id = acompanhante.getId();
 		this.password = acompanhante.getPassword();
 		this.nome = acompanhante.getNome();
+		this.perfil = acompanhante.getPerfil();
 		this.dataNascimento = acompanhante.getDataNascimento();
 		this.tipoAcompanhante = acompanhante.getTipoAcompanhante();
 		this.emailAcompanhante = acompanhante.getEmailAcompanhante();
@@ -71,6 +74,7 @@ public class AcompanhanteTotalDTO implements Serializable {
 		this.logradouro = acompanhante.getEnderecos().getLogradouro();
 		this.numero = acompanhante.getEnderecos().getNumero();
 		this.imagem = acompanhante.getImage();
+		
 	}
 
 	public long getId() {
@@ -215,5 +219,13 @@ public class AcompanhanteTotalDTO implements Serializable {
 
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 }

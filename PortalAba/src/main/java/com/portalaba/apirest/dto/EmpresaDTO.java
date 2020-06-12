@@ -22,6 +22,8 @@ public class EmpresaDTO {
 
 	private	String email;
 
+	private	String perfil;
+
 	public EmpresaDTO() {
 		super();
 	}
@@ -37,6 +39,7 @@ public class EmpresaDTO {
 		this.telefone = empresa.getTelefone();
 		this.celular = empresa.getCelular();
 		this.email = empresa.getEmail();
+		this.perfil = empresa.getPerfil();
 	}
 
 	public long getId() {
@@ -109,5 +112,13 @@ public class EmpresaDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 }

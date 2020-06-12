@@ -36,7 +36,7 @@ public class Acompanhante extends Pessoa implements Serializable{
     
 	@NotEmpty
     @Column(name = "email",length=60,unique = true)
-    private String emailAcompanhante;
+    private String email;
     
 	@NotEmpty
     @Column(name = "cpf",length=11,unique = true)
@@ -82,12 +82,12 @@ public class Acompanhante extends Pessoa implements Serializable{
 		setNome(nome);
 		setDataNascimento(dataNascimento);
 		this.tipoAcompanhante = tipoAcompanhante;
-		this.emailAcompanhante = emailAcompanhante;
+		this.email = emailAcompanhante;
 		this.cpfAcompanhante = cpfAcompanhante;
 		this.contatoAcompanhante = contatoAcompanhante;
 		this.crpAcompanhante = crpAcompanhante;
 		this.dataInicio = new Date();
-		//addPerfil(Perfil.ACOMPANHANTE);
+		setPerfil("ACOMPANHANTE");
 	}
    
     public Acompanhante(Acompanhante acompanhante) {
@@ -97,7 +97,7 @@ public class Acompanhante extends Pessoa implements Serializable{
 		setNome(acompanhante.getNome());
 		setDataNascimento(acompanhante.getDataNascimento());
 		this.tipoAcompanhante = acompanhante.getTipoAcompanhante();
-		this.emailAcompanhante = acompanhante.getEmailAcompanhante();
+		this.email = acompanhante.getEmailAcompanhante();
 		this.cpfAcompanhante = acompanhante.getCpfAcompanhante();
 		this.contatoAcompanhante = acompanhante.getContatoAcompanhante();
 		this.crpAcompanhante = acompanhante.getCrpAcompanhante();
@@ -106,7 +106,8 @@ public class Acompanhante extends Pessoa implements Serializable{
 	}
    
     public Acompanhante() {
-		//addPerfil(Perfil.ACOMPANHANTE);
+		this.dataInicio = new Date();
+		setPerfil("ACOMPANHANTE");
     }
    
 	public String getTipoAcompanhante() {
@@ -118,11 +119,11 @@ public class Acompanhante extends Pessoa implements Serializable{
 	}
 	
 	public String getEmailAcompanhante() {
-		return emailAcompanhante;
+		return email;
 	}
 	
 	public void setEmailAcompanhante(String emailAcompanhante) {
-		this.emailAcompanhante = emailAcompanhante;
+		this.email = emailAcompanhante;
 	}
 	
 	public String getCpfAcompanhante() {

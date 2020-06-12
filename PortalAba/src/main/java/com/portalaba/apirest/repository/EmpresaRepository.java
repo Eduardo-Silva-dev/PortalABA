@@ -22,6 +22,9 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 	@Query("select u.pacientes from Empresa u where u.id=?1")
 	Page<Paciente> findAllPaciente(long id, Pageable pageable);
 	
+	@Query("select u from Empresa u where u.email = ?1")
+	Empresa findByEmail(String email);
+	
 	@Query("select u from Empresa u where u.id = ?1")
 	Empresa findByID(long id);
 	

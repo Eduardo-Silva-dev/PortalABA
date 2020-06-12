@@ -11,7 +11,9 @@ public class AcompanhanteDTO {
     private String emailAcompanhante;
     
     private String cpfAcompanhante;
-   
+    
+    private String perfil;
+  
     private byte[] image;
 
 	public AcompanhanteDTO() {
@@ -23,6 +25,7 @@ public class AcompanhanteDTO {
 		this.nome = obj.getNome();
 		this.emailAcompanhante = obj.getEmailAcompanhante();
 		this.cpfAcompanhante = obj.getCpfAcompanhante();
+		this.perfil = obj.getPerfil();
 	}
 
 	public long getId() {
@@ -63,5 +66,13 @@ public class AcompanhanteDTO {
 
 	public void setImage(byte[] img) {
 		this.image = img;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 }

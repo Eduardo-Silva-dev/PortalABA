@@ -54,9 +54,9 @@ public class Paciente extends Pessoa  implements Serializable{
     
     @Column(name = "nivel_altismo",length=8)
     private String nivelAltismo;
-    
+	
     @Column(name = "dataInicio",length=8)
-    private LocalDate dataInicio;
+    private Date dataInicio;
     
     @OneToOne(mappedBy="paciente", cascade=CascadeType.ALL)
   	private Endereco enderecos = new Endereco();
@@ -77,7 +77,8 @@ public class Paciente extends Pessoa  implements Serializable{
     private Empresa empresa;
 
 	public Paciente() {
-		//addPerfil(Perfil.PACIENTE);
+		this.dataInicio = new Date();
+		setPerfil("PACIENTE");
 	}
 
 	public Paciente(String password,String nome, Date dataNascimento,String nomeResponsavel, 
@@ -86,6 +87,7 @@ public class Paciente extends Pessoa  implements Serializable{
 		super();
 		setPassword(password);
 		setNome(nome);
+		setPerfil("PACIENTE");
 		setDataNascimento(dataNascimento);
 		this.nomeResponsavel = nomeResponsavel;
 		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
@@ -94,8 +96,7 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.contatoResponsavel = contatoResponsavel;
 		this.contatoAuxiliar = contatoAuxiliar;
 		this.nivelAltismo = nivelAltismo;
-		this.dataInicio = LocalDate.now();
-		//addPerfil(Perfil.PACIENTE);
+		this.dataInicio = new Date();
 		
 	}
 	
@@ -171,11 +172,11 @@ public class Paciente extends Pessoa  implements Serializable{
 		this.nivelAltismo = nivelAltismo;
 	}
 
-	public LocalDate getDataInicio() {
+	public Date getDataInicio() {
 		return dataInicio;
 	}
 
-	public void setDataInicio(LocalDate dataInicio) {
+	public void setDataInicio(Date dataInicio) {
 		this.dataInicio = dataInicio;
 	}
 

@@ -29,6 +29,8 @@ public class PacienteTotalDTO implements Serializable {
     
     private String cpfResponsavel;
     
+    private String perfil;
+    
     private String contatoResponsavel;
     
     private String contatoAuxiliar;
@@ -63,6 +65,7 @@ public class PacienteTotalDTO implements Serializable {
 		this.id = paciente.getId();
 		this.password = paciente.getPassword();
 		this.nome = paciente.getNome();
+		this.perfil = paciente.getPerfil();
 		this.dataNascimento = paciente.getDataNascimento();
 		this.nomeResponsavel = paciente.getNomeResponsavel();
 		this.dataNascimentoResponsavel = paciente.getDataNascimentoResponsavel();
@@ -139,6 +142,14 @@ public class PacienteTotalDTO implements Serializable {
 
 	public String getCpfResponsavel() {
 		return cpfResponsavel;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	public void setCpfResponsavel(String cpfResponsavel) {

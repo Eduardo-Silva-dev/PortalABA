@@ -67,10 +67,6 @@ public class Analista extends Pessoa implements Serializable{
 		inverseJoinColumns = @JoinColumn(name = "acompanhante_id")
 	)
 	private List<Acompanhante> acompanhantes = new ArrayList<>();
-    
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="PERFIS")
-	private Set<Integer> perfis = new HashSet<>();
 	
     @Column(name = "dataInicio",length=8)
     private Date dataInicio;
@@ -87,7 +83,8 @@ public class Analista extends Pessoa implements Serializable{
    	private List<Paciente> pacientes = new ArrayList<>();
 
 	public Analista() {
-		
+		this.dataInicio = new Date();
+		setPerfil("ANALISTA");
 	}
 
 	public Analista(String password, String nome, Date dataNascimento,String tipoAnalista, String emailAnalista, String cpfAnalista,
@@ -95,6 +92,7 @@ public class Analista extends Pessoa implements Serializable{
 		super();
 		setPassword(password);
 		setNome(nome);
+		setPerfil("ANALISTA");
 		setDataNascimento(dataNascimento);
 		this.tipoAnalista = tipoAnalista;
 		this.emailAnalista = emailAnalista;
@@ -103,7 +101,6 @@ public class Analista extends Pessoa implements Serializable{
 		this.crpAnalista = crpAnalista;
 		this.cnpjAnalista = cnpjAnalista;
 		this.dataInicio = new Date();
-		addPerfil(Perfil.ANALISTA);
 	}
 
 	public Analista(Analista analista) {
@@ -215,13 +212,5 @@ public class Analista extends Pessoa implements Serializable{
 
 	public void setEmpresas(List<Empresa> empresas) {
 		this.empresas = empresas;
-	}
-	
-	public Set<Perfil> getPerfis() {
-		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
-	}
-	
-	public void addPerfil(Perfil perfil) {
-		perfis.add(perfil.getCod());
 	}
 }

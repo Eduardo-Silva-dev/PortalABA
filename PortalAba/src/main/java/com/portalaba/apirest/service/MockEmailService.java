@@ -1,5 +1,7 @@
 package com.portalaba.apirest.service;
 
+import javax.mail.internet.MimeMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,13 @@ public class MockEmailService extends AbstractEmailService  {
 	public void sendOrderConfirmationEmail(Tratamento obj) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void sendHtmlEmail(MimeMessage mm) {
+		LOG.info("Simulando envio de email...");
+		LOG.info(mm.toString());
+		LOG.info("Email enviado");
 	}
 
 }

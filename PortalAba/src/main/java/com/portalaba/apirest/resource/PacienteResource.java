@@ -112,7 +112,6 @@ public class PacienteResource {
 		return ResponseEntity.created(uri).build();
 	}	
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		pacienteService.delete(id);

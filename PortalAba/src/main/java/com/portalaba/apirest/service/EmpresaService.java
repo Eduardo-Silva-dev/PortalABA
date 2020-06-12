@@ -261,6 +261,13 @@ public class EmpresaService {
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
 		}
 		
+		for (int i = 0; i<obj.getAnalistas().size() ; i++) {
+			if(idA == obj.getAnalistas().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Analista.class.getName(), null);
+			}
+		}
+		
 		obj.getAnalistas().add(analista);
 		
 		analista.getEmpresas().add(obj);
@@ -281,6 +288,13 @@ public class EmpresaService {
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Acompanhante.class.getName(), null);
 		}
 		
+		for (int i = 0; i<obj.getAcompanhantes().size() ; i++) {
+			if(idA == obj.getAcompanhantes().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Acompanhante.class.getName(), null);
+			}
+		}
+		
 		obj.getAcompanhantes().add(acompanhante);
 	
 		acompanhante.getEmpresas().add(obj);
@@ -299,6 +313,13 @@ public class EmpresaService {
 		if (paciente == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		}
+		
+		for (int i = 0; i<obj.getPacientes().size() ; i++) {
+			if(idA == obj.getPacientes().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Paciente.class.getName(), null);
+			}
 		}
 		
 		obj.getPacientes().add(paciente);

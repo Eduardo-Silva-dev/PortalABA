@@ -28,6 +28,7 @@ import com.portalaba.apirest.domain.Paciente;
 
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
+import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.dto.PacienteNewDTO;
 import com.portalaba.apirest.dto.PacienteTotalDTO;
@@ -74,29 +75,21 @@ public class PacienteService {
 	
 	public Page<PacienteTotalDTO> findAll(Pageable pageable) throws IOException {
 		
-		Page<Paciente> paciente = repo.findAll(pageable);
+		Page<Paciente> pacientes = repo.findAll(pageable);
 		
-		List<Paciente> list = paciente.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
-		
-		List<PacienteTotalDTO> listDto = list.stream().map(obj -> new PacienteTotalDTO(obj)).collect(Collectors.toList());  
-		
-		for (int i = 0; i<list.size() ; i++) {
-				
-			if(list.get(i).getImage() != null) {
-				
-				File img = new File(list.get(i).getImage().toString());
+		Page<PacienteTotalDTO> listDto = pacientes.map(obj -> new PacienteTotalDTO(obj));  
+
+		for (PacienteTotalDTO p : listDto){
+			if(p.getImagem() != null) {
+				File img = new File(p.getImagem().toString());
 				FileInputStream fis = new FileInputStream(img);
 				byte[] data = new byte[fis.available()];
 				fis.read(data);
-				
-				listDto.get(i).setImage(data);
+				p.setImage(data);
 			}
-		
 		}
-
-		Page<PacienteTotalDTO> pages = new PageImpl<PacienteTotalDTO>(listDto);
 		
-		return pages;
+		return listDto;
 	}
 	
 	public PacienteDTO findParcial(long id) throws IOException {

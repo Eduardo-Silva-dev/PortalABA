@@ -19,6 +19,9 @@ public interface AcompanhanteRepository extends JpaRepository<Acompanhante, Long
 	
 	@Query("select u.pacientes from Acompanhante u where u.id = ?1")
 	Page<Paciente> findAllPacientes(long id,Pageable pageable);
+	
+	@Query("select u from Acompanhante u where u.email = ?1")
+	Acompanhante findByEmail(String email);
 
 	@Query("select u.analistas from Acompanhante u where u.id = ?1")
 	Page<Analista> findAllAnalistas(long id,Pageable pageable);	

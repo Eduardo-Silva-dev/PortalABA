@@ -28,6 +28,8 @@ public class AnalistaTotalDTO implements Serializable {
 
     private String contatoAnalista;
     
+    private String perfil;
+    
     private String crpAnalista;
     
     private String cnpjAnalista;
@@ -59,6 +61,7 @@ public class AnalistaTotalDTO implements Serializable {
 		this.id = analista.getId();
 		this.password = analista.getPassword();
 		this.nome = analista.getNome();
+		this.perfil = analista.getPerfil();
 		this.dataNascimento = analista.getDataNascimento();
 		this.tipoAnalista = analista.getTipoAnalista();
 		this.emailAnalista = analista.getEmailAnalista();
@@ -122,6 +125,14 @@ public class AnalistaTotalDTO implements Serializable {
 
 	public void setEmailAnalista(String emailAnalista) {
 		this.emailAnalista = emailAnalista;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	public String getCpfAnalista() {

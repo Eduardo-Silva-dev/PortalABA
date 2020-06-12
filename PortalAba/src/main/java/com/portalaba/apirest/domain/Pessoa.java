@@ -42,15 +42,19 @@ public abstract class Pessoa  implements Serializable{
     @JsonFormat(pattern="dd/MM/yyyy")
     private Date dataNascimento;
     
+    @Column(name = "perfil")
+    private String perfil;	
+    
     public Pessoa() {
     	
     }
     
-	public Pessoa(String password, String nome, Date dataNascimento) {
+	public Pessoa(String password, String nome, Date dataNascimento,String perfil) {
 		super();
 		this.password = password;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
+		this.perfil = perfil;
 	}
 	
 	public long getId() {
@@ -85,6 +89,14 @@ public abstract class Pessoa  implements Serializable{
 		this.dataNascimento = dataNascimento;
 	}
 
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,6 +105,7 @@ public abstract class Pessoa  implements Serializable{
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((perfil == null) ? 0 : perfil.hashCode());
 		return result;
 	}
 
@@ -121,6 +134,11 @@ public abstract class Pessoa  implements Serializable{
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
+			return false;
+		if (perfil == null) {
+			if (other.perfil != null)
+				return false;
+		} else if (!perfil.equals(other.perfil))
 			return false;
 		return true;
 	}

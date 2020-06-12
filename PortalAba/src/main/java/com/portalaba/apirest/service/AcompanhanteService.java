@@ -219,11 +219,11 @@ public class AcompanhanteService {
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
 		}
 		
-		Analista analist = repo.findAnalista(id);
-		
-		if (analist != null) {
-			throw new ObjectNotFoundException(
-					"Analista já inserido! Id: " + id + ", Tipo: " + Analista.class.getName(), null);
+		for (int i = 0; i<obj.getAnalistas().size() ; i++) {
+			if(idA == obj.getAnalistas().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Analista.class.getName(), null);
+			}
 		}
 		
 		obj.getAnalistas().add(analista);
@@ -245,12 +245,12 @@ public class AcompanhanteService {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
 		}
-
-		Paciente pacient = repo.findPaciente(id);
 		
-		if (pacient != null) {
-			throw new ObjectNotFoundException(
-					"Paciente já inserido! Id: " + id + ", Tipo: " + Paciente.class.getName(), null);
+		for (int i = 0; i<obj.getPacientes().size() ; i++) {
+			if(idA == obj.getPacientes().get(i).getId() ){
+				throw new ObjectNotFoundException(
+						"Objeto não encontrado! Id: " + idA + ", Tipo: " + Paciente.class.getName(), null);
+			}
 		}
 		
 		obj.getPacientes().add(paciente);

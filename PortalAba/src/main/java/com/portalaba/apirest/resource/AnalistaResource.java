@@ -38,14 +38,14 @@ public class AnalistaResource {
 
 	@Autowired
 	private AnalistaService analsitaservice;
-	
-	@PreAuthorize("hasAnyRole('ADMIN','EMPRESA')")
-	@GetMapping
-	public ResponseEntity<Page<AnalistaTotalDTO>> findAll(Pageable pageable) throws IOException {
-		return ResponseEntity.ok().body(analsitaservice.findAll(pageable));
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Page<AnalistaTotalDTO>> findAll(@PathVariable Integer id,Pageable pageable) throws IOException {
+		String permissao = analsitaservice.permissao(id);
+		return ResponseEntity.ok().body(analsitaservice.findAll(permissao,pageable));
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/parcial/{id}")
 	public ResponseEntity<AnalistaDTO> find(@PathVariable Integer id) throws IOException {
 		AnalistaDTO obj = analsitaservice.findParcial(id);
 		return ResponseEntity.ok().body(obj);
@@ -108,8 +108,7 @@ public class AnalistaResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		analsitaservice.delete(id);
