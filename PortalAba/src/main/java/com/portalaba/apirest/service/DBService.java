@@ -16,13 +16,16 @@ public class DBService {
 	private EmpresaService empresaService;
 	
 	public void instantiateTestDatabase() throws ParseException{
-		
+		try {
 		EmpresaNewDTO objDto = new EmpresaNewDTO("administrador","53284124000102","Eduardo,Alex","corporação capsula","Backend Eduardo",
 				"8332144021","83998232040","suporte.portalaba@gmail.com","Av. teste","",
 				"mangabeira","58058340","90","joão pessoa","pb");
 		Empresa obj = empresaService.fromDTO(objDto);
 		obj.setPerfil("ADMIN");
 		obj = empresaService.insert(obj);
+		}catch (Exception e) {
+
+		}
 	}
 	
 }

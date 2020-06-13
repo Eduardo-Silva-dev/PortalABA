@@ -39,10 +39,9 @@ public class AnalistaResource {
 	@Autowired
 	private AnalistaService analsitaservice;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Page<AnalistaTotalDTO>> findAll(@PathVariable Integer id,Pageable pageable) throws IOException {
-		String permissao = analsitaservice.permissao(id);
-		return ResponseEntity.ok().body(analsitaservice.findAll(permissao,pageable));
+	@GetMapping
+	public ResponseEntity<Page<AnalistaTotalDTO>> findAll(Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(analsitaservice.findAll(pageable));
 	}
 	
 	@GetMapping("/parcial/{id}")

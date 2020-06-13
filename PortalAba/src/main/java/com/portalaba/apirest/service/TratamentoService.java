@@ -1,5 +1,6 @@
 package com.portalaba.apirest.service;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.nio.file.Files;
@@ -183,6 +184,16 @@ public class TratamentoService {
 		String nomeArquivo = path.toString();
 		
 		return nomeArquivo;	
+	}
+
+
+	public void delete(long id) {
+		String filename = findEnd(id);
+		System.out.println(filename);
+		System.out.println(id);
+		File file = new File(filename);
+		file.delete();
+		tratamentoRepository.deleteById(id);
 	}
 
 }
