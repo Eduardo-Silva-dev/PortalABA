@@ -85,9 +85,9 @@ public class TratamentoResource {
 		    return response;
 	}
 	
-	@GetMapping("/{id}/tratamento/{idP}")
-	public ResponseEntity<Page<Tratamento>> findTratamentos(@PathVariable long id,@PathVariable long idP,Pageable pageable) throws IOException {
-		return ResponseEntity.ok().body(analsitaservice.findTratamentos(id,idP,pageable));
+	@GetMapping("/{id}")
+	public ResponseEntity<Page<Tratamento>> findTratamentos(@PathVariable long id,Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(analsitaservice.findTratamentos(id,pageable));
 	}
 
 	@PostMapping("/{id}/nome/{nome}")

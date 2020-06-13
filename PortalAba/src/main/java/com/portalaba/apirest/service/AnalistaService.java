@@ -183,9 +183,9 @@ public class AnalistaService {
 		return pages;
 	}
 	
-	public Page<Tratamento> findTratamentos(long id,long idP,Pageable pageable) {
+	public Page<Tratamento> findTratamentos(long id,Pageable pageable) {
 		
-		Page<Tratamento> tratamento = repoT.findTratamentos(id,idP,pageable);
+		Page<Tratamento> tratamento = repoT.findTratamentos(id,pageable);
 		
 		return tratamento;
 	}
