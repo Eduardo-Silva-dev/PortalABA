@@ -29,6 +29,7 @@ import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.domain.Tratamento;
 import com.portalaba.apirest.dto.AcompanhanteDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
+import com.portalaba.apirest.dto.TratamentoDTO;
 import com.portalaba.apirest.dto.TratamentoNewDTO;
 import com.portalaba.apirest.service.AnalistaService;
 import com.portalaba.apirest.service.PacienteService;
@@ -85,9 +86,9 @@ public class TratamentoResource {
 		    return response;
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<Page<Tratamento>> findTratamentos(@PathVariable long id,Pageable pageable) throws IOException {
-		return ResponseEntity.ok().body(analsitaservice.findTratamentos(id,pageable));
+	@GetMapping("/{id}/tipo-{tipo}")
+	public ResponseEntity<Page<TratamentoDTO>> findTratamentos(@PathVariable long id,@PathVariable String tipo,Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(analsitaservice.findTratamentos(id,tipo,pageable));
 	}
 
 	@PostMapping("/{id}/nome/{nome}")

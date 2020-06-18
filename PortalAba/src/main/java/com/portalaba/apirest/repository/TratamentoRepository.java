@@ -9,8 +9,8 @@ import com.portalaba.apirest.domain.Tratamento;
 
 public interface TratamentoRepository extends JpaRepository<Tratamento, Long>{
 
-	@Query("select u from Tratamento u where u.paciente = ?1")
-	Page<Tratamento> findTratamentos(long id,Pageable pageable);
+	@Query("select u from Tratamento u where u.paciente = ?1 AND u.tipo=?2")
+	Page<Tratamento> findTratamentos(long id,String tipo,Pageable pageable);
 	
 	@Query("select u from Tratamento u where u.id = ?1")
 	Tratamento findByID(long id);

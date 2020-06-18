@@ -13,6 +13,7 @@ public class AnalistaTotalDTO implements Serializable {
 
     private long id; 
     
+    @JsonIgnore
     private String password; 
 
     private String nome;

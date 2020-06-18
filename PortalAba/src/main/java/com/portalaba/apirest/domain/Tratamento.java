@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tratamento")
 public class Tratamento implements Serializable{
@@ -35,16 +37,25 @@ public class Tratamento implements Serializable{
 	@Column(name = "endereco_arquivo")
 	private String file;
 
+	@Column(name = "tipo")
+	private String tipo;
+
 	@Column(name = "data_Cadastro")
 	private Date data_Cadastro;
 
-	public Tratamento(long analista,long acompanhante ,long paciente,String nome) {
+	@Column(name = "data_envio")
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private Date data_envio;
+
+	public Tratamento(long analista,long acompanhante ,long paciente,String nome,String tipo) {
 		super();
 		this.analista = analista;
 		this.acompanhante = acompanhante;
 		this.paciente = paciente;
 		this.nome = nome;
+		this.tipo = tipo;
 		this.data_Cadastro = new Date();
+		this.data_envio = new Date(System.currentTimeMillis());
 	}
 	
 	public Tratamento() {
@@ -105,6 +116,22 @@ public class Tratamento implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public Date getData_envio() {
+		return data_envio;
+	}
+
+	public void setData_envio(Date data_envio) {
+		this.data_envio = data_envio;
 	}
 
 	@Override

@@ -1,12 +1,16 @@
 package com.portalaba.apirest.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.portalaba.apirest.domain.Tratamento;
 
-public class TratamentoDTO {
-
+public class TratamentoDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private long id;  
 	
 	private long analista;
@@ -15,31 +19,33 @@ public class TratamentoDTO {
 
 	private String nome;
 
+	private String tipo;
+
 	private long paciente;
 
 	private String file;
 	
-	@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonIgnore
 	private Date data_Cadastro;
 	
-	
-	public TratamentoDTO(Tratamento obj) {
-
-	}
+    @JsonFormat(pattern="dd/MM/yyyy")
+	private Date data_envio;
 	
 	public TratamentoDTO( ) {
 
 	}
 
-	public TratamentoDTO(long id, long analista, long acompanhante, String nome, long paciente, String file, Date data_Cadastro) {
+	public TratamentoDTO(Tratamento obj) {
 		super();
-		this.id = id;
-		this.analista = analista;
-		this.acompanhante = acompanhante;
-		this.nome = nome;
-		this.paciente = paciente;
-		this.file = file;
-		this.data_Cadastro = data_Cadastro;
+		this.id = obj.getId();
+		this.analista = obj.getAnalista();
+		this.acompanhante = obj.getAcompanhante();
+		this.nome = obj.getNome();
+		this.paciente = obj.getPaciente();
+		this.file = obj.getFile();
+		this.data_Cadastro = obj.getData_Cadastro();
+		this.data_envio = obj.getData_envio();
+		this.tipo = obj.getTipo();
 	}
 
 	public long getId() {
@@ -96,5 +102,21 @@ public class TratamentoDTO {
 
 	public void setData_Cadastro(Date data_Cadastro) {
 		this.data_Cadastro = data_Cadastro;
+	}
+
+	public Date getData_envio() {
+		return data_envio;
+	}
+
+	public void setData_envio(Date data_envio) {
+		this.data_envio = data_envio;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 }

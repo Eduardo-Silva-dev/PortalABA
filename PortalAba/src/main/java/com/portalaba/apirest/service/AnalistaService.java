@@ -30,6 +30,7 @@ import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.TratamentoDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.EmpresaRepository;
@@ -72,6 +73,7 @@ public class AnalistaService {
 	}
 	
 	public Page<AnalistaTotalDTO> findAll(Pageable pageable) throws IOException {
+		
 			Page<Analista> analista = repo.findAll(pageable);
 			
 			Page<AnalistaTotalDTO> listDto = analista.map(obj -> new AnalistaTotalDTO(obj));  
@@ -183,11 +185,13 @@ public class AnalistaService {
 		return pages;
 	}
 	
-	public Page<Tratamento> findTratamentos(long id,Pageable pageable) {
+	public Page<TratamentoDTO> findTratamentos(long id,String tipo,Pageable pageable) {
 		
-		Page<Tratamento> tratamento = repoT.findTratamentos(id,pageable);
+		Page<Tratamento> tratamento = repoT.findTratamentos(id,tipo,pageable);
 		
-		return tratamento;
+		Page<TratamentoDTO> list =  tratamento.map(obj -> new TratamentoDTO(obj));  
+		
+		return list;
 	}
 	
 	public Analista fromDTO(AnalistaNewDTO objDto) {

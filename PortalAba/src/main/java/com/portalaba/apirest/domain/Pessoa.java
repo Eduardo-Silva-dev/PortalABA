@@ -2,14 +2,8 @@ package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +11,6 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.portalaba.apirest.domain.enums.Perfil;
 
 @MappedSuperclass
 public abstract class Pessoa  implements Serializable{
@@ -31,7 +24,6 @@ public abstract class Pessoa  implements Serializable{
 	
 	@NotEmpty
 	@Column(name = "password")
-	//@JsonIgnore
     private String password; 
 
 	@NotEmpty

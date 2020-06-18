@@ -8,7 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,12 +42,11 @@ public class TratamentoService {
 		Tratamento tratamento = tratamentoRepository.findByID(id);
 		
 		return tratamento.getFile();
-	}
-	
+	}	
 	
 	public Tratamento fromDTO (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"programas");
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -80,7 +82,7 @@ public class TratamentoService {
 	
 	public Tratamento fromDTOR (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"retorno");
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -116,7 +118,7 @@ public class TratamentoService {
 	
 	public Tratamento fromDTOMP4 (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"video");
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -152,7 +154,7 @@ public class TratamentoService {
 	
 	public Tratamento fromDTORelatorio (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome());
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"relatorio");
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -189,8 +191,6 @@ public class TratamentoService {
 
 	public void delete(long id) {
 		String filename = findEnd(id);
-		System.out.println(filename);
-		System.out.println(id);
 		File file = new File(filename);
 		file.delete();
 		tratamentoRepository.deleteById(id);
