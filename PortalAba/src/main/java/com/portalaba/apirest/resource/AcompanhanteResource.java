@@ -30,6 +30,7 @@ import com.portalaba.apirest.dto.AcompanhanteNewDTO;
 import com.portalaba.apirest.dto.AcompanhanteTotalDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.PacienteTotalDTO;
 import com.portalaba.apirest.service.AcompanhanteService;
 
 @RestController
@@ -61,6 +62,11 @@ public class AcompanhanteResource {
 		return ResponseEntity.ok().body(acompanhanteservice.findAllPacientes(id,pageable));
 	}
 	
+	@GetMapping("/{id}/pacientes-diferente")
+	public ResponseEntity<Page<PacienteTotalDTO>> findAllPacientesDiferente(@PathVariable long id,Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(acompanhanteservice.findAllPacientesD(id,pageable));
+	}
+	
 	@GetMapping("/{id}/analistas")
 	public ResponseEntity<Page<AnalistaDTO>> findAllAnalistas(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(acompanhanteservice.findAllAnalistas(id,pageable));
@@ -76,9 +82,8 @@ public class AcompanhanteResource {
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody AcompanhanteNewDTO objDto){
-		MultipartFile file = null;
 		Acompanhante obj = acompanhanteservice.fromDTO(objDto);
-		obj = acompanhanteservice.insert(obj,file);
+		obj = acompanhanteservice.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}

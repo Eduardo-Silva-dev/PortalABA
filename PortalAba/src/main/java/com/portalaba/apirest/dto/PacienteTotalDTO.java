@@ -228,11 +228,11 @@ public class PacienteTotalDTO implements Serializable {
 		this.estado = estado;
 	}
 
-	public String getNivelAutismo() {
+	public String getNivelAltismo() {
 		return nivelAutismo;
 	}
 
-	public void setNivelAutismo(String nivelAutismo) {
+	public void setNivelAltismo(String nivelAutismo) {
 		this.nivelAutismo = nivelAutismo;
 	}
 	

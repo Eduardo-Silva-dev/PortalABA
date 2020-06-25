@@ -184,25 +184,10 @@ public class PacienteService {
 		return paciente; 
 	}
 	
-	public Paciente insert(Paciente obj,MultipartFile file) {
+	public Paciente insert(Paciente obj) {
 		
-		obj = repo.save(obj);
+		return repo.save(obj);
 		
-		if(file == null) { 
-			return obj; 
-		}
-		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/paciente/"  + obj.getCpfResponsavel()+".jpg");
-		
-		try {
-			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		obj.setImage(path.toString());
-		
-		return obj;
 	}
 	
 	public Paciente insertAcompanhante(long idP, long idA) {

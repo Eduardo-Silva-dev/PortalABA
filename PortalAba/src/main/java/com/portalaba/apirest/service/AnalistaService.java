@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.PacienteTotalDTO;
 import com.portalaba.apirest.dto.TratamentoDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
@@ -156,6 +158,50 @@ public class AnalistaService {
 		return pages;
 	}
 
+
+	public Page<PacienteTotalDTO> findAllPacientesD(long id,Pageable pageable) throws IOException {
+		
+		Analista analista = find(id);
+		
+		Page<Paciente> pacientesA = repoP.findAllPacientes(analista,pageable);
+		
+		Page<Paciente> pacientesR = repoE.findAllPaciente(analista.getEmpresas().get(0).getId(), pageable);
+		
+		List<Paciente> paciente = new ArrayList<Paciente>();
+		
+		List<Paciente> listA = pacientesA.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
+		
+		List<Paciente> listR = pacientesR.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
+		
+		for(int i=0;i<listA.size();i++) {
+			for(int j=0;j<listR.size();j++) {
+				if(!listA.get(i).equals(listR.get(j))) {
+					paciente.add(listR.get(j));
+				}
+			}
+		}
+		
+		List<PacienteTotalDTO> listDto = paciente.stream().map(obj -> new PacienteTotalDTO(obj)).collect(Collectors.toList());  
+		
+		for (int i = 0; i<paciente.size() ; i++) {
+				
+			if(paciente.get(i).getImage() != null) {
+				
+				File img = new File(paciente.get(i).getImage().toString());
+				FileInputStream fis = new FileInputStream(img);
+				byte[] data = new byte[fis.available()];
+				fis.read(data);
+				
+				listDto.get(i).setImage(data);
+			}
+		
+		}
+
+		Page<PacienteTotalDTO> pages = new PageImpl<PacienteTotalDTO>(listDto);
+		
+		return pages;
+	}
+	
 	public Page<AcompanhanteDTO> findAllAcompanhantes(long id,Pageable pageable) throws IOException {
 
 		find(id);

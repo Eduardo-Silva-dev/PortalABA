@@ -79,9 +79,8 @@ public class PacienteResource {
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody PacienteNewDTO objDto){
-		MultipartFile file = null;
 		Paciente obj = pacienteService.fromDTO(objDto);
-		obj = pacienteService.insert(obj,file);
+		obj = pacienteService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}

@@ -1,5 +1,7 @@
 package com.portalaba.apirest.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
@@ -75,6 +77,8 @@ public class PacienteNewDTO {
 	@NotEmpty(message="Preenchimento obrigatório")
 	@Length(min=2, max=2, message="O tamanho deve ser de 2 caracteres")
 	private String estado;
+   	
+   	SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy"); 
 	
 	public PacienteNewDTO() {
 		
@@ -82,6 +86,37 @@ public class PacienteNewDTO {
 	
 	public PacienteNewDTO(Paciente paciente) {
 		
+	}
+	
+	public PacienteNewDTO(String password, String nome,String dataNascimento,String nomeResponsavel,String dataNascimentoResponsavel,
+			String cpfResponsavel,String contatoResponsavel,String contatoAuxiliar,String emailResponsavel,String nivelAltismo,
+			String logradouro,String complemento,String bairro,String cep,String numero,String cidade,String estado) {
+		super();
+		this.password = password;
+		this.nome = nome;
+		try {
+			this.dataNascimento = formato.parse(dataNascimento);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.nomeResponsavel = nomeResponsavel;
+		try {
+			this.dataNascimentoResponsavel = formato.parse(dataNascimentoResponsavel);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.cpfResponsavel = cpfResponsavel;
+		this.contatoResponsavel = contatoResponsavel;
+		this.contatoAuxiliar = contatoAuxiliar;
+		this.emailResponsavel = emailResponsavel;
+		this.nivelAltismo = nivelAltismo;
+		this.logradouro = logradouro;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
 	}
 
 	public long getId() {

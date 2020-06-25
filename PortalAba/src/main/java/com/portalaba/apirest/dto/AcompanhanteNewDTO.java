@@ -1,5 +1,7 @@
 package com.portalaba.apirest.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
@@ -65,9 +67,36 @@ public class AcompanhanteNewDTO {
    	@NotEmpty(message="Preenchimento obrigatório")
    	@Length(min=2, max=2, message="O tamanho deve ser de 2 caracteres")
    	private String estado;
+   	
+   	SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy"); 
 	
 	public AcompanhanteNewDTO() {
 		
+	}
+
+	public AcompanhanteNewDTO(String password,String nome,String dataNascimento,String tipoAcompanhante,String emailAcompanhante,
+			String cpfAcompanhante,String contatoAcompanhante,String crpAcompanhante,String logradouro,
+			String complemento,String bairro, String cep,String numero,String cidade,String estado) {
+		super();
+		this.password = password;
+		this.nome = nome;
+		try {
+			this.dataNascimento = formato.parse(dataNascimento);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.tipoAcompanhante = tipoAcompanhante;
+		this.emailAcompanhante = emailAcompanhante;
+		this.cpfAcompanhante = cpfAcompanhante;
+		this.contatoAcompanhante = contatoAcompanhante;
+		this.crpAcompanhante = crpAcompanhante;
+		this.logradouro = logradouro;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.estado = estado;
 	}
 
 	public String getPassword() {

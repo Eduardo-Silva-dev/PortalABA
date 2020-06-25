@@ -29,6 +29,7 @@ import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.AnalistaNewDTO;
 import com.portalaba.apirest.dto.AnalistaTotalDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
+import com.portalaba.apirest.dto.PacienteTotalDTO;
 //import com.portalaba.apirest.dto.PacienteDTO;
 import com.portalaba.apirest.service.AnalistaService;
 
@@ -59,6 +60,11 @@ public class AnalistaResource {
 	@GetMapping("/{id}/pacientes")
 	public ResponseEntity<Page<PacienteDTO>> findAllPacientes(@PathVariable long id,Pageable pageable) throws IOException {
 		return ResponseEntity.ok().body(analsitaservice.findAllPacientes(id,pageable));
+	}
+	
+	@GetMapping("/{id}/pacientes-diferente")
+	public ResponseEntity<Page<PacienteTotalDTO>> findAllPacientesDiferente(@PathVariable long id,Pageable pageable) throws IOException {
+		return ResponseEntity.ok().body(analsitaservice.findAllPacientesD(id,pageable));
 	}
 	
 	@GetMapping("/{id}/acompanhantes")

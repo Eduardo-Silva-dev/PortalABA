@@ -31,7 +31,7 @@ public abstract class Pessoa  implements Serializable{
     private String nome;
     
     @Column(name = "dataNascimento",length=8)
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date dataNascimento;
     
     @Column(name = "perfil")

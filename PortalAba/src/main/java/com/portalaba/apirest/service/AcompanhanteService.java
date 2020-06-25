@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,10 @@ import com.portalaba.apirest.dto.AcompanhanteNewDTO;
 import com.portalaba.apirest.dto.AcompanhanteTotalDTO;
 import com.portalaba.apirest.dto.AnalistaDTO;
 import com.portalaba.apirest.dto.PacienteDTO;
-
+import com.portalaba.apirest.dto.PacienteTotalDTO;
 import com.portalaba.apirest.repository.AcompanhanteRepository;
 import com.portalaba.apirest.repository.AnalistaRepository;
+import com.portalaba.apirest.repository.EmpresaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
 
 @Service
@@ -50,6 +52,9 @@ public class AcompanhanteService {
 	
 	@Autowired
 	private PacienteRepository repoP;
+	
+	@Autowired
+	private EmpresaRepository repoE;
 	
 	public Acompanhante find(long id) {
 		
@@ -146,6 +151,54 @@ public class AcompanhanteService {
 		
 		return pages;
 	}
+	
+public Page<PacienteTotalDTO> findAllPacientesD(long id,Pageable pageable) throws IOException {
+		
+		Acompanhante acompanhante = find(id);
+		
+		Page<Paciente> pacientesA = repo.findAllPacientes(id,pageable);
+		
+		Page<Paciente> pacientesR = repoE.findAllPaciente(acompanhante.getEmpresas().get(0).getId(), pageable);
+		
+		List<Paciente> paciente = new ArrayList<Paciente>();
+		
+		List<Paciente> listA = pacientesA.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
+		
+		List<Paciente> listR = pacientesR.stream().map(obj -> new Paciente(obj)).collect(Collectors.toList());  
+		if(listA.size()>0) {
+			for(int i=0;i<listA.size();i++) {
+				for(int j=0;j<listR.size();j++) {
+					if(!listA.get(i).equals(listR.get(j))) {
+						paciente.add(listR.get(j));
+					}
+				}
+			}
+		}else {
+			
+					paciente.addAll(listR);
+			
+		}
+		
+		List<PacienteTotalDTO> listDto = paciente.stream().map(obj -> new PacienteTotalDTO(obj)).collect(Collectors.toList());  
+		
+		for (int i = 0; i<paciente.size() ; i++) {
+				
+			if(paciente.get(i).getImage() != null) {
+				
+				File img = new File(paciente.get(i).getImage().toString());
+				FileInputStream fis = new FileInputStream(img);
+				byte[] data = new byte[fis.available()];
+				fis.read(data);
+				
+				listDto.get(i).setImage(data);
+			}
+		
+		}
+
+		Page<PacienteTotalDTO> pages = new PageImpl<PacienteTotalDTO>(listDto);
+		
+		return pages;
+	}
 
 	public Page<AnalistaDTO> findAllAnalistas(long id,Pageable pageable) throws IOException {
 		
@@ -189,23 +242,10 @@ public class AcompanhanteService {
 		return acompanhante;
 	}
 	
-	public Acompanhante insert(Acompanhante obj,MultipartFile file) {
+	public Acompanhante insert(Acompanhante obj) {
+
+		return repo.save(obj);
 		
-		obj = repo.save(obj);
-		
-		if(file == null) { return obj; }
-		
-		Path path = Paths.get("C:/Users/Eduardo/git/PortalABA/PortalAba/src/main/resources/imagensCadastro/acompanhante/"  + obj.getCpfAcompanhante()+".jpg");
-		
-		try {
-			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		obj.setImage(path.toString());
-		
-		return obj;
 	}
 	
 	public Acompanhante insertAnalista(long id,long idA) {

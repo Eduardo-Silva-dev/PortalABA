@@ -18,7 +18,7 @@ public class AnalistaTotalDTO implements Serializable {
 
     private String nome;
     
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date dataNascimento;
 
     private String tipoAnalista;
