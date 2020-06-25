@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import com.portalaba.apirest.service.DBService;
 import com.portalaba.apirest.service.EmailService;
 import com.portalaba.apirest.service.MockEmailService;
+import com.portalaba.apirest.service.SmtpEmailService;
 
 @Configuration
 @Profile("test")
@@ -26,6 +27,6 @@ public class TestConfig {
 	
 	@Bean
 	public EmailService emailService() {
-		return new MockEmailService();
+		return new SmtpEmailService();
 	}
 }

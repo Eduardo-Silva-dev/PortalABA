@@ -1,7 +1,11 @@
 package com.portalaba.apirest.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +38,15 @@ public class Tratamento implements Serializable{
 	@Column(name = "paciente_id")
 	private long paciente;
 
+	@Column(name = "nome_paciente")
+	private String nomePaciente;
+
+	@Column(name = "nome_acompanhante")
+	private String nomeAcompanhante;
+
+	@Column(name = "nome_analista")
+	private String nomeAnalista;
+
 	@Column(name = "endereco_arquivo")
 	private String file;
 
@@ -47,17 +60,23 @@ public class Tratamento implements Serializable{
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date data_envio;
 
-	public Tratamento(long analista,long acompanhante ,long paciente,String nome,String tipo) {
+	
+	
+	public Tratamento(long analista, long acompanhante,  long paciente, String nome,String tipo,String nomePaciente,
+			String nomeAcompanhante, String nomeAnalista) {
 		super();
 		this.analista = analista;
 		this.acompanhante = acompanhante;
-		this.paciente = paciente;
 		this.nome = nome;
+		this.paciente = paciente;
+		this.nomePaciente = nomePaciente;
+		this.nomeAcompanhante = nomeAcompanhante;
+		this.nomeAnalista = nomeAnalista;
 		this.tipo = tipo;
 		this.data_Cadastro = new Date();
 		this.data_envio = new Date(System.currentTimeMillis());
 	}
-	
+
 	public Tratamento() {
 		
 	}
@@ -86,12 +105,44 @@ public class Tratamento implements Serializable{
 		this.acompanhante = acompanhante;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	public long getPaciente() {
 		return paciente;
 	}
 
 	public void setPaciente(long paciente) {
 		this.paciente = paciente;
+	}
+
+	public String getNomePaciente() {
+		return nomePaciente;
+	}
+
+	public void setNomePaciente(String nomePaciente) {
+		this.nomePaciente = nomePaciente;
+	}
+
+	public String getNomeAcompanhante() {
+		return nomeAcompanhante;
+	}
+
+	public void setNomeAcompanhante(String nomeAcompanhante) {
+		this.nomeAcompanhante = nomeAcompanhante;
+	}
+
+	public String getNomeAnalista() {
+		return nomeAnalista;
+	}
+
+	public void setNomeAnalista(String nomeAnalista) {
+		this.nomeAnalista = nomeAnalista;
 	}
 
 	public String getFile() {
@@ -102,28 +153,20 @@ public class Tratamento implements Serializable{
 		this.file = file;
 	}
 
-	public Date getData_Cadastro() {
-		return data_Cadastro;
-	}
-
-	public void setData_Cadastro(Date data_Cadastro) {
-		this.data_Cadastro = data_Cadastro;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public String getTipo() {
 		return tipo;
 	}
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public Date getData_Cadastro() {
+		return data_Cadastro;
+	}
+
+	public void setData_Cadastro(Date data_Cadastro) {
+		this.data_Cadastro = data_Cadastro;
 	}
 
 	public Date getData_envio() {
@@ -141,10 +184,15 @@ public class Tratamento implements Serializable{
 		result = prime * result + (int) (acompanhante ^ (acompanhante >>> 32));
 		result = prime * result + (int) (analista ^ (analista >>> 32));
 		result = prime * result + ((data_Cadastro == null) ? 0 : data_Cadastro.hashCode());
+		result = prime * result + ((data_envio == null) ? 0 : data_envio.hashCode());
 		result = prime * result + ((file == null) ? 0 : file.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((nomeAcompanhante == null) ? 0 : nomeAcompanhante.hashCode());
+		result = prime * result + ((nomeAnalista == null) ? 0 : nomeAnalista.hashCode());
+		result = prime * result + ((nomePaciente == null) ? 0 : nomePaciente.hashCode());
 		result = prime * result + (int) (paciente ^ (paciente >>> 32));
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		return result;
 	}
 
@@ -166,6 +214,11 @@ public class Tratamento implements Serializable{
 				return false;
 		} else if (!data_Cadastro.equals(other.data_Cadastro))
 			return false;
+		if (data_envio == null) {
+			if (other.data_envio != null)
+				return false;
+		} else if (!data_envio.equals(other.data_envio))
+			return false;
 		if (file == null) {
 			if (other.file != null)
 				return false;
@@ -178,15 +231,44 @@ public class Tratamento implements Serializable{
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
+		if (nomeAcompanhante == null) {
+			if (other.nomeAcompanhante != null)
+				return false;
+		} else if (!nomeAcompanhante.equals(other.nomeAcompanhante))
+			return false;
+		if (nomeAnalista == null) {
+			if (other.nomeAnalista != null)
+				return false;
+		} else if (!nomeAnalista.equals(other.nomeAnalista))
+			return false;
+		if (nomePaciente == null) {
+			if (other.nomePaciente != null)
+				return false;
+		} else if (!nomePaciente.equals(other.nomePaciente))
+			return false;
 		if (paciente != other.paciente)
+			return false;
+		if (tipo == null) {
+			if (other.tipo != null)
+				return false;
+		} else if (!tipo.equals(other.tipo))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Tratamento [id=" + id + ", analista=" + analista + ", acompanhante=" + acompanhante + ", nome=" + nome
-				+ ", paciente=" + paciente + ", file=" + file + ", data_Cadastro=" + data_Cadastro + "]";
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("NOVO TRATAMENTO: \n");
+		builder.append("O Analista: ");
+		builder.append(getNomeAnalista() + "\n");
+		builder.append("Enviou um novo tramento para o seu Anjinho: ");
+		builder.append(getNomePaciente() + "\n");
+		builder.append("Tratamento enviado as: \n");
+		builder.append(sdf.format(getData_Cadastro()) );
+		return builder.toString();
 	}
 	
 }

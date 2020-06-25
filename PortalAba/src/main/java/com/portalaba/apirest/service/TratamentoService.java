@@ -16,12 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.portalaba.apirest.domain.Acompanhante;
+import com.portalaba.apirest.domain.Analista;
 import com.portalaba.apirest.domain.Paciente;
 import com.portalaba.apirest.domain.Tratamento;
 
 import com.portalaba.apirest.dto.TratamentoNewDTO;
 
 import com.portalaba.apirest.repository.AcompanhanteRepository;
+import com.portalaba.apirest.repository.AnalistaRepository;
 import com.portalaba.apirest.repository.PacienteRepository;
 import com.portalaba.apirest.repository.TratamentoRepository;
 
@@ -37,6 +39,12 @@ public class TratamentoService {
 	@Autowired
 	private AcompanhanteRepository repoA;
 	
+	@Autowired
+	private AnalistaRepository repoAn;
+
+	@Autowired
+	private EmailService emailService;
+	
 	public String findEnd(long id) {
 	
 		Tratamento tratamento = tratamentoRepository.findByID(id);
@@ -46,7 +54,13 @@ public class TratamentoService {
 	
 	public Tratamento fromDTO (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"programas");
+		Paciente paciente = repoP.findByID(objDto.getPaciente());
+		
+		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
+		
+		Analista analista = repoAn.findByID(id);
+		
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"programas",paciente.getNome(),acompanhante.getNome(),analista.getNome());
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -56,11 +70,7 @@ public class TratamentoService {
 		
 		tratamentoRepository.save(tratamento);
 		
-		Paciente paciente = repoP.findByID(objDto.getPaciente());
-		
-		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
-		
-		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
+		emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
 		
 		return tratamento;
 	}
@@ -82,7 +92,13 @@ public class TratamentoService {
 	
 	public Tratamento fromDTOR (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"retorno");
+		Paciente paciente = repoP.findByID(objDto.getPaciente());
+		
+		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
+		
+		Analista analista = repoAn.findByID(id);
+		
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"retorno",paciente.getNome(),acompanhante.getNome(),analista.getNome());
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -91,10 +107,6 @@ public class TratamentoService {
 		tratamento.setFile(caminho);
 		
 		tratamentoRepository.save(tratamento);
-		
-		Paciente paciente = repoP.findByID(objDto.getPaciente());
-		
-		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
 		
 		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
 		
@@ -117,8 +129,14 @@ public class TratamentoService {
 	}
 	
 	public Tratamento fromDTOMP4 (TratamentoNewDTO objDto,long id,MultipartFile file) {
+
+		Paciente paciente = repoP.findByID(objDto.getPaciente());
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"video");
+		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
+		
+		Analista analista = repoAn.findByID(id);
+		
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"video",paciente.getNome(),acompanhante.getNome(),analista.getNome());
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -127,10 +145,6 @@ public class TratamentoService {
 		tratamento.setFile(caminho);
 		
 		tratamentoRepository.save(tratamento);
-		
-		Paciente paciente = repoP.findByID(objDto.getPaciente());
-		
-		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
 		
 		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
 		
@@ -154,7 +168,14 @@ public class TratamentoService {
 	
 	public Tratamento fromDTORelatorio (TratamentoNewDTO objDto,long id,MultipartFile file) {
 		
-		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"relatorio");
+
+		Paciente paciente = repoP.findByID(objDto.getPaciente());
+		
+		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
+		
+		Analista analista = repoAn.findByID(id);
+		
+		Tratamento tratamento = new Tratamento(id,objDto.getAcompanhante(),objDto.getPaciente(),objDto.getNome(),"relatorio",paciente.getNome(),acompanhante.getNome(),analista.getNome());
 		
 		tratamentoRepository.save(tratamento);
 		
@@ -163,10 +184,6 @@ public class TratamentoService {
 		tratamento.setFile(caminho);
 		
 		tratamentoRepository.save(tratamento);
-		
-		Paciente paciente = repoP.findByID(objDto.getPaciente());
-		
-		Acompanhante acompanhante = repoA.findByID(objDto.getAcompanhante());
 		
 		//emailService.sendOrderConfirmationEmail(tratamento,acompanhante.getEmailAcompanhante(),paciente.getNome());
 		

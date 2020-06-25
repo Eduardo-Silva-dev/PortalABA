@@ -37,7 +37,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(destinatario);
 		sm.setFrom(sender);
-		sm.setSubject("Novo tratamento para o Paciente " + paciente);
+		sm.setSubject("Novo tratamento para o seu Anjinho " + paciente);
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
 		return sm;
@@ -66,7 +66,7 @@ public abstract class AbstractEmailService implements EmailService {
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		mmh.setTo(destinatario);
 		mmh.setFrom(sender);
-		mmh.setSubject("Novo tratamento para o Paciente " + paciente);
+		mmh.setSubject("Novo tratamento para o seu Anjinho" + paciente);
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplateTratamento(obj, destinatario, paciente), true);
 		return mimeMessage;
